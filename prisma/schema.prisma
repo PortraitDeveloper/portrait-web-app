@@ -1,0 +1,116 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model branches {
+  branch_id      String  @unique
+  branch_name    String
+  branch_address String?
+
+  products products[] // A branch can have many products
+}
+
+model products {
+  product_id    String  @unique
+  product_name  String
+  product_price Int
+  product_desc  String?
+
+  branches  branches @relation(fields: [branch_id], references: [branch_id]) // A product has one branch
+  branch_id String
+
+  orders_book      orders_book[] // A product can have many orders
+  products_history products_history[] // A product can have many histories
+}
+
+model products_history {
+  history_id String @unique
+
+  products   products @relation(fields: [product_id], references: [product_id]) // A history has one product
+  product_id String
+
+  product_name_old  String
+  product_price_old String
+  product_desc_old  String
+  product_name_new  String
+  product_price_new String
+  product_desc_new  String?
+  update_at         DateTime
+}
+
+model additionals {
+  item_id    String  @unique
+  item_name  String
+  item_price Int
+  item_desc  String?
+}
+
+model vouchers {
+  voucher_code        String    @unique
+  percentage_discount Float?
+  nominal_discount    Int?
+  start_date          DateTime?
+  expired_date        DateTime?
+}
+
+model customers {
+  cust_id      Int    @id @default(autoincrement())
+  cust_name    String
+  email        String @unique
+  phone_number String @unique
+
+  orders_book orders_book[] // A customer can have many orders
+}
+
+model orders_book {
+  book_id       String    @unique
+  book_ref      String    @unique
+  created_at    DateTime
+  updated_at    DateTime?
+  booking_start DateTime
+  booking_end   DateTime
+
+  customers customers @relation(fields: [cust_id], references: [cust_id]) // An order has one customer
+  cust_id   Int
+
+  products   products @relation(fields: [product_id], references: [product_id]) // An order has one product
+  product_id String
+
+  number_of_add_person   Int     @default(0)
+  number_of_add_pets     Int     @default(0)
+  number_of_add_print_5r Int     @default(0)
+  is_add_softfile        Boolean @default(false)
+  voucher_code           String?
+  is_voucher_applied     Boolean @default(false)
+  total_price            Int     @default(0)
+  total_paid_by_cust     Int     @default(0)
+  book_status            String
+  payment_status         String
+}
+
+model orders_book_dev {
+  book_id                String    @unique
+  book_ref               String
+  created_at             DateTime
+  updated_at             DateTime?
+  booking_start          String
+  booking_end            String
+  cust_name              String
+  email                  String
+  phone_number           String
+  product_name           String
+  number_of_add_person   String
+  number_of_add_pets     String
+  number_of_add_print_5r String
+  is_add_softfile        String
+  voucher_code           String?
+  branch_id              String
+}
