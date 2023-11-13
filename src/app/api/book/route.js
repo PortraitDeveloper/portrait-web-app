@@ -84,7 +84,7 @@ export async function POST(request) {
     const numberOfAddPrint5R = parseInt(body.number_of_add_print_5r);
 
     // Convert to boolean
-    const isAddSoftfile = body.is_add_softfile === "true" ? true : false;
+    const isAddSoftfile = body.is_add_softfile === "yes" ? true : false;
 
     // Convert to integer
     const numberOfAddSoftfile = isAddSoftfile === true ? 1 : 0;
@@ -132,6 +132,7 @@ export async function POST(request) {
     // Determine whether the print5R is color or black&white
     const foundIndex = productName[0].indexOf("black&white");
     const n = foundIndex !== -1 ? 3 : 2;
+    console.log("n:", n);
 
     // Total price calculation
     totalPrice =
