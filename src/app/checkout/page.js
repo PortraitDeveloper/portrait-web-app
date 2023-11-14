@@ -1,46 +1,26 @@
-import { useEffect } from "react";
-import { NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
-import { useRouter } from "next/router";
+"use client";
+import { useSearchParams } from "next/navigation";
 
-// Prisma initial
-const prisma = new PrismaClient();
+async function getData(book_id) {
+  const res = await fetch(`http://localhost:3000/api/orderbook/${book_id}`);
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
+
+  return res.json();
+}
 
 export default function Checkout() {
-  const [data, setData] = useState({});
-  const router = useRouter();
-  const { book_id } = router.query;
-
-  useEffect(() => {
-    const readOrdersBook = async () => {
-      try {
-        const getData = await prisma.orders_book.findFirst({
-          where: {
-            book_id: book_id,
-          },
-        });
-        setData(getData);
-        return NextResponse.json(getData, { status: 201 });
-      } catch (error) {
-        const _currentDate = new Date();
-        _currentDate.setHours(_currentDate.getHours() + 7);
-        console.log(
-          _currentDate,
-          "Status: 500, An error occurred while processing the request"
-        );
-        return NextResponse.json({ error }, { status: 500 });
-      } finally {
-        await prisma.$disconnect();
-      }
-    };
-
-    readOrdersBook();
-  }, []);
+  const searchParams = useSearchParams();
+  const book_id = searchParams.get("book_id");
+  const orderBook = getData(book_id);
 
   return (
     <>
       <h1>Checkout Page</h1>
-      <p>{data}</p>
+      <p>{book_id}</p>
+      <p>{orderBook}</p>
     </>
   );
 }
