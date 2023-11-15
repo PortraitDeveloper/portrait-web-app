@@ -70,9 +70,30 @@ model customers {
   orders_book orders_book[] // A customer can have many orders
 }
 
+model transactions {
+  book_code                 String    @unique
+  created_at                DateTime
+  updated_at                DateTime?
+  product_price             Int
+  additional_person_price   Int       @default(0)
+  additional_pet_price      Int       @default(0)
+  additional_print5r_price  Int       @default(0)
+  additional_softfile_price Int       @default(0)
+  total_price               Int       @default(0)
+  voucher_code              String?
+  is_voucher_applied        Boolean   @default(false)
+  total_paid_by_cust        Int       @default(0)
+  payment_status            String
+
+  orders_book orders_book? // A transaction has one order
+}
+
 model orders_book {
-  book_id       String    @unique
-  book_ref      String    @unique
+  book_id String @unique
+
+  transactions transactions @relation(fields: [book_code], references: [book_code]) // An Order has one transaction
+  book_code    String       @unique
+
   created_at    DateTime
   updated_at    DateTime?
   booking_start DateTime
@@ -84,33 +105,27 @@ model orders_book {
   products   products @relation(fields: [product_id], references: [product_id]) // An order has one product
   product_id String
 
-  number_of_add_person   Int     @default(0)
-  number_of_add_pets     Int     @default(0)
-  number_of_add_print_5r Int     @default(0)
-  is_add_softfile        Boolean @default(false)
-  voucher_code           String?
-  is_voucher_applied     Boolean @default(false)
-  total_price            Int     @default(0)
-  total_paid_by_cust     Int     @default(0)
-  book_status            String
-  payment_status         String
+  number_of_add_person  Int     @default(0)
+  number_of_add_pet     Int     @default(0)
+  number_of_add_print5r Int     @default(0)
+  is_add_softfile       Boolean @default(false)
+  book_status           String
 }
 
-model orders_book_dev {
-  book_id                String    @unique
-  book_ref               String
-  created_at             DateTime
-  updated_at             DateTime?
-  booking_start          String
-  booking_end            String
-  cust_name              String
-  email                  String
-  phone_number           String
-  product_name           String
-  number_of_add_person   String
-  number_of_add_pets     String
-  number_of_add_print_5r String
-  is_add_softfile        String
-  voucher_code           String?
-  branch_id              String
+model raw_data {
+  book_id               String   @unique
+  book_code             String
+  created_at            DateTime
+  booking_start         String
+  booking_end           String
+  cust_name             String
+  email                 String
+  phone_number          String
+  product_name          String
+  number_of_add_person  String
+  number_of_add_pet     String
+  number_of_add_print5r String
+  is_add_softfile       String
+  voucher_code          String?
+  branch_id             String
 }

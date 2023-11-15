@@ -55,9 +55,26 @@ CREATE TABLE "customers" (
 );
 
 -- CreateTable
+CREATE TABLE "transactions" (
+    "book_code" TEXT NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL,
+    "updated_at" TIMESTAMP(3),
+    "product_price" INTEGER NOT NULL,
+    "additional_person_price" INTEGER NOT NULL DEFAULT 0,
+    "additional_pet_price" INTEGER NOT NULL DEFAULT 0,
+    "additional_print5r_price" INTEGER NOT NULL DEFAULT 0,
+    "additional_softfile_price" INTEGER NOT NULL DEFAULT 0,
+    "total_price" INTEGER NOT NULL DEFAULT 0,
+    "voucher_code" TEXT,
+    "is_voucher_applied" BOOLEAN NOT NULL DEFAULT false,
+    "total_paid_by_cust" INTEGER NOT NULL DEFAULT 0,
+    "payment_status" TEXT NOT NULL
+);
+
+-- CreateTable
 CREATE TABLE "orders_book" (
     "book_id" TEXT NOT NULL,
-    "book_ref" TEXT NOT NULL,
+    "book_code" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL,
     "updated_at" TIMESTAMP(3),
     "booking_start" TIMESTAMP(3) NOT NULL,
@@ -65,23 +82,17 @@ CREATE TABLE "orders_book" (
     "cust_id" INTEGER NOT NULL,
     "product_id" TEXT NOT NULL,
     "number_of_add_person" INTEGER NOT NULL DEFAULT 0,
-    "number_of_add_pets" INTEGER NOT NULL DEFAULT 0,
-    "number_of_add_print_5r" INTEGER NOT NULL DEFAULT 0,
+    "number_of_add_pet" INTEGER NOT NULL DEFAULT 0,
+    "number_of_add_print5r" INTEGER NOT NULL DEFAULT 0,
     "is_add_softfile" BOOLEAN NOT NULL DEFAULT false,
-    "voucher_code" TEXT,
-    "is_voucher_applied" BOOLEAN NOT NULL DEFAULT false,
-    "total_price" INTEGER NOT NULL DEFAULT 0,
-    "total_paid_by_cust" INTEGER NOT NULL DEFAULT 0,
-    "book_status" TEXT NOT NULL,
-    "payment_status" TEXT NOT NULL
+    "book_status" TEXT NOT NULL
 );
 
 -- CreateTable
-CREATE TABLE "orders_book_dev" (
+CREATE TABLE "raw_data" (
     "book_id" TEXT NOT NULL,
-    "book_ref" TEXT NOT NULL,
+    "book_code" TEXT NOT NULL,
     "created_at" TIMESTAMP(3) NOT NULL,
-    "updated_at" TIMESTAMP(3),
     "booking_start" TEXT NOT NULL,
     "booking_end" TEXT NOT NULL,
     "cust_name" TEXT NOT NULL,
@@ -89,8 +100,8 @@ CREATE TABLE "orders_book_dev" (
     "phone_number" TEXT NOT NULL,
     "product_name" TEXT NOT NULL,
     "number_of_add_person" TEXT NOT NULL,
-    "number_of_add_pets" TEXT NOT NULL,
-    "number_of_add_print_5r" TEXT NOT NULL,
+    "number_of_add_pet" TEXT NOT NULL,
+    "number_of_add_print5r" TEXT NOT NULL,
     "is_add_softfile" TEXT NOT NULL,
     "voucher_code" TEXT,
     "branch_id" TEXT NOT NULL
@@ -118,19 +129,25 @@ CREATE UNIQUE INDEX "customers_email_key" ON "customers"("email");
 CREATE UNIQUE INDEX "customers_phone_number_key" ON "customers"("phone_number");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "transactions_book_code_key" ON "transactions"("book_code");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "orders_book_book_id_key" ON "orders_book"("book_id");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "orders_book_book_ref_key" ON "orders_book"("book_ref");
+CREATE UNIQUE INDEX "orders_book_book_code_key" ON "orders_book"("book_code");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "orders_book_dev_book_id_key" ON "orders_book_dev"("book_id");
+CREATE UNIQUE INDEX "raw_data_book_id_key" ON "raw_data"("book_id");
 
 -- AddForeignKey
 ALTER TABLE "products" ADD CONSTRAINT "products_branch_id_fkey" FOREIGN KEY ("branch_id") REFERENCES "branches"("branch_id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "products_history" ADD CONSTRAINT "products_history_product_id_fkey" FOREIGN KEY ("product_id") REFERENCES "products"("product_id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "orders_book" ADD CONSTRAINT "orders_book_book_code_fkey" FOREIGN KEY ("book_code") REFERENCES "transactions"("book_code") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "orders_book" ADD CONSTRAINT "orders_book_cust_id_fkey" FOREIGN KEY ("cust_id") REFERENCES "customers"("cust_id") ON DELETE RESTRICT ON UPDATE CASCADE;
