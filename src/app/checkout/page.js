@@ -41,7 +41,7 @@ export default function Checkout() {
       }
     };
 
-    getOrderBook(book_id);
+    getData(book_id);
   }, [book_id]); // Menambahkan book_id sebagai dependency agar efek berjalan saat nilai book_id berubah
 
   return (

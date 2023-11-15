@@ -79,8 +79,8 @@ export async function POST(request) {
 
     // Convert to integer
     const numberOfAddPerson = parseInt(body.number_of_add_person);
-    const numberOfAddPets = parseInt(body.number_of_add_pets);
-    const numberOfAddPrint5R = parseInt(body.number_of_add_print_5r);
+    const numberOfAddPets = parseInt(body.number_of_add_pet);
+    const numberOfAddPrint5R = parseInt(body.number_of_add_print5r);
 
     // Convert to boolean
     const isAddSoftfile = body.is_add_softfile === "yes" ? true : false;
@@ -98,9 +98,12 @@ export async function POST(request) {
       const voucherUsed = await prisma.orders_book.findFirst({
         where: {
           cust_id: customer.cust_id,
-          voucher_code: voucherCode,
+          transactions: {
+            voucher_code: voucherCode,
+          },
         },
       });
+      console.log("voucherUsed:", voucherUsed);
 
       // If the voucher has never been used then retrieve the voucher data
       if (!voucherUsed) {
