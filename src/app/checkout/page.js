@@ -30,7 +30,7 @@ export default function Checkout() {
         await new Promise((resolve) => setTimeout(resolve, 2000));
 
         const response = await fetch(
-          `http://localhost:3000/api/data/book/${bookid}`
+          `${env("HOST_URL_PROD")}/api/data/book/${bookid}`
         );
 
         if (!response.ok) {
@@ -69,7 +69,7 @@ export default function Checkout() {
         const isVoucherApplied =
           voucherCode === "-"
             ? "Tidak menggunakan voucher"
-            : data.voucher_code
+            : data.transactions.voucher_code
             ? "Voucher dapat digunakan"
             : "Voucher tidak dapat digunakan";
 
