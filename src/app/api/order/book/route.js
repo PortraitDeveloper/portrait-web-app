@@ -1,8 +1,16 @@
 import { NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
+import getTimeStamp from "@/utils/getTimeStamp";
+import is8601Format from "@/utils/iso8601Format";
 
 // Prisma initial
 const prisma = new PrismaClient();
+
+// Set Time Zone from UTC to WIB or Asia/Jakarta Timezone where time difference is 7
+const timeDiff = 7;
+
+// Generate timestamp / current datetime
+const currentTimeStamp = getTimeStamp(timeDiff);
 
 // Create data
 export async function POST(request) {
@@ -10,15 +18,12 @@ export async function POST(request) {
     // Read the body data
     const body = await request.json();
 
-    const currentDate = new Date();
-    currentDate.setHours(currentDate.getHours() + 7);
-
     // Create orders_book_dev data
     await prisma.raw_data.create({
       data: {
         book_id: body.book_id,
         book_code: body.book_code,
-        created_at: currentDate,
+        created_at: currentTimeStamp,
         booking_start: body.booking_start,
         booking_end: body.booking_end,
         cust_name: body.cust_name,
@@ -34,15 +39,11 @@ export async function POST(request) {
       },
     });
 
-    // Convert booking_start and booking_end datetime  ISO 8601 format in WIB or Asia/Jakarta Timezone
+    // Convert booking_start and booking_end datetime ISO 8601 format in WIB or Asia/Jakarta Timezone
     // const bookingStart = body.booking_start.concat(":00Z");
     // const bookingEnd = body.booking_end.concat(":00Z");
-
-    const bookingStart = new Date(body.booking_start);
-    bookingStart.setHours(bookingStart.getHours() + 7);
-
-    const bookingEnd = new Date(body.booking_end);
-    bookingEnd.setHours(bookingEnd.getHours() + 7);
+    const bookingStart = is8601Format(timeDiff, body.booking_start);
+    const bookingEnd = is8601Format(timeDiff, body.booking_end);
 
     // Read customer data
     let customer = await prisma.customers.findFirst({
@@ -84,14 +85,15 @@ export async function POST(request) {
     const numberOfAddPrint5R = parseInt(body.number_of_add_print5r);
 
     // Convert to boolean
-    const isAddSoftfile = body.is_add_softfile === "yes" ? true : false;
+    let isAddSoftfile = body.is_add_softfile === "yes";
 
-    // Convert to integer
-    let numberOfAddSoftfile = isAddSoftfile === true ? 1 : 0;
+    // Set number of softfile based on boolean value
+    const numberOfAddSoftfile =
+      isAddSoftfile && productName !== "blue room" ? 1 : 0;
 
     // If product name is blue room then number of softfile is 0
     if (productName === "blue room") {
-      numberOfAddSoftfile = 0;
+      isAddSoftfile = false;
     }
 
     // Check voucher_code, if empty string then null
@@ -125,7 +127,7 @@ export async function POST(request) {
     // Provides status whether the voucher can be used or not
     let isVoucherApplied = false;
     if (voucher) {
-      if (currentDate < voucher.expired_date && !voucher.is_voucher_used) {
+      if (currentTimeStamp < voucher.expired_date && !voucher.is_voucher_used) {
         isVoucherApplied = true;
       }
     }
@@ -177,7 +179,7 @@ export async function POST(request) {
     await prisma.transactions.create({
       data: {
         book_code: body.book_code,
-        created_at: currentDate,
+        created_at: currentTimeStamp,
         updated_at: null,
         product_price: product.product_price,
         additional_person_price: additionalPersonPrice,
@@ -197,7 +199,7 @@ export async function POST(request) {
       data: {
         book_id: body.book_id,
         book_code: body.book_code,
-        created_at: currentDate,
+        created_at: currentTimeStamp,
         updated_at: null,
         booking_start: bookingStart,
         booking_end: bookingEnd,
@@ -211,16 +213,17 @@ export async function POST(request) {
       },
     });
 
-    console.log(currentDate, "Status: 201, Data inserted");
+    console.log(currentTimeStamp, "Status: 201, Data inserted");
     return NextResponse.json(newData, { status: 201 });
   } catch (error) {
-    const _currentDate = new Date();
-    _currentDate.setHours(_currentDate.getHours() + 7);
     console.log(
-      _currentDate,
+      currentTimeStamp,
       "Status: 500, An error occurred while processing the request"
     );
-    return NextResponse.json({ error }, { status: 500 });
+    return NextResponse.json(
+      { error: "Status: 500, An error occurred while processing the request" },
+      { status: 500 }
+    );
   } finally {
     await prisma.$disconnect();
   }

@@ -6,6 +6,7 @@ import { useSearchParams } from "next/navigation";
 export default function Checkout() {
   const searchParams = useSearchParams();
   const book_id = searchParams.get("book_id");
+  const [loading, setLoading] = useState(true);
   const [orderBook, setOrderBook] = useState({
     book_code: "",
     branch_address: "",
@@ -26,6 +27,8 @@ export default function Checkout() {
   useEffect(() => {
     const getData = async (bookid) => {
       try {
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+
         const response = await fetch(
           `http://localhost:3000/api/data/book/${bookid}`
         );
@@ -60,7 +63,9 @@ export default function Checkout() {
         const bookingStartDate = `${day} ${monthName} ${year}`;
         const bookingStartTime = timeWithMillis.replace(":00.000Z", "");
 
-        const voucherCode = data.voucher_code ? data.voucher_code : "-";
+        const voucherCode = data.transactions.voucher_code
+          ? data.transactions.voucher_code
+          : "-";
         const isVoucherApplied =
           voucherCode === "-"
             ? "Tidak menggunakan voucher"
@@ -87,6 +92,8 @@ export default function Checkout() {
         });
       } catch (error) {
         console.error("Error fetching data:", error.message);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -95,68 +102,76 @@ export default function Checkout() {
 
   return (
     <>
-      <div className="h-screen flex justify-center items-center">
-        <div className="border border-black rounded-3xl px-6 py-4">
-          <h1 className="text-center text-2xl font-bold">Ringkasan Order</h1>
-          <div className="mt-4 mx-4">
-            <p>Kode Booking : {orderBook.book_code}</p>
-            <p>Lokasi : {orderBook.branch_address}</p>
-            <p>Tanggal : {orderBook.booking_start_date}</p>
-            <p>Pukul : {orderBook.booking_start_time} WIB</p>
-          </div>
-          <div className="flex justify-center item-center">
+      {loading ? (
+        <p>loading...</p>
+      ) : (
+        <div className="h-screen flex justify-center items-center">
+          <div className="border border-black rounded-3xl px-6 py-4">
+            <h1 className="text-center text-2xl font-bold">Ringkasan Order</h1>
             <div className="mt-4 mx-4">
-              <div className="flex">
-                <div className="w-64 py-1">{orderBook.product_name}</div>
-                <div className="py-1">{orderBook.product_price}</div>
-              </div>
-              <div className="flex">
-                <div className="w-64 py-1">Tambah Orang Dewasa</div>
-                <div className="py-1">{orderBook.additional_person_price}</div>
-              </div>
-              <div className="flex">
-                <div className="w-64 py-1">Tambah Hewan Peliharaan</div>
-                <div className="py-1">{orderBook.additional_pet_price}</div>
-              </div>
-              <div className="flex">
-                <div className="w-64 py-1">Tambah Print5R</div>
-                <div className="py-1">{orderBook.additional_print5r_price}</div>
-              </div>
-              <div className="flex">
-                <div className="w-64 py-1">Tambah Soft-File</div>
-                <div className="py-1">
-                  {orderBook.additional_softfile_price}
-                </div>
-              </div>
-              <hr></hr>
-              <div className="flex mb-3">
-                <div className="w-64 font-bold py-1">Total</div>
-                <div className="py-1 font-bold">{orderBook.total_price}</div>
-              </div>
+              <p>Kode Booking : {orderBook.book_code}</p>
+              <p>Lokasi : {orderBook.branch_address}</p>
+              <p>Tanggal : {orderBook.booking_start_date}</p>
+              <p>Pukul : {orderBook.booking_start_time} WIB</p>
             </div>
-          </div>
-          <div className="mt-4 mx-4">
-            <p>Kode Voucher : {orderBook.voucher_code}</p>
-            <p>Status Voucher : {orderBook.is_voucher_applied}</p>
-          </div>
-          <div className="flex justify-center item-center">
-            <div className="mt-4 mx-4">
-              <hr></hr>
-              <div className="flex mb-3">
-                <div className="w-64 font-bold py-1">Total Pembayaran</div>
-                <div className="py-1 font-bold">
-                  {orderBook.total_paid_by_cust}
+            <div className="flex justify-center item-center">
+              <div className="mt-4 mx-4">
+                <div className="flex">
+                  <div className="w-64 py-1">{orderBook.product_name}</div>
+                  <div className="py-1">{orderBook.product_price}</div>
+                </div>
+                <div className="flex">
+                  <div className="w-64 py-1">Tambah Orang Dewasa</div>
+                  <div className="py-1">
+                    {orderBook.additional_person_price}
+                  </div>
+                </div>
+                <div className="flex">
+                  <div className="w-64 py-1">Tambah Hewan Peliharaan</div>
+                  <div className="py-1">{orderBook.additional_pet_price}</div>
+                </div>
+                <div className="flex">
+                  <div className="w-64 py-1">Tambah Print5R</div>
+                  <div className="py-1">
+                    {orderBook.additional_print5r_price}
+                  </div>
+                </div>
+                <div className="flex">
+                  <div className="w-64 py-1">Tambah Soft-File</div>
+                  <div className="py-1">
+                    {orderBook.additional_softfile_price}
+                  </div>
+                </div>
+                <hr></hr>
+                <div className="flex mb-3">
+                  <div className="w-64 font-bold py-1">Total</div>
+                  <div className="py-1 font-bold">{orderBook.total_price}</div>
                 </div>
               </div>
             </div>
-          </div>
-          <div className="flex justify-center items-center mt-4">
-            <button className="bg-blue-500 text-white hover:bg-blue-700 rounded-xl w-64 h-8 font-bold">
-              Pilih Pembayaran
-            </button>
+            <div className="mt-4 mx-4">
+              <p>Kode Voucher : {orderBook.voucher_code}</p>
+              <p>Status Voucher : {orderBook.is_voucher_applied}</p>
+            </div>
+            <div className="flex justify-center item-center">
+              <div className="mt-4 mx-4">
+                <hr></hr>
+                <div className="flex mb-3">
+                  <div className="w-64 font-bold py-1">Total Pembayaran</div>
+                  <div className="py-1 font-bold">
+                    {orderBook.total_paid_by_cust}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="flex justify-center items-center mt-4">
+              <button className="bg-blue-500 text-white hover:bg-blue-700 rounded-xl w-64 h-8 font-bold">
+                Pilih Pembayaran
+              </button>
+            </div>
           </div>
         </div>
-      </div>
+      )}
     </>
   );
 }

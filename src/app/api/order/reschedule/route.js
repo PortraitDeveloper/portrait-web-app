@@ -1,8 +1,16 @@
 import { NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
+import getTimeStamp from "@/utils/getTimeStamp";
+import is8601Format from "@/utils/iso8601Format";
 
 // Prisma initial
 const prisma = new PrismaClient();
+
+// Set Time Zone from UTC to WIB or Asia/Jakarta Timezone where time difference is 7
+const timeDiff = 7;
+
+// Generate timestamp / current datetime
+const currentTimeStamp = getTimeStamp(timeDiff);
 
 // Create data
 export async function PATCH(request) {
@@ -10,19 +18,11 @@ export async function PATCH(request) {
     // Read the body data
     const body = await request.json();
 
-    // Generate timestamp and convert to WIB or Asia/Jakarta Timezone
-    const currentDate = new Date();
-    currentDate.setHours(currentDate.getHours() + 7);
-
     // Convert booking_start and booking_end datetime  ISO 8601 format in WIB or Asia/Jakarta Timezone
     // const bookingStart = body.booking_start.concat(":00Z");
     // const bookingEnd = body.booking_end.concat(":00Z");
-
-    const bookingStart = new Date(body.booking_start);
-    bookingStart.setHours(bookingStart.getHours() + 7);
-
-    const bookingEnd = new Date(body.booking_end);
-    bookingEnd.setHours(bookingEnd.getHours() + 7);
+    const bookingStart = is8601Format(timeDiff, body.booking_start);
+    const bookingEnd = is8601Format(timeDiff, body.booking_end);
 
     // Read orders_book data by current book_id and book_code
     const orderBook = await prisma.orders_book.findFirst({
@@ -45,18 +45,18 @@ export async function PATCH(request) {
           book_code: body.book_code,
         },
         data: {
-          updated_at: currentDate,
+          updated_at: currentTimeStamp,
           booking_start: bookingStart,
           booking_end: bookingEnd,
           book_status: "rescheduled",
         },
       });
 
-      console.log(currentDate, "Status: 200, Data updated");
+      console.log(currentTimeStamp, "Status: 200, Data updated");
       return NextResponse.json(newData, { status: 200 });
     } else {
       console.log(
-        currentDate,
+        currentTimeStamp,
         "Status: 400, Order not found or not eligible for update"
       );
       return NextResponse.json(
@@ -65,13 +65,14 @@ export async function PATCH(request) {
       );
     }
   } catch (error) {
-    const _currentDate = new Date();
-    _currentDate.setHours(_currentDate.getHours() + 7);
     console.log(
-      _currentDate,
+      currentTimeStamp,
       "Status: 500, An error occurred while processing the request"
     );
-    return NextResponse.json({ error }, { status: 500 });
+    return NextResponse.json(
+      { error: "Status: 500, An error occurred while processing the request" },
+      { status: 500 }
+    );
   } finally {
     await prisma.$disconnect();
   }
