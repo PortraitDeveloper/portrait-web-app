@@ -30,7 +30,7 @@ export default function Checkout() {
         await new Promise((resolve) => setTimeout(resolve, 2000));
 
         const response = await fetch(
-          `${env("HOST_URL_PROD")}/api/data/book/${bookid}`
+          `${process.env.NEXT_PUBLIC_HOST_URL_PROD}/api/data/book/${bookid}`
         );
 
         if (!response.ok) {
