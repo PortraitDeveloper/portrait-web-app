@@ -65,13 +65,14 @@ export async function POST(request) {
     }
 
     // Fix product_name string
-    const productName = body.product_name.toLowerCase().split("  ");
-    console.log("product_name:", productName[0]);
+    const productNameArray = body.product_name.toLowerCase().split("  ");
+    const productName = productNameArray[0];
+    console.log("product_name:", productName);
 
     // Read product data
     const product = await prisma.products.findFirst({
       where: {
-        product_name: productName[0],
+        product_name: productName,
         branch_id: body.branch_id,
       },
     });
@@ -86,7 +87,12 @@ export async function POST(request) {
     const isAddSoftfile = body.is_add_softfile === "yes" ? true : false;
 
     // Convert to integer
-    const numberOfAddSoftfile = isAddSoftfile === true ? 1 : 0;
+    let numberOfAddSoftfile = isAddSoftfile === true ? 1 : 0;
+
+    // If product name is blue room then number of softfile is 0
+    if (productName === "blue room") {
+      numberOfAddSoftfile = 0;
+    }
 
     // Check voucher_code, if empty string then null
     const voucherCode = body.voucher_code === "" ? null : body.voucher_code;
