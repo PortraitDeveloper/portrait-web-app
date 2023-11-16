@@ -134,10 +134,10 @@ export async function POST(request) {
     console.log("n:", n);
 
     // Additionals Price List Calculation
-    const additionalPersonPrice = additionals[0].item_price;
-    const additionalPetPrice = additionals[1].item_price;
-    const additionalPrint5r = additionals[n].item_price;
-    const additionalSoftfile = additionals[4].item_price;
+    const additionalPersonPrice = numberOfAddPerson * additionals[0].item_price;
+    const additionalPetPrice = numberOfAddPets * additionals[1].item_price;
+    const additionalPrint5r = numberOfAddPrint5R * additionals[n].item_price;
+    const additionalSoftfile = numberOfAddSoftfile * additionals[4].item_price;
 
     // Total price initial
     let totalPrice = null;
@@ -145,10 +145,10 @@ export async function POST(request) {
     // Total price calculation
     totalPrice =
       product.product_price +
-      numberOfAddPerson * additionalPersonPrice +
-      numberOfAddPets * additionalPetPrice +
-      numberOfAddPrint5R * additionalPrint5r +
-      numberOfAddSoftfile * additionalSoftfile;
+      additionalPersonPrice +
+      additionalPetPrice +
+      additionalPrint5r +
+      additionalSoftfile;
     console.log("totalPrice:", totalPrice);
 
     let totalPaidByCust = totalPrice;
