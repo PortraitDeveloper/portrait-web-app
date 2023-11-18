@@ -2,14 +2,16 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
-// import axios from "axios";
 import getTimeStamp from "@/utils/getTimeStamp";
 
 // Set Time Zone from UTC to WIB or Asia/Jakarta Timezone where time difference is 7
 const timeDiff = 7;
-
 // Generate timestamp / current datetime
 const currentTimeStamp = getTimeStamp(timeDiff);
+
+const host = process.env.NEXT_PUBLIC_LOCALHOST;
+const clientKey = process.env.NEXT_PUBLIC_CLIENT_KEY_DEV;
+const midtransUrl = process.env.NEXT_PUBLIC_MIDTRANS_URL_DEV;
 
 export default function Checkout() {
   const searchParams = useSearchParams();
@@ -49,32 +51,68 @@ export default function Checkout() {
       };
 
       // const response = await axios.post("/api/payment", body);
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_LOCALHOST}/api/payment`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(body),
-        }
-      );
+      const response = await fetch(`${host}/api/payment`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      });
 
       if (!response.ok) {
-        throw new Error(currentTimeStamp, "Failed to fetch data");
+        throw new Error(currentTimeStamp, "Failed to fetch data to midtrans");
       }
 
       const token = await response.json();
       console.log("token:", token);
       setMidtransToken(token);
     } catch (error) {
-      console.error(currentTimeStamp, "Error during payment:", error.message);
+      console.error(
+        currentTimeStamp,
+        "Error during payment at midtrans:",
+        error.message
+      );
     }
-
-    // finally {
-    //   console.log(currentTimeStamp, "Payment successful");
-    // }
   };
+
+  useEffect(() => {
+    if (midtransToken) {
+      window.snap.pay(midtransToken, {
+        onSuccess: (result) => {
+          console.log(result);
+          console.log("Payment successful");
+          setMidtransToken("");
+        },
+        onPending: (result) => {
+          console.log(result);
+          console.log("pending payment");
+          setMidtransToken("");
+        },
+        onError: (error) => {
+          console.log(error);
+          console.log("Payment failed");
+          setMidtransToken("");
+        },
+        onClose: () => {
+          console.log("Payment Completed");
+          setMidtransToken("");
+        },
+      });
+    }
+  }, [midtransToken]);
+
+  useEffect(() => {
+    let scriptTag = document.createElement("script");
+    scriptTag.src = midtransUrl;
+
+    scriptTag.setAttribute("data-client-key", clientKey);
+
+    document.body.appendChild(scriptTag);
+
+    return () => {
+      document.body.removeChild(scriptTag);
+    };
+  }, []);
 
   useEffect(() => {
     const getData = async (bookid) => {
