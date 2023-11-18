@@ -48,7 +48,9 @@ export async function POST(request) {
     // Read customer data
     let customer = await prisma.customers.findFirst({
       where: {
+        cust_name: body.cust_name,
         email: body.email,
+        phone_number: body.phone_number,
       },
     });
     console.log("customer:", customer);

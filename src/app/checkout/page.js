@@ -2,13 +2,26 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
+// import axios from "axios";
+import getTimeStamp from "@/utils/getTimeStamp";
+
+// Set Time Zone from UTC to WIB or Asia/Jakarta Timezone where time difference is 7
+const timeDiff = 7;
+
+// Generate timestamp / current datetime
+const currentTimeStamp = getTimeStamp(timeDiff);
 
 export default function Checkout() {
   const searchParams = useSearchParams();
   const book_id = searchParams.get("book_id");
   const [loading, setLoading] = useState(true);
+  const [midtransToken, setMidtransToken] = useState(null);
   const [orderBook, setOrderBook] = useState({
     book_code: "",
+    first_name: "",
+    last_name: "",
+    email: "",
+    phone_number: "",
     branch_address: "",
     booking_start_date: "",
     booking_start_time: "",
@@ -24,21 +37,66 @@ export default function Checkout() {
     total_paid_by_cust: "",
   });
 
+  const clickHandler = async () => {
+    try {
+      const body = {
+        order_id: orderBook.book_code,
+        gross_amount: orderBook.total_paid_by_cust,
+        first_name: orderBook.first_name,
+        last_name: orderBook.last_name,
+        email: orderBook.email,
+        phone: orderBook.phone,
+      };
+
+      // const response = await axios.post("/api/payment", body);
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_LOCALHOST}/api/payment`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(body),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(currentTimeStamp, "Failed to fetch data");
+      }
+
+      const token = await response.json();
+      console.log("token:", token);
+      setMidtransToken(token);
+    } catch (error) {
+      console.error(currentTimeStamp, "Error during payment:", error.message);
+    }
+
+    // finally {
+    //   console.log(currentTimeStamp, "Payment successful");
+    // }
+  };
+
   useEffect(() => {
     const getData = async (bookid) => {
       try {
         await new Promise((resolve) => setTimeout(resolve, 2000));
 
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_HOST_URL_PROD}/api/data/book/${bookid}`
+          `${process.env.NEXT_PUBLIC_LOCALHOST}/api/data/book/${bookid}`
         );
 
         if (!response.ok) {
-          throw new Error("Failed to fetch data");
+          throw new Error(currentTimeStamp, "Failed to fetch data");
         }
 
         const data = await response.json();
-        console.log(data);
+        console.log("data:", data);
+
+        const name = data.customers.cust_name.split(" ");
+        const firstName = name[0];
+        const lastName = name[1];
+        console.log("First name:", firstName);
+        console.log("Last Name:", lastName);
 
         const [bookingDate, timeWithMillis] = data.booking_start.split("T");
         const dateObj = new Date(bookingDate);
@@ -75,6 +133,10 @@ export default function Checkout() {
 
         setOrderBook({
           book_code: data.book_code,
+          first_name: firstName,
+          last_name: lastName,
+          email: data.customers.email,
+          phone_number: data.customers.phone_number,
           branch_address: data.products.branches.branch_address,
           booking_start_date: bookingStartDate,
           booking_start_time: bookingStartTime,
@@ -165,7 +227,10 @@ export default function Checkout() {
               </div>
             </div>
             <div className="flex justify-center items-center mt-4">
-              <button className="bg-blue-500 text-white hover:bg-blue-700 rounded-xl w-64 h-8 font-bold">
+              <button
+                className="bg-blue-500 text-white hover:bg-blue-700 rounded-xl w-64 h-8 font-bold"
+                onClick={clickHandler}
+              >
                 Pilih Pembayaran
               </button>
             </div>
