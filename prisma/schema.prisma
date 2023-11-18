@@ -64,8 +64,8 @@ model vouchers {
 model customers {
   cust_id      Int    @id @default(autoincrement())
   cust_name    String
-  email        String @unique
-  phone_number String @unique
+  email        String 
+  phone_number String 
 
   orders_book orders_book[] // A customer can have many orders
 }
