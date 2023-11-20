@@ -9,13 +9,15 @@ const timeDiff = 7;
 // Generate timestamp / current datetime
 const currentTimeStamp = getTimeStamp(timeDiff);
 
-const host = process.env.NEXT_PUBLIC_LOCALHOST;
-const clientKey = process.env.NEXT_PUBLIC_CLIENT_KEY_DEV;
-const midtransUrl = process.env.NEXT_PUBLIC_MIDTRANS_URL_DEV;
-
 export default function Checkout() {
+  const host = process.env.NEXT_PUBLIC_LOCALHOST;
+  const clientKey = process.env.NEXT_PUBLIC_CLIENT_KEY_DEV;
+  const midtransUrl = process.env.NEXT_PUBLIC_MIDTRANS_URL_DEV;
+
   const searchParams = useSearchParams();
   const book_id = searchParams.get("book_id");
+  console.log("Get BookID:", book_id);
+  
   const [loading, setLoading] = useState(true);
   const [midtransToken, setMidtransToken] = useState(null);
   const [orderBook, setOrderBook] = useState({
@@ -119,9 +121,7 @@ export default function Checkout() {
       try {
         await new Promise((resolve) => setTimeout(resolve, 2000));
 
-        const response = await fetch(
-          `${process.env.NEXT_PUBLIC_LOCALHOST}/api/data/book/${bookid}`
-        );
+        const response = await fetch(`${host}/api/data/book/${bookid}`);
 
         if (!response.ok) {
           throw new Error(currentTimeStamp, "Failed to fetch data");
