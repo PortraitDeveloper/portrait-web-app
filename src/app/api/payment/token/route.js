@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 import getTimeStamp from "@/utils/getTimeStamp";
-// import midtransClient from "@/node_modules/midtrans-client";
 import midtransClient from "midtrans-client";
 
 // Set Time Zone from UTC to WIB or Asia/Jakarta Timezone where time difference is 7

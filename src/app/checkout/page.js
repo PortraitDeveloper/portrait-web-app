@@ -10,6 +10,7 @@ const timeDiff = 7;
 const currentTimeStamp = getTimeStamp(timeDiff);
 
 export default function Checkout() {
+  const timeOut = 2000;
   const host = process.env.NEXT_PUBLIC_HOST;
   const clientKey = process.env.NEXT_PUBLIC_CLIENT_KEY_DEV;
   const midtransUrl = process.env.NEXT_PUBLIC_MIDTRANS_URL_DEV;
@@ -53,7 +54,7 @@ export default function Checkout() {
       };
 
       // const response = await axios.post("/api/payment", body);
-      const response = await fetch(`${host}/api/payment`, {
+      const response = await fetch(`${host}/api/payment/token`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -119,7 +120,7 @@ export default function Checkout() {
   useEffect(() => {
     const getData = async (bookid) => {
       try {
-        await new Promise((resolve) => setTimeout(resolve, 2000));
+        await new Promise((resolve) => setTimeout(resolve, timeOut));
 
         const response = await fetch(`${host}/api/data/book/${bookid}`);
 
