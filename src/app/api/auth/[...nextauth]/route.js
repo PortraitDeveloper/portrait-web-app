@@ -10,23 +10,26 @@ export const authOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [
     CredentialsProvider({
-      name: "credentials",
+      name: "Credentials",
       credentials: {
-        email: { label: "email", type: "email" },
+        name: { label: "name", type: "text" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
         // check to see if email and password is valid
-        if (!credentials.email || !credentials.password) {
+        console.log("Credentials:", credentials);
+        if (!credentials.name || !credentials.password) {
           return null;
         }
 
         // check to see if user exists
         const user = await prisma.user.findUnique({
           where: {
-            email: credentials.email,
+            name: credentials.name,
           },
         });
+
+        console.log("User:", user);
 
         if (!user) {
           return null;
@@ -37,6 +40,8 @@ export const authOptions = {
           credentials.password,
           user.hashedPassword
         );
+
+        console.log("Password Match:", passwordsMatch);
 
         if (!passwordsMatch) {
           return null;

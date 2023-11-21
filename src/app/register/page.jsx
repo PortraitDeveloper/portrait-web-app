@@ -6,8 +6,8 @@ export default function RegisterPage() {
   const router = useRouter();
   const [data, setData] = useState({
     name: "",
-    email: "",
     password: "",
+    confirm_password: "",
   });
 
   const registerUser = async (e) => {
@@ -29,8 +29,8 @@ export default function RegisterPage() {
     <>
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-            Register for an account
+          <h2 className="mt-10 text-center text-3xl font-bold leading-9 tracking-tight text-gray-900">
+            Register
           </h2>
         </div>
 
@@ -41,7 +41,7 @@ export default function RegisterPage() {
                 htmlFor="name"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
-                Name
+                Username
               </label>
               <div className="mt-2">
                 <input
@@ -59,29 +59,6 @@ export default function RegisterPage() {
             </div>
 
             <div>
-              <label
-                htmlFor="email"
-                className="block text-sm font-medium leading-6 text-gray-900"
-              >
-                Email address
-              </label>
-              <div className="mt-2">
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  required
-                  value={data.email}
-                  onChange={(e) => {
-                    setData({ ...data, email: e.target.value });
-                  }}
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                />
-              </div>
-            </div>
-
-            <div>
               <div className="flex items-center justify-between">
                 <label
                   htmlFor="password"
@@ -89,14 +66,6 @@ export default function RegisterPage() {
                 >
                   Password
                 </label>
-                <div className="text-sm">
-                  <a
-                    href="#"
-                    className="font-semibold text-indigo-600 hover:text-indigo-500"
-                  >
-                    Forgot password?
-                  </a>
-                </div>
               </div>
               <div className="mt-2">
                 <input
@@ -108,6 +77,31 @@ export default function RegisterPage() {
                   value={data.password}
                   onChange={(e) => {
                     setData({ ...data, password: e.target.value });
+                  }}
+                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                />
+              </div>
+            </div>
+
+            <div>
+              <div className="flex items-center justify-between">
+                <label
+                  htmlFor="confirm_password"
+                  className="block text-sm font-medium leading-6 text-gray-900"
+                >
+                  Confirm Password
+                </label>
+              </div>
+              <div className="mt-2">
+                <input
+                  id="confirm_password"
+                  name="confirm_password"
+                  type="password"
+                  autoComplete="current-password"
+                  required
+                  value={data.confirm_password}
+                  onChange={(e) => {
+                    setData({ ...data, confirm_password: e.target.value });
                   }}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
