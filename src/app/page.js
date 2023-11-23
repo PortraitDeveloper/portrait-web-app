@@ -3,8 +3,7 @@ import Link from "next/link";
 export default function Home() {
   return (
     <main>
-      <h1>NextAuth.js</h1>
-      <Link href="/register">Register</Link>
+      <h1>Welcome To Theportraitplace Web App</h1>
       <Link href="/login">Login</Link>
     </main>
   );
