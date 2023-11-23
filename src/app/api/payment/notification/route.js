@@ -47,10 +47,26 @@ export async function POST(request) {
     console.log("SHA-512 Hash:", hashed);
     console.log("SignatureKey:", signatureKey);
 
-    if (transactionStatus == "capture") {
-      if (fraudStatus == "accept") {
+    if (hashed === signatureKey) {
+      if (transactionStatus == "capture") {
+        if (fraudStatus == "accept") {
+          // TODO set transaction status on your database to 'success'
+          const paymentStatus = "paid";
+          updateTransaction(orderId, paymentStatus);
+
+          // and response with 200 OK
+          console.log(
+            currentTimeStamp,
+            `Status: 200, Payment status is ${transactionStatus}`
+          );
+          return NextResponse.json(
+            { message: `Payment status is ${transactionStatus}` },
+            { status: 200 }
+          );
+        }
+      } else if (transactionStatus == "settlement") {
         // TODO set transaction status on your database to 'success'
-        const paymentStatus = "paid";
+        const paymentStatus = transactionStatus;
         updateTransaction(orderId, paymentStatus);
 
         // and response with 200 OK
@@ -62,52 +78,44 @@ export async function POST(request) {
           { message: `Payment status is ${transactionStatus}` },
           { status: 200 }
         );
+      } else if (
+        transactionStatus == "cancel" ||
+        transactionStatus == "deny" ||
+        transactionStatus == "expire"
+      ) {
+        // TODO set transaction status on your database to 'failure'
+        const paymentStatus = transactionStatus;
+        updateData(orderId, paymentStatus);
+
+        // and response with 200 OK
+        console.log(
+          currentTimeStamp,
+          `Status: 200, Payment status is ${transactionStatus}`
+        );
+        return NextResponse.json(
+          { message: `Payment status is ${transactionStatus}` },
+          { status: 200 }
+        );
+      } else if (transactionStatus == "pending") {
+        // TODO set transaction status on your database to 'pending' / waiting payment
+        const paymentStatus = transactionStatus;
+        updateData(orderId, paymentStatus);
+
+        // and response with 200 OK
+        console.log(
+          currentTimeStamp,
+          `Status: 200, Payment status is ${transactionStatus}`
+        );
+        return NextResponse.json(
+          { message: `Payment status is ${transactionStatus}` },
+          { status: 200 }
+        );
       }
-    } else if (transactionStatus == "settlement") {
-      // TODO set transaction status on your database to 'success'
-      const paymentStatus = "paid";
-      updateTransaction(orderId, paymentStatus);
-
-      // and response with 200 OK
-      console.log(
-        currentTimeStamp,
-        `Status: 200, Payment status is ${transactionStatus}`
-      );
+    } else {
+      console.log(currentTimeStamp, `Status: 400, Payment is not valid`);
       return NextResponse.json(
-        { message: `Payment status is ${transactionStatus}` },
-        { status: 200 }
-      );
-    } else if (
-      transactionStatus == "cancel" ||
-      transactionStatus == "deny" ||
-      transactionStatus == "expire"
-    ) {
-      // TODO set transaction status on your database to 'failure'
-      const paymentStatus = transactionStatus;
-      updateData(orderId, paymentStatus);
-
-      // and response with 200 OK
-      console.log(
-        currentTimeStamp,
-        `Status: 200, Payment status is ${transactionStatus}`
-      );
-      return NextResponse.json(
-        { message: `Payment status is ${transactionStatus}` },
-        { status: 200 }
-      );
-    } else if (transactionStatus == "pending") {
-      // TODO set transaction status on your database to 'pending' / waiting payment
-      const paymentStatus = transactionStatus;
-      updateData(orderId, paymentStatus);
-
-      // and response with 200 OK
-      console.log(
-        currentTimeStamp,
-        `Status: 200, Payment status is ${transactionStatus}`
-      );
-      return NextResponse.json(
-        { message: `Payment status is ${transactionStatus}` },
-        { status: 200 }
+        { message: `Payment is not valid` },
+        { status: 400 }
       );
     }
   } catch (error) {

@@ -10,7 +10,7 @@ const timeDiff = 7;
 const currentTimeStamp = getTimeStamp(timeDiff);
 
 export default function Checkout() {
-  const timeOut = 2000;
+  const timeOut = 3000;
   const host = process.env.NEXT_PUBLIC_HOST;
   const clientKey = process.env.NEXT_PUBLIC_CLIENT_KEY_DEV;
   const midtransUrl = process.env.NEXT_PUBLIC_MIDTRANS_URL_DEV;
