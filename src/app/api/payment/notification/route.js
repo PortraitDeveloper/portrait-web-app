@@ -34,6 +34,7 @@ export async function POST(request) {
     const grossAmount = body.gross_amount;
     const signatureKey = body.signature_key;
     const transactionStatus = body.transaction_status;
+    const fraudStatus = body.fraud_status;
 
     // Concatenate the values
     const concatenatedString = orderId + statusCode + grossAmount + serverKey;
