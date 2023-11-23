@@ -1,6 +1,10 @@
 import { NextResponse } from "next/server";
+import { PrismaClient } from "@prisma/client";
 import getTimeStamp from "@/utils/getTimeStamp";
 import crypto from "crypto";
+
+// Prisma initial
+const prisma = new PrismaClient();
 
 // Set Time Zone from UTC to WIB or Asia/Jakarta Timezone where time difference is 7
 const timeDiff = 7;
@@ -8,20 +12,31 @@ const timeDiff = 7;
 const currentTimeStamp = getTimeStamp(timeDiff);
 
 export async function POST(request) {
+  const updateTransaction = async (orderId, paymentStatus) => {
+    await prisma.transactions.update({
+      where: {
+        book_code: orderId,
+      },
+      data: {
+        payment_status: paymentStatus,
+      },
+    });
+  };
+
   try {
     // Read the body data
     const body = await request.json();
     console.log("body:", body);
 
-    // Example values (replace these with your actual data)
-    const order_id = body.order_id;
-    const status_code = body.status_code;
-    const gross_amount = body.gross_amount;
     const serverKey = process.env.NEXT_PUBLIC_SERVER_KEY_DEV;
+    const orderId = body.order_id;
+    const statusCode = body.status_code;
+    const grossAmount = body.gross_amount;
+    const signatureKey = body.signature_key;
+    const transactionStatus = body.transaction_status;
 
     // Concatenate the values
-    const concatenatedString =
-      order_id + status_code + gross_amount + serverKey;
+    const concatenatedString = orderId + statusCode + grossAmount + serverKey;
 
     // Create a SHA-512 hash
     const hashed = crypto
@@ -30,13 +45,71 @@ export async function POST(request) {
       .digest("hex");
 
     console.log("SHA-512 Hash:", hashed);
-    console.log("SignatureKey:", body.signature_key)
+    console.log("SignatureKey:", signatureKey);
 
-    console.log(currentTimeStamp, "Status: 200, Payment status is paid");
-    return NextResponse.json(
-      { message: "Payment status is paid" },
-      { status: 200 }
-    );
+    if (transactionStatus == "capture") {
+      if (fraudStatus == "accept") {
+        // TODO set transaction status on your database to 'success'
+        const paymentStatus = "paid";
+        updateTransaction(orderId, paymentStatus);
+
+        // and response with 200 OK
+        console.log(
+          currentTimeStamp,
+          `Status: 200, Payment status is ${transactionStatus}`
+        );
+        return NextResponse.json(
+          { message: `Payment status is ${transactionStatus}` },
+          { status: 200 }
+        );
+      }
+    } else if (transactionStatus == "settlement") {
+      // TODO set transaction status on your database to 'success'
+      const paymentStatus = "paid";
+      updateTransaction(orderId, paymentStatus);
+
+      // and response with 200 OK
+      console.log(
+        currentTimeStamp,
+        `Status: 200, Payment status is ${transactionStatus}`
+      );
+      return NextResponse.json(
+        { message: `Payment status is ${transactionStatus}` },
+        { status: 200 }
+      );
+    } else if (
+      transactionStatus == "cancel" ||
+      transactionStatus == "deny" ||
+      transactionStatus == "expire"
+    ) {
+      // TODO set transaction status on your database to 'failure'
+      const paymentStatus = transactionStatus;
+      updateData(orderId, paymentStatus);
+
+      // and response with 200 OK
+      console.log(
+        currentTimeStamp,
+        `Status: 200, Payment status is ${transactionStatus}`
+      );
+      return NextResponse.json(
+        { message: `Payment status is ${transactionStatus}` },
+        { status: 200 }
+      );
+    } else if (transactionStatus == "pending") {
+      // TODO set transaction status on your database to 'pending' / waiting payment
+      const paymentStatus = transactionStatus;
+      updateData(orderId, paymentStatus);
+
+      // and response with 200 OK
+      console.log(
+        currentTimeStamp,
+        `Status: 200, Payment status is ${transactionStatus}`
+      );
+      return NextResponse.json(
+        { message: `Payment status is ${transactionStatus}` },
+        { status: 200 }
+      );
+    }
   } catch (error) {
     console.log(
       currentTimeStamp,
