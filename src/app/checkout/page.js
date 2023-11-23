@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import getTimeStamp from "@/utils/getTimeStamp";
+import { useRouter } from "next/navigation";
 
 // Set Time Zone from UTC to WIB or Asia/Jakarta Timezone where time difference is 7
 const timeDiff = 7;
@@ -10,6 +11,8 @@ const timeDiff = 7;
 const currentTimeStamp = getTimeStamp(timeDiff);
 
 export default function Checkout() {
+  const router = useRouter();
+  
   const timeOut = 3000;
   const host = process.env.NEXT_PUBLIC_HOST;
   const clientKey = process.env.NEXT_PUBLIC_CLIENT_KEY_DEV;
@@ -18,7 +21,7 @@ export default function Checkout() {
   const searchParams = useSearchParams();
   const book_id = searchParams.get("book_id");
   console.log("Get BookID:", book_id);
-  
+
   const [loading, setLoading] = useState(true);
   const [midtransToken, setMidtransToken] = useState(null);
   const [orderBook, setOrderBook] = useState({

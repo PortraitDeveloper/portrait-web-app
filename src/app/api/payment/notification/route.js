@@ -60,14 +60,17 @@ export async function POST(request) {
             currentTimeStamp,
             `Status: 200, Payment status is ${transactionStatus}`
           );
-          return NextResponse.json(
-            { message: `Payment status is ${transactionStatus}` },
-            { status: 200 }
-          );
+
+          // return NextResponse.json(
+          //   { message: `Payment status is ${transactionStatus}` },
+          //   { status: 200 }
+          // );
+
+          return NextResponse.redirect(new URL('/thankyou', request.url))
         }
       } else if (transactionStatus == "settlement") {
         // TODO set transaction status on your database to 'success'
-        const paymentStatus = transactionStatus;
+        const paymentStatus = "paid";
         updateTransaction(orderId, paymentStatus);
 
         // and response with 200 OK
@@ -75,10 +78,13 @@ export async function POST(request) {
           currentTimeStamp,
           `Status: 200, Payment status is ${transactionStatus}`
         );
-        return NextResponse.json(
-          { message: `Payment status is ${transactionStatus}` },
-          { status: 200 }
-        );
+
+        // return NextResponse.json(
+        //   { message: `Payment status is ${transactionStatus}` },
+        //   { status: 200 }
+        // );
+
+        return NextResponse.redirect(new URL('/thankyou', request.url))
       } else if (
         transactionStatus == "cancel" ||
         transactionStatus == "deny" ||
@@ -86,7 +92,7 @@ export async function POST(request) {
       ) {
         // TODO set transaction status on your database to 'failure'
         const paymentStatus = transactionStatus;
-        updateData(orderId, paymentStatus);
+        updateTransaction(orderId, paymentStatus);
 
         // and response with 200 OK
         console.log(
@@ -100,7 +106,7 @@ export async function POST(request) {
       } else if (transactionStatus == "pending") {
         // TODO set transaction status on your database to 'pending' / waiting payment
         const paymentStatus = transactionStatus;
-        updateData(orderId, paymentStatus);
+        updateTransaction(orderId, paymentStatus);
 
         // and response with 200 OK
         console.log(
