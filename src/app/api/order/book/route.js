@@ -140,7 +140,7 @@ export async function POST(request) {
 
     // Determine whether the print5R is color or black&white
     const foundIndex = productName[0].indexOf("black&white");
-    const n = foundIndex !== -1 ? 3 : 2;
+    const n = foundIndex !== -1 ? 2 : 3;
     console.log("n:", n);
 
     // Additionals Price List Calculation
