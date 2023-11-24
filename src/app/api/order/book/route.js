@@ -139,7 +139,7 @@ export async function POST(request) {
     console.log("additionals:", additionals);
 
     // Determine whether the print5R is color or black&white
-    const foundIndex = productName[0].indexOf("black&white");
+    const foundIndex = productName.indexOf("black&white");
     const n = foundIndex !== -1 ? 2 : 3;
     console.log("n:", n);
 
