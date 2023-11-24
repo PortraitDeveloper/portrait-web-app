@@ -87,7 +87,7 @@ export default function Checkout() {
         const body = {
           email: orderBook.email,
           subject: "Konfirmasi Pembayaran",
-          text: `Hi ${orderBook.cust_name},\nPembayaran Anda dengan kode booking ${orderBook.book_code} telah berhasil.`,
+          text: `Hi ${orderBook.first_name},\nPembayaran Anda dengan kode booking ${orderBook.book_code} telah berhasil.`,
         };
 
         const response = await fetch(`${host}/api/email`, {
