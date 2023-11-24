@@ -104,8 +104,8 @@ export default function Checkout() {
           throw new Error(currentTimeStamp, "Email could not be sent");
         }
 
-        setPaymentStatus(false);
         router.push("/thankyou");
+        setPaymentStatus(false);
       } catch (error) {
         console.error(currentTimeStamp, "Error sending email:", error);
       }
