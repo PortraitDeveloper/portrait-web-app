@@ -12,7 +12,7 @@ const currentTimeStamp = getTimeStamp(timeDiff);
 
 export default function Checkout() {
   const router = useRouter();
-  
+
   const timeOut = 3000;
   const host = process.env.NEXT_PUBLIC_HOST;
   const clientKey = process.env.NEXT_PUBLIC_CLIENT_KEY_DEV;
@@ -24,6 +24,7 @@ export default function Checkout() {
 
   const [loading, setLoading] = useState(true);
   const [midtransToken, setMidtransToken] = useState(null);
+  const [paymentStatus, setPaymentStatus] = useState(false);
   const [orderBook, setOrderBook] = useState({
     book_code: "",
     first_name: "",
@@ -56,7 +57,6 @@ export default function Checkout() {
         phone: orderBook.phone,
       };
 
-      // const response = await axios.post("/api/payment", body);
       const response = await fetch(`${host}/api/payment/token`, {
         method: "POST",
         headers: {
@@ -82,11 +82,47 @@ export default function Checkout() {
   };
 
   useEffect(() => {
+    const sendEmail = async () => {
+      try {
+        const body = {
+          email: orderBook.email,
+          subject: "Konfirmasi Pembayaran",
+          text: `Hi ${orderBook.cust_name},\nPembayaran Anda dengan kode booking ${orderBook.book_code} telah berhasil.`,
+        };
+
+        const response = await fetch(`${host}/api/email`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(body),
+        });
+
+        console.log(response);
+
+        if (!response.ok) {
+          throw new Error(currentTimeStamp, "Email could not be sent");
+        }
+
+        setPaymentStatus(false);
+        router.push("/thankyou");
+      } catch (error) {
+        console.error(currentTimeStamp, "Error sending email:", error);
+      }
+    };
+
+    if (paymentStatus === true) {
+      sendEmail();
+    }
+  }, [paymentStatus]);
+
+  useEffect(() => {
     if (midtransToken) {
       window.snap.pay(midtransToken, {
         onSuccess: (result) => {
           console.log(result);
           console.log("Payment successful");
+          setPaymentStatus(true);
           setMidtransToken("");
         },
         onPending: (result) => {

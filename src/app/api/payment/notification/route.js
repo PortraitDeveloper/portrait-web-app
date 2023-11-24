@@ -61,12 +61,10 @@ export async function POST(request) {
             `Status: 200, Payment status is ${transactionStatus}`
           );
 
-          // return NextResponse.json(
-          //   { message: `Payment status is ${transactionStatus}` },
-          //   { status: 200 }
-          // );
-
-          return NextResponse.redirect(new URL('/thankyou', request.url))
+          return NextResponse.json(
+            { message: `Payment status is ${transactionStatus}` },
+            { status: 200 }
+          );
         }
       } else if (transactionStatus == "settlement") {
         // TODO set transaction status on your database to 'success'
@@ -79,12 +77,10 @@ export async function POST(request) {
           `Status: 200, Payment status is ${transactionStatus}`
         );
 
-        // return NextResponse.json(
-        //   { message: `Payment status is ${transactionStatus}` },
-        //   { status: 200 }
-        // );
-
-        return NextResponse.redirect(new URL('/thankyou', request.url))
+        return NextResponse.json(
+          { message: `Payment status is ${transactionStatus}` },
+          { status: 200 }
+        );
       } else if (
         transactionStatus == "cancel" ||
         transactionStatus == "deny" ||
