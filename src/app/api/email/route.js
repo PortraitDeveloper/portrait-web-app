@@ -12,9 +12,9 @@ const currentTimeStamp = getTimeStamp(timeDiff);
 export async function POST(request) {
   try {
     // Read the body data
-    const { email, subject, message } = await request.json();
+    const { email, subject, text } = await request.json();
 
-    console.log("Email Parameters:", email, subject, message);
+    console.log("Email Parameters:", email, subject, text);
 
     const transporter = nodemailer.createTransport({
       service: "gmail",
@@ -28,7 +28,7 @@ export async function POST(request) {
       from: "noreply",
       to: email,
       subject: subject,
-      text: message,
+      text: text,
     };
 
     const info = await transporter.sendMail(mailOptions);
