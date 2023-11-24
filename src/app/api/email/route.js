@@ -14,6 +14,8 @@ export async function POST(request) {
     // Read the body data
     const { email, subject, message } = await request.json();
 
+    console.log("Email Parameters:", email, subject, message);
+
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
@@ -41,10 +43,10 @@ export async function POST(request) {
   } catch (error) {
     console.log(
       currentTimeStamp,
-      "Status: 500, An error occurred while processing the request"
+      "api/email, Status: 500, An error occurred while processing the request"
     );
     return NextResponse.json(
-      { error: "Status: 500, An error occurred while processing the request" },
+      { error: "api/email, Status: 500, An error occurred while processing the request" },
       { status: 500 }
     );
   }
