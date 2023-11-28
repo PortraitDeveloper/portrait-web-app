@@ -14,7 +14,7 @@ export default function Checkout() {
   const router = useRouter();
 
   // const timeOut = 3000;
-  
+
   const host = process.env.NEXT_PUBLIC_HOST;
   const clientKey = process.env.NEXT_PUBLIC_CLIENT_KEY_DEV;
   const midtransUrl = process.env.NEXT_PUBLIC_MIDTRANS_URL_DEV;
@@ -282,7 +282,7 @@ export default function Checkout() {
     };
 
     getData(book_id);
-  }, [book_id]); // Menambahkan book_id sebagai dependency agar efek berjalan saat nilai book_id berubah
+  }, []);
 
   return (
     <>
