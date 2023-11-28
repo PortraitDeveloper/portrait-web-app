@@ -71,7 +71,10 @@ export default function Checkout() {
 
       const transaction = await response.json();
       const token = transaction.token;
-      console.log("token:", token)
+      const paymentUrl = transaction.paymentUrl;
+      console.log("token:", token);
+      console.log("paymentUrl:", paymentUrl);
+
       setMidtransToken(token);
     } catch (error) {
       console.error(
