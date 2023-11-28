@@ -130,7 +130,7 @@ export default function Checkout() {
         const body = {
           email: orderBook.email,
           subject: "Link Pembayaran",
-          text: `Hi ${orderBook.first_name},\nBerikut adalah link pembayaran ${paymentUrl}. \nSegera lakukan pembayaran dalam waktu 15 menit kedepan, jika lewat batas waktu maka order booking anda akan dicancel secara otomatis.`,
+          text: `Hi ${orderBook.first_name},\nPesanan Anda dengan kode booking ${orderBook.book_code} \nBerikut adalah link pembayaran ${paymentUrl}. \nSegera lakukan pembayaran dalam waktu 15 menit kedepan, jika lewat batas waktu maka order booking anda akan dicancel secara otomatis.`,
         };
 
         const response = await fetch(`${host}/api/email`, {
