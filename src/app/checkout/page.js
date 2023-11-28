@@ -202,6 +202,7 @@ export default function Checkout() {
         if (!response.ok) {
           throw new Error(currentTimeStamp, "Failed to fetch data");
         } else if (response.status === 404) {
+          console.log("redirect");
           router.push("https://msha.ke/bookingstudio");
         } else {
           const data = await response.json();
