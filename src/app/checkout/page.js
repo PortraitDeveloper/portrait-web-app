@@ -89,7 +89,7 @@ export default function Checkout() {
     }
   };
 
-  useEffect(() => {
+  // useEffect(() => {
     // const sendEmail = async () => {
     //   try {
     //     const body = {
@@ -122,8 +122,8 @@ export default function Checkout() {
     //   sendEmail();
     // }
 
-    router.push("/thankyou");
-  }, [paymentStatus]);
+  //   router.push("/thankyou");
+  // }, [paymentStatus]);
 
   useEffect(() => {
     const sendEmail = async () => {
@@ -154,13 +154,14 @@ export default function Checkout() {
 
     if (midtransToken) {
       sendEmail();
-      
+
       window.snap.pay(midtransToken, {
         onSuccess: (result) => {
           console.log(result);
           console.log("Payment successful");
           setPaymentStatus(true);
           setMidtransToken("");
+          router.push("/thankyou");
         },
         onPending: (result) => {
           console.log(result);
