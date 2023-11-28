@@ -90,37 +90,37 @@ export default function Checkout() {
   };
 
   // useEffect(() => {
-    // const sendEmail = async () => {
-    //   try {
-    //     const body = {
-    //       email: orderBook.email,
-    //       subject: "Konfirmasi Pembayaran",
-    //       text: `Hi ${orderBook.first_name},\nPembayaran Anda dengan kode booking ${orderBook.book_code} telah berhasil.`,
-    //     };
+  // const sendEmail = async () => {
+  //   try {
+  //     const body = {
+  //       email: orderBook.email,
+  //       subject: "Konfirmasi Pembayaran",
+  //       text: `Hi ${orderBook.first_name},\nPembayaran Anda dengan kode booking ${orderBook.book_code} telah berhasil.`,
+  //     };
 
-    //     const response = await fetch(`${host}/api/email`, {
-    //       method: "POST",
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //       },
-    //       body: JSON.stringify(body),
-    //     });
+  //     const response = await fetch(`${host}/api/email`, {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify(body),
+  //     });
 
-    //     console.log(response);
+  //     console.log(response);
 
-    //     if (!response.ok) {
-    //       throw new Error(currentTimeStamp, "Email could not be sent");
-    //     }
+  //     if (!response.ok) {
+  //       throw new Error(currentTimeStamp, "Email could not be sent");
+  //     }
 
-    //     setPaymentStatus(false);
-    //   } catch (error) {
-    //     console.error(currentTimeStamp, "Error sending email:", error);
-    //   }
-    // };
+  //     setPaymentStatus(false);
+  //   } catch (error) {
+  //     console.error(currentTimeStamp, "Error sending email:", error);
+  //   }
+  // };
 
-    // if (paymentStatus === true) {
-    //   sendEmail();
-    // }
+  // if (paymentStatus === true) {
+  //   sendEmail();
+  // }
 
   //   router.push("/thankyou");
   // }, [paymentStatus]);
@@ -161,7 +161,6 @@ export default function Checkout() {
           console.log("Payment successful");
           setPaymentStatus(true);
           setMidtransToken("");
-          router.push("/thankyou");
         },
         onPending: (result) => {
           console.log(result);
@@ -280,9 +279,8 @@ export default function Checkout() {
 
   return (
     <>
-      {loading ? (
-        <p>loading...</p>
-      ) : (
+      {loading && !paymentStatus && <p>loading...</p>}
+      {!loading && !paymentStatus && (
         <div className="h-screen flex justify-center items-center">
           <div className="border border-black rounded-3xl px-6 py-4">
             <h1 className="text-center text-2xl font-bold">Ringkasan Order</h1>
@@ -353,6 +351,7 @@ export default function Checkout() {
           </div>
         </div>
       )}
+      {paymentStatus && (<div>Pembayaran Anda Berhasil</div>)}
     </>
   );
 }
