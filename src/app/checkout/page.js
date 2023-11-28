@@ -69,8 +69,9 @@ export default function Checkout() {
         throw new Error(currentTimeStamp, "Failed to fetch data to midtrans");
       }
 
-      const token = await response.json();
-      console.log("token:", token);
+      const transaction = await response.json();
+      const token = transaction.token;
+      console.log("token:", token)
       setMidtransToken(token);
     } catch (error) {
       console.error(
