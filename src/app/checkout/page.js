@@ -122,7 +122,6 @@ export default function Checkout() {
   //   sendEmail();
   // }
 
-  //   router.push("/thankyou");
   // }, [paymentStatus]);
 
   useEffect(() => {
@@ -196,77 +195,79 @@ export default function Checkout() {
   useEffect(() => {
     const getData = async (bookid) => {
       try {
-        await new Promise((resolve) => setTimeout(resolve, timeOut));
-
         const response = await fetch(`${host}/api/data/book/${bookid}`);
+        // await new Promise((resolve) => setTimeout(resolve, timeOut));
 
         if (!response.ok) {
           throw new Error(currentTimeStamp, "Failed to fetch data");
+        } else if (!response) {
+          router.push("https://msha.ke/bookingstudio");
+        } else {
+          const data = await response.json();
+          console.log("data:", data);
+
+          const name = data.customers.cust_name.split(" ");
+          const firstName = name[0];
+          const lastName = name[1];
+          console.log("First name:", firstName);
+          console.log("Last Name:", lastName);
+
+          const [bookingDate, timeWithMillis] = data.booking_start.split("T");
+          const dateObj = new Date(bookingDate);
+          const day = dateObj.getDate();
+          const monthIndex = dateObj.getMonth();
+          const year = dateObj.getFullYear();
+          const monthNames = [
+            "Januari",
+            "Februari",
+            "Maret",
+            "April",
+            "Mei",
+            "Juni",
+            "Juli",
+            "Agustus",
+            "September",
+            "Oktober",
+            "November",
+            "Desember",
+          ];
+          const monthName = monthNames[monthIndex];
+          const bookingStartDate = `${day} ${monthName} ${year}`;
+          const bookingStartTime = timeWithMillis.replace(":00.000Z", "");
+
+          const voucherCode = data.transactions.voucher_code
+            ? data.transactions.voucher_code
+            : "-";
+          const isVoucherApplied =
+            voucherCode === "-"
+              ? "Tidak menggunakan voucher"
+              : data.transactions.voucher_code
+              ? "Voucher dapat digunakan"
+              : "Voucher tidak dapat digunakan";
+
+          setOrderBook({
+            book_code: data.book_code,
+            first_name: firstName,
+            last_name: lastName,
+            email: data.customers.email,
+            phone_number: data.customers.phone_number,
+            branch_address: data.products.branches.branch_address,
+            booking_start_date: bookingStartDate,
+            booking_start_time: bookingStartTime,
+            product_name: data.products.product_name,
+            product_price: data.products.product_price,
+            additional_person_price: data.transactions.additional_person_price,
+            additional_pet_price: data.transactions.additional_pet_price,
+            additional_print5r_price:
+              data.transactions.additional_print5r_price,
+            additional_softfile_price:
+              data.transactions.additional_softfile_price,
+            total_price: data.transactions.total_price,
+            voucher_code: voucherCode,
+            is_voucher_applied: isVoucherApplied,
+            total_paid_by_cust: data.transactions.total_paid_by_cust,
+          });
         }
-
-        const data = await response.json();
-        console.log("data:", data);
-
-        const name = data.customers.cust_name.split(" ");
-        const firstName = name[0];
-        const lastName = name[1];
-        console.log("First name:", firstName);
-        console.log("Last Name:", lastName);
-
-        const [bookingDate, timeWithMillis] = data.booking_start.split("T");
-        const dateObj = new Date(bookingDate);
-        const day = dateObj.getDate();
-        const monthIndex = dateObj.getMonth();
-        const year = dateObj.getFullYear();
-        const monthNames = [
-          "Januari",
-          "Februari",
-          "Maret",
-          "April",
-          "Mei",
-          "Juni",
-          "Juli",
-          "Agustus",
-          "September",
-          "Oktober",
-          "November",
-          "Desember",
-        ];
-        const monthName = monthNames[monthIndex];
-        const bookingStartDate = `${day} ${monthName} ${year}`;
-        const bookingStartTime = timeWithMillis.replace(":00.000Z", "");
-
-        const voucherCode = data.transactions.voucher_code
-          ? data.transactions.voucher_code
-          : "-";
-        const isVoucherApplied =
-          voucherCode === "-"
-            ? "Tidak menggunakan voucher"
-            : data.transactions.voucher_code
-            ? "Voucher dapat digunakan"
-            : "Voucher tidak dapat digunakan";
-
-        setOrderBook({
-          book_code: data.book_code,
-          first_name: firstName,
-          last_name: lastName,
-          email: data.customers.email,
-          phone_number: data.customers.phone_number,
-          branch_address: data.products.branches.branch_address,
-          booking_start_date: bookingStartDate,
-          booking_start_time: bookingStartTime,
-          product_name: data.products.product_name,
-          product_price: data.products.product_price,
-          additional_person_price: data.transactions.additional_person_price,
-          additional_pet_price: data.transactions.additional_pet_price,
-          additional_print5r_price: data.transactions.additional_print5r_price,
-          additional_softfile_price:
-            data.transactions.additional_softfile_price,
-          total_price: data.transactions.total_price,
-          voucher_code: voucherCode,
-          is_voucher_applied: isVoucherApplied,
-          total_paid_by_cust: data.transactions.total_paid_by_cust,
-        });
       } catch (error) {
         console.error("Error fetching data:", error.message);
       } finally {
@@ -279,8 +280,8 @@ export default function Checkout() {
 
   return (
     <>
-      {loading && !paymentStatus && <p>loading...</p>}
-      {!loading && !paymentStatus && (
+      {loading && <p>loading...</p>}
+      {!loading && (
         <div className="h-screen flex justify-center items-center">
           <div className="border border-black rounded-3xl px-6 py-4">
             <h1 className="text-center text-2xl font-bold">Ringkasan Order</h1>
@@ -351,7 +352,6 @@ export default function Checkout() {
           </div>
         </div>
       )}
-      {paymentStatus && (<div>Pembayaran Anda Berhasil</div>)}
     </>
   );
 }
