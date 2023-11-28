@@ -90,38 +90,39 @@ export default function Checkout() {
   };
 
   useEffect(() => {
-    const sendEmail = async () => {
-      try {
-        const body = {
-          email: orderBook.email,
-          subject: "Konfirmasi Pembayaran",
-          text: `Hi ${orderBook.first_name},\nPembayaran Anda dengan kode booking ${orderBook.book_code} telah berhasil.`,
-        };
+    // const sendEmail = async () => {
+    //   try {
+    //     const body = {
+    //       email: orderBook.email,
+    //       subject: "Konfirmasi Pembayaran",
+    //       text: `Hi ${orderBook.first_name},\nPembayaran Anda dengan kode booking ${orderBook.book_code} telah berhasil.`,
+    //     };
 
-        const response = await fetch(`${host}/api/email`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(body),
-        });
+    //     const response = await fetch(`${host}/api/email`, {
+    //       method: "POST",
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //       },
+    //       body: JSON.stringify(body),
+    //     });
 
-        console.log(response);
+    //     console.log(response);
 
-        if (!response.ok) {
-          throw new Error(currentTimeStamp, "Email could not be sent");
-        }
+    //     if (!response.ok) {
+    //       throw new Error(currentTimeStamp, "Email could not be sent");
+    //     }
 
-        router.push("/thankyou");
-        setPaymentStatus(false);
-      } catch (error) {
-        console.error(currentTimeStamp, "Error sending email:", error);
-      }
-    };
+    //     setPaymentStatus(false);
+    //   } catch (error) {
+    //     console.error(currentTimeStamp, "Error sending email:", error);
+    //   }
+    // };
 
-    if (paymentStatus === true) {
-      sendEmail();
-    }
+    // if (paymentStatus === true) {
+    //   sendEmail();
+    // }
+
+    router.push("/thankyou");
   }, [paymentStatus]);
 
   useEffect(() => {
@@ -153,6 +154,7 @@ export default function Checkout() {
 
     if (midtransToken) {
       sendEmail();
+      
       window.snap.pay(midtransToken, {
         onSuccess: (result) => {
           console.log(result);
