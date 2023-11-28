@@ -13,7 +13,8 @@ const currentTimeStamp = getTimeStamp(timeDiff);
 export default function Checkout() {
   const router = useRouter();
 
-  const timeOut = 3000;
+  // const timeOut = 3000;
+  
   const host = process.env.NEXT_PUBLIC_HOST;
   const clientKey = process.env.NEXT_PUBLIC_CLIENT_KEY_DEV;
   const midtransUrl = process.env.NEXT_PUBLIC_MIDTRANS_URL_DEV;
@@ -197,82 +198,82 @@ export default function Checkout() {
       try {
         const response = await fetch(`${host}/api/data/book/${bookid}`);
         // await new Promise((resolve) => setTimeout(resolve, timeOut));
+
         console.log("response:", response);
         console.log("response status:", response.status);
-
-        // if (!response.ok) {
-        //   throw new Error(currentTimeStamp, "Failed to fetch data");
-        // }
 
         if (response.status === 404) {
           console.log("redirect");
           router.push("https://msha.ke/bookingstudio");
-        } else {
-          const data = await response.json();
-          console.log("data:", data);
-
-          const name = data.customers.cust_name.split(" ");
-          const firstName = name[0];
-          const lastName = name[1];
-          console.log("First name:", firstName);
-          console.log("Last Name:", lastName);
-
-          const [bookingDate, timeWithMillis] = data.booking_start.split("T");
-          const dateObj = new Date(bookingDate);
-          const day = dateObj.getDate();
-          const monthIndex = dateObj.getMonth();
-          const year = dateObj.getFullYear();
-          const monthNames = [
-            "Januari",
-            "Februari",
-            "Maret",
-            "April",
-            "Mei",
-            "Juni",
-            "Juli",
-            "Agustus",
-            "September",
-            "Oktober",
-            "November",
-            "Desember",
-          ];
-          const monthName = monthNames[monthIndex];
-          const bookingStartDate = `${day} ${monthName} ${year}`;
-          const bookingStartTime = timeWithMillis.replace(":00.000Z", "");
-
-          const voucherCode = data.transactions.voucher_code
-            ? data.transactions.voucher_code
-            : "-";
-          const isVoucherApplied =
-            voucherCode === "-"
-              ? "Tidak menggunakan voucher"
-              : data.transactions.voucher_code
-              ? "Voucher dapat digunakan"
-              : "Voucher tidak dapat digunakan";
-
-          setOrderBook({
-            book_code: data.book_code,
-            first_name: firstName,
-            last_name: lastName,
-            email: data.customers.email,
-            phone_number: data.customers.phone_number,
-            branch_address: data.products.branches.branch_address,
-            booking_start_date: bookingStartDate,
-            booking_start_time: bookingStartTime,
-            product_name: data.products.product_name,
-            product_price: data.products.product_price,
-            additional_person_price: data.transactions.additional_person_price,
-            additional_pet_price: data.transactions.additional_pet_price,
-            additional_print5r_price:
-              data.transactions.additional_print5r_price,
-            additional_softfile_price:
-              data.transactions.additional_softfile_price,
-            total_price: data.transactions.total_price,
-            voucher_code: voucherCode,
-            is_voucher_applied: isVoucherApplied,
-            total_paid_by_cust: data.transactions.total_paid_by_cust,
-          });
         }
+
+        if (!response.ok) {
+          throw new Error(currentTimeStamp, "Failed to fetch data");
+        }
+
+        const data = await response.json();
+        console.log("data:", data);
+
+        const name = data.customers.cust_name.split(" ");
+        const firstName = name[0];
+        const lastName = name[1];
+        console.log("First name:", firstName);
+        console.log("Last Name:", lastName);
+
+        const [bookingDate, timeWithMillis] = data.booking_start.split("T");
+        const dateObj = new Date(bookingDate);
+        const day = dateObj.getDate();
+        const monthIndex = dateObj.getMonth();
+        const year = dateObj.getFullYear();
+        const monthNames = [
+          "Januari",
+          "Februari",
+          "Maret",
+          "April",
+          "Mei",
+          "Juni",
+          "Juli",
+          "Agustus",
+          "September",
+          "Oktober",
+          "November",
+          "Desember",
+        ];
+        const monthName = monthNames[monthIndex];
+        const bookingStartDate = `${day} ${monthName} ${year}`;
+        const bookingStartTime = timeWithMillis.replace(":00.000Z", "");
+
+        const voucherCode = data.transactions.voucher_code
+          ? data.transactions.voucher_code
+          : "-";
+        const isVoucherApplied =
+          voucherCode === "-"
+            ? "Tidak menggunakan voucher"
+            : data.transactions.voucher_code
+            ? "Voucher dapat digunakan"
+            : "Voucher tidak dapat digunakan";
+
+        setOrderBook({
+          book_code: data.book_code,
+          first_name: firstName,
+          last_name: lastName,
+          email: data.customers.email,
+          phone_number: data.customers.phone_number,
+          branch_address: data.products.branches.branch_address,
+          booking_start_date: bookingStartDate,
+          booking_start_time: bookingStartTime,
+          product_name: data.products.product_name,
+          product_price: data.products.product_price,
+          additional_person_price: data.transactions.additional_person_price,
+          additional_pet_price: data.transactions.additional_pet_price,
+          additional_print5r_price: data.transactions.additional_print5r_price,
+          additional_softfile_price:
+            data.transactions.additional_softfile_price,
+          total_price: data.transactions.total_price,
+          voucher_code: voucherCode,
+          is_voucher_applied: isVoucherApplied,
+          total_paid_by_cust: data.transactions.total_paid_by_cust,
+        });
       } catch (error) {
         console.error("Error fetching data:", error.message);
       } finally {
