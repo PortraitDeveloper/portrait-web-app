@@ -34,10 +34,13 @@ export async function POST(request) {
     };
 
     const transaction = await snap.createTransaction(parameter);
-    const token = transaction.token
+    // const token = transaction.token
 
-    console.log(currentTimeStamp, "Status: 200, Got token");
-    return NextResponse.json(token, { status: 200 });
+    // console.log(currentTimeStamp, "Status: 200, Got token");
+    // return NextResponse.json(token, { status: 200 });
+
+    console.log(currentTimeStamp, `Status: 200, Got ${transaction}`);
+    return NextResponse.json(transaction, { status: 200 });
   } catch (error) {
     console.log(
       currentTimeStamp,
