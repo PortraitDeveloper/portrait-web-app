@@ -24,7 +24,7 @@ export default function Checkout() {
   console.log("Get BookID:", book_id);
 
   const [loading, setLoading] = useState(true);
-  const [paymentStatus, setPaymentStatus] = useState(false);
+  const [view, setView] = useState(false);
 
   const [midtransToken, setMidtransToken] = useState(null);
   const [paymentUrl, setPaymentUrl] = useState(null);
@@ -159,7 +159,7 @@ export default function Checkout() {
         onSuccess: (result) => {
           console.log(result);
           console.log("Payment successful");
-          setPaymentStatus(true);
+          // setPaymentStatus(true);
           setMidtransToken("");
         },
         onPending: (result) => {
@@ -274,6 +274,8 @@ export default function Checkout() {
           is_voucher_applied: isVoucherApplied,
           total_paid_by_cust: data.transactions.total_paid_by_cust,
         });
+
+        setView(true);
       } catch (error) {
         console.error("Error fetching data:", error.message);
       } finally {
@@ -286,8 +288,8 @@ export default function Checkout() {
 
   return (
     <>
-      {loading && <p>loading...</p>}
-      {!loading && (
+      {loading && !view && <p>loading...</p>}
+      {!loading && view && (
         <div className="h-screen flex justify-center items-center">
           <div className="border border-black rounded-3xl px-6 py-4">
             <h1 className="text-center text-2xl font-bold">Ringkasan Order</h1>

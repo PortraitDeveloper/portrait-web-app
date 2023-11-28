@@ -1,10 +1,10 @@
-import Link from "next/link";
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useRouter } from "next/navigation";
 
 export default function Home() {
-  return (
-    <main>
-      <h1>Welcome To Theportraitplace Web App</h1>
-      <Link href="/login">Login</Link>
-    </main>
-  );
+  const router = useRouter();
+
+  useEffect(() => {
+    router.push("https://msha.ke/bookingstudio");
+  }, []);
 }
