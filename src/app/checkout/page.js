@@ -198,6 +198,7 @@ export default function Checkout() {
         const response = await fetch(`${host}/api/data/book/${bookid}`);
         // await new Promise((resolve) => setTimeout(resolve, timeOut));
         console.log("response:", response);
+        console.log("response status:", response.status);
 
         if (!response.ok) {
           throw new Error(currentTimeStamp, "Failed to fetch data");
