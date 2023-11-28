@@ -39,7 +39,7 @@ export async function POST(request) {
     // console.log(currentTimeStamp, "Status: 200, Got token");
     // return NextResponse.json(token, { status: 200 });
 
-    console.log(currentTimeStamp, `Status: 200, Got ${transaction}`);
+    console.log(currentTimeStamp, `Status: 200, Got ${transaction.json()}`);
     return NextResponse.json(transaction, { status: 200 });
   } catch (error) {
     console.log(
