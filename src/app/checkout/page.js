@@ -197,10 +197,11 @@ export default function Checkout() {
       try {
         const response = await fetch(`${host}/api/data/book/${bookid}`);
         // await new Promise((resolve) => setTimeout(resolve, timeOut));
+        console.log("response:", response);
 
         if (!response.ok) {
           throw new Error(currentTimeStamp, "Failed to fetch data");
-        } else if (!response) {
+        } else if (response.status === 404) {
           router.push("https://msha.ke/bookingstudio");
         } else {
           const data = await response.json();
