@@ -23,8 +23,11 @@ export default function Checkout() {
   console.log("Get BookID:", book_id);
 
   const [loading, setLoading] = useState(true);
-  const [midtransToken, setMidtransToken] = useState(null);
   const [paymentStatus, setPaymentStatus] = useState(false);
+
+  const [midtransToken, setMidtransToken] = useState(null);
+  const [paymentUrl, setPaymentUrl] = useState(null);
+
   const [orderBook, setOrderBook] = useState({
     book_code: "",
     first_name: "",
@@ -70,11 +73,12 @@ export default function Checkout() {
       }
 
       const transaction = await response.json();
-      const token = transaction.token;
       const paymentUrl = transaction.paymentUrl;
+      const token = transaction.token;
       console.log("token:", token);
       console.log("paymentUrl:", paymentUrl);
 
+      setPaymentUrl(paymentUrl);
       setMidtransToken(token);
     } catch (error) {
       console.error(
@@ -121,7 +125,34 @@ export default function Checkout() {
   }, [paymentStatus]);
 
   useEffect(() => {
+    const sendEmail = async () => {
+      try {
+        const body = {
+          email: orderBook.email,
+          subject: "Link Pembayaran",
+          text: `Hi ${orderBook.first_name},\nBerikut adalah link pembayaran ${paymentUrl}. \nSegera lakukan pembayaran dalam waktu 15 menit kedepan, jika lewat batas waktu maka order booking anda akan dicancel secara otomatis.`,
+        };
+
+        const response = await fetch(`${host}/api/email`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(body),
+        });
+
+        console.log(response);
+
+        if (!response.ok) {
+          throw new Error(currentTimeStamp, "Email could not be sent");
+        }
+      } catch (error) {
+        console.error(currentTimeStamp, "Error sending email:", error);
+      }
+    };
+
     if (midtransToken) {
+      sendEmail();
       window.snap.pay(midtransToken, {
         onSuccess: (result) => {
           console.log(result);
