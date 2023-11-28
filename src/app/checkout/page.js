@@ -13,7 +13,7 @@ const currentTimeStamp = getTimeStamp(timeDiff);
 export default function Checkout() {
   const router = useRouter();
 
-  // const timeOut = 3000;
+  const timeOut = 3000;
 
   const host = process.env.NEXT_PUBLIC_HOST;
   const clientKey = process.env.NEXT_PUBLIC_CLIENT_KEY_DEV;
@@ -196,9 +196,9 @@ export default function Checkout() {
   useEffect(() => {
     const getData = async (bookid) => {
       try {
+        await new Promise((resolve) => setTimeout(resolve, timeOut));
         const response = await fetch(`${host}/api/data/book/${bookid}`);
-        // await new Promise((resolve) => setTimeout(resolve, timeOut));
-
+        
         console.log("response:", response);
         console.log("response status:", response.status);
 
