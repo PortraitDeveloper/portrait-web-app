@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
 import getTimeStamp from "@/utils/getTimeStamp";
+import errorLog from "@/utils/errorLog";
 
 // Prisma initial
 const prisma = new PrismaClient();
@@ -35,6 +36,16 @@ export async function GET(request, { params: { bookid } }) {
     // if data not found, return 404 error
     if (!orderBook) {
       console.log(currentTimeStamp, "Status: 404, Data not found");
+
+      const log = {
+        created_at: currentTimeStamp,
+        status: 404,
+        error: "Data not found",
+      };
+
+      console.log(log);
+
+      errorLog(log);
       return NextResponse.json({ error: "Data not found" }, { status: 404 });
     } else {
       // Else return data
