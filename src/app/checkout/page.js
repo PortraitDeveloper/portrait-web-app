@@ -11,14 +11,16 @@ const timeDiff = 7;
 const currentTimeStamp = getTimeStamp(timeDiff);
 
 export default function Checkout() {
+  const searchParams = useSearchParams();
+  const book_id = searchParams.get("book_id");
+
   const router = useRouter();
-  const timeOut = 3000;
+  const timeOut = 5000;
   const redirectUrl = "https://msha.ke/bookingstudio";
   const host = process.env.NEXT_PUBLIC_HOST;
   const clientKey = process.env.NEXT_PUBLIC_CLIENT_KEY_DEV;
   const midtransUrl = process.env.NEXT_PUBLIC_MIDTRANS_URL_DEV;
-  const searchParams = useSearchParams();
-  const book_id = searchParams.get("book_id");
+
   const [loading, setLoading] = useState(true);
   const [view, setView] = useState(false);
 
@@ -158,7 +160,6 @@ export default function Checkout() {
         await new Promise((resolve) => setTimeout(resolve, timeOut));
         const response = await fetch(`${host}/api/data/book/${bookid}`);
         const payload = await response.json();
-        console.log("payload:", payload);
 
         if (payload.status === 404) {
           router.push(redirectUrl);
@@ -235,7 +236,6 @@ export default function Checkout() {
           message: error,
         };
         errorLog(log);
-        console.error(log);
       } finally {
         setLoading(false);
       }

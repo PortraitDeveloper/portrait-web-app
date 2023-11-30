@@ -54,7 +54,7 @@ export async function POST(request) {
         phone_number: body.phone_number,
       },
     });
-    console.log("customer:", customer);
+    // console.log("customer:", customer);
 
     // Check if customer doesn't exist
     if (!customer) {
@@ -71,7 +71,7 @@ export async function POST(request) {
     // Fix product_name string
     const productNameArray = body.product_name.toLowerCase().split("  ");
     const productName = productNameArray[0];
-    console.log("product_name:", productName);
+    // console.log("product_name:", productName);
 
     // Read product data
     const product = await prisma.products.findFirst({
@@ -80,7 +80,7 @@ export async function POST(request) {
         branch_id: body.branch_id,
       },
     });
-    console.log("product:", product);
+    // console.log("product:", product);
 
     // Convert to integer
     const numberOfAddPerson = parseInt(body.number_of_add_person);
@@ -114,7 +114,7 @@ export async function POST(request) {
           },
         },
       });
-      console.log("voucherUsed:", voucherUsed);
+      // console.log("voucherUsed:", voucherUsed);
 
       // If the voucher has never been used then retrieve the voucher data
       if (!voucherUsed) {
@@ -125,7 +125,7 @@ export async function POST(request) {
         });
       }
     }
-    console.log("voucher:", voucher);
+    // console.log("voucher:", voucher);
 
     // Provides status whether the voucher can be used or not
     let isVoucherApplied = false;
@@ -137,12 +137,12 @@ export async function POST(request) {
 
     // Read additionals data
     const additionals = await prisma.additionals.findMany();
-    console.log("additionals:", additionals);
+    // console.log("additionals:", additionals);
 
     // Determine whether the print5R is color or black&white
     const foundIndex = productName.indexOf("black&white");
     const n = foundIndex !== -1 ? 2 : 3;
-    console.log("n:", n);
+    // console.log("n:", n);
 
     // Additionals Price List Calculation
     const additionalPersonPrice = numberOfAddPerson * additionals[0].item_price;
@@ -160,7 +160,7 @@ export async function POST(request) {
       additionalPetPrice +
       additionalPrint5r +
       additionalSoftfile;
-    console.log("totalPrice:", totalPrice);
+    // console.log("totalPrice:", totalPrice);
 
     let totalPaidByCust = totalPrice;
 
@@ -176,7 +176,7 @@ export async function POST(request) {
           (voucher.nominal_discount === null ? 0 : voucher.nominal_discount);
       }
     }
-    console.log("totalPaidByCust:", totalPaidByCust);
+    // console.log("totalPaidByCust:", totalPaidByCust);
 
     // Create transactions data
     await prisma.transactions.create({
@@ -216,8 +216,19 @@ export async function POST(request) {
       },
     });
 
-    console.log(currentTimeStamp, "Status: 201, Data inserted");
-    return NextResponse.json(newData, { status: 201 });
+    console.log(
+      currentTimeStamp,
+      "Status: 201",
+      "New order book data inserted."
+    );
+    
+    return NextResponse.json({
+      created_at: currentTimeStamp,
+      route: "/api/order/book",
+      status: 201,
+      message: "New order book data inserted.",
+      data: newData,
+    });
   } catch (error) {
     // If the system or database server error then return an error log
     const log = {
