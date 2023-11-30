@@ -86,45 +86,10 @@ export default function Checkout() {
     }
   };
 
-  // useEffect(() => {
-  // const sendEmail = async () => {
-  //   try {
-  //     const body = {
-  //       email: orderBook.email,
-  //       subject: "Konfirmasi Pembayaran",
-  //       text: `Hi ${orderBook.first_name},\nPembayaran Anda dengan kode booking ${orderBook.book_code} telah berhasil.`,
-  //     };
-
-  //     const response = await fetch(`${host}/api/email`, {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify(body),
-  //     });
-
-  //     console.log(response);
-
-  //     if (!response.ok) {
-  //       throw new Error(currentTimeStamp, "Email could not be sent");
-  //     }
-
-  //     setPaymentStatus(false);
-  //   } catch (error) {
-  //     console.error(currentTimeStamp, "Error sending email:", error);
-  //   }
-  // };
-
-  // if (paymentStatus === true) {
-  //   sendEmail();
-  // }
-
-  // }, [paymentStatus]);
-
   useEffect(() => {
     const sendEmail = async () => {
       try {
-        const body = {
+        const payload = {
           email: orderBook.email,
           subject: "Link Pembayaran",
           text: `Hi ${orderBook.first_name},\nPesanan Anda dengan kode booking ${orderBook.book_code} \nBerikut adalah link pembayaran ${paymentUrl}. \nSegera lakukan pembayaran dalam waktu 15 menit kedepan, jika lewat batas waktu maka order booking anda akan dicancel secara otomatis.`,
@@ -135,10 +100,10 @@ export default function Checkout() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(body),
+          body: JSON.stringify(payload),
         });
 
-        console.log(response);
+        console.log("Email Response:", response);
 
         if (!response.ok) {
           throw new Error(currentTimeStamp, "Email could not be sent");
@@ -150,12 +115,10 @@ export default function Checkout() {
 
     if (midtransToken) {
       sendEmail();
-
       window.snap.pay(midtransToken, {
         onSuccess: (result) => {
           console.log(result);
           console.log("Payment successful");
-          // setPaymentStatus(true);
           setMidtransToken("");
         },
         onPending: (result) => {

@@ -16,8 +16,7 @@ export async function POST(request) {
     const user = process.env.EMAIL_HOST;
     const pass = process.env.EMAIL_APP_PASS;
 
-    console.log("Email Parameters:", email, subject, text, user, pass);
-
+    // Transporter config
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
@@ -26,27 +25,24 @@ export async function POST(request) {
       },
     });
 
-    console.log("Transporter:", transporter);
-
+    // Mail options config
     const mailOptions = {
-      from: "noreply",
+      from: "The Portrait Place",
       to: email,
       subject: subject,
       text: text,
     };
 
-    console.log("mailOptions:", mailOptions);
+    // Send email and get response
+    const response = await transporter.sendMail(mailOptions);
 
-    const info = await transporter.sendMail(mailOptions);
-
-    console.log("Info:", info);
-    console.log("Email sent:", info.response);
-
-    console.log(currentTimeStamp, "Status: 200, Email sent successfully");
-    return NextResponse.json(
-      { message: "Email sent successfully" },
-      { status: 200 }
-    );
+    // Return success log
+    return NextResponse.json({
+      created_at: currentTimeStamp,
+      route: "/api/email",
+      status: 200,
+      message: response,
+    });
   } catch (error) {
     // If the system or server error then return an error log
     const log = {
