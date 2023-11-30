@@ -12,8 +12,7 @@ export async function POST(request) {
   try {
     // Read the body data
     const body = await request.json();
-    console.log("body:", body);
-
+    
     const snap = new midtransClient.Snap({
       isProduction: false, // Sandbox
       // isProduction: true, // Production

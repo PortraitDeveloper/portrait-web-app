@@ -15,7 +15,7 @@ export default function Checkout() {
   const book_id = searchParams.get("book_id");
 
   const router = useRouter();
-  const timeOut = 5000;
+  const timeOut = 4000;
   const redirectUrl = "https://msha.ke/bookingstudio";
   const host = process.env.NEXT_PUBLIC_HOST;
   const clientKey = process.env.NEXT_PUBLIC_CLIENT_KEY_DEV;
