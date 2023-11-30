@@ -12,7 +12,8 @@ export async function POST(request) {
   try {
     // Read the body data
     const body = await request.json();
-    
+
+    // Midtrans client config
     const snap = new midtransClient.Snap({
       isProduction: false, // Sandbox
       // isProduction: true, // Production
@@ -20,6 +21,7 @@ export async function POST(request) {
       clientKey: process.env.NEXT_PUBLIC_CLIENT_KEY_DEV,
     });
 
+    // Parameter config
     const parameter = {
       transaction_details: {
         order_id: body.order_id,
@@ -33,13 +35,20 @@ export async function POST(request) {
       },
     };
 
+    // Create midtrans transaction
     const transaction = await snap.createTransaction(parameter);
-    const token = transaction.token;
-    const paymentUrl = transaction.redirect_url;
+    // const token = transaction.token;
+    // const paymentUrl = transaction.redirect_url;
 
-    console.log(currentTimeStamp, `Status: 200, Token: ${token}`);
-    console.log(currentTimeStamp, `Status: 200, Payment URL: ${paymentUrl}`);
-    return NextResponse.json({ token, paymentUrl }, { status: 200 });
+    // return NextResponse.json({ token, paymentUrl }, { status: 200 });
+
+    return NextResponse.json({
+      created_at: currentTimeStamp,
+      route: "/api/payment/token",
+      status: 200,
+      message: "The transaction has been generated.",
+      data: transaction,
+    });
   } catch (error) {
     const log = {
       created_at: currentTimeStamp,
