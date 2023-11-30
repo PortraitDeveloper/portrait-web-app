@@ -59,13 +59,15 @@ export default function Checkout() {
         phone: orderBook.phone,
       };
 
-      const response = await fetch(`${host}/api/payment/token`, {
+      const response = await fetch(`${host}/api/payment/transaction`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(body),
       });
+
+      console.log("Midtrans Response:", response)
 
       if (!response.ok) {
         throw new Error(currentTimeStamp, "Failed to fetch data to midtrans");
@@ -74,8 +76,8 @@ export default function Checkout() {
       const payload = await response.json();
       console.log("Midtrans Payload:", payload);
 
-      const paymentUrl = payload.paymentUrl;
-      const token = payload.token;
+      const paymentUrl = payload.data.paymentUrl;
+      const token = payload.data.token;
       console.log("token:", token);
       console.log("paymentUrl:", paymentUrl);
 
