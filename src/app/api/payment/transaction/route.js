@@ -37,22 +37,20 @@ export async function POST(request) {
 
     // Create midtrans transaction
     const transaction = await snap.createTransaction(parameter);
-    // const token = transaction.token;
-    // const paymentUrl = transaction.redirect_url;
 
-    // return NextResponse.json({ token, paymentUrl }, { status: 200 });
-
+    // return a success log which has token and url transaction
     return NextResponse.json({
       created_at: currentTimeStamp,
-      route: "/api/payment/token",
+      route: "/api/payment/transaction",
       status: 200,
       message: "The transaction has been generated.",
       data: transaction,
     });
   } catch (error) {
+    // If the system or server error then return an error log
     const log = {
       created_at: currentTimeStamp,
-      route: "/api/payment/token",
+      route: "/api/payment/transaction",
       status: 500,
       message: error,
     };

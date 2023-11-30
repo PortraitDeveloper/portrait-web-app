@@ -67,7 +67,7 @@ export default function Checkout() {
         body: JSON.stringify(body),
       });
 
-      console.log("Midtrans Response:", response)
+      console.log("Midtrans Response:", response);
 
       if (!response.ok) {
         throw new Error(currentTimeStamp, "Failed to fetch data to midtrans");
@@ -81,8 +81,10 @@ export default function Checkout() {
       console.log("token:", token);
       console.log("paymentUrl:", paymentUrl);
 
-      setPaymentUrl(paymentUrl);
-      setMidtransToken(token);
+      // setPaymentUrl(paymentUrl);
+      // setMidtransToken(token);
+
+      router.push(paymentUrl);
     } catch (error) {
       console.error(
         currentTimeStamp,
@@ -92,71 +94,71 @@ export default function Checkout() {
     }
   };
 
-  useEffect(() => {
-    const sendEmail = async () => {
-      try {
-        const payload = {
-          email: orderBook.email,
-          subject: "Link Pembayaran",
-          text: `Hi ${orderBook.first_name},\nPesanan Anda dengan kode booking ${orderBook.book_code} \nBerikut adalah link pembayaran ${paymentUrl}. \nSegera lakukan pembayaran dalam waktu 15 menit kedepan, jika lewat batas waktu maka order booking anda akan dicancel secara otomatis.`,
-        };
+  // useEffect(() => {
+  //   const sendEmail = async () => {
+  //     try {
+  //       const payload = {
+  //         email: orderBook.email,
+  //         subject: "Link Pembayaran",
+  //         text: `Hi ${orderBook.first_name},\nPesanan Anda dengan kode booking ${orderBook.book_code} \nBerikut adalah link pembayaran ${paymentUrl}. \nSegera lakukan pembayaran dalam waktu 15 menit kedepan, jika lewat batas waktu maka order booking anda akan dicancel secara otomatis.`,
+  //       };
 
-        const response = await fetch(`${host}/api/email`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(payload),
-        });
+  //       const response = await fetch(`${host}/api/email`, {
+  //         method: "POST",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //         body: JSON.stringify(payload),
+  //       });
 
-        console.log("Email Response:", response);
+  //       console.log("Email Response:", response);
 
-        if (!response.ok) {
-          throw new Error(currentTimeStamp, "Email could not be sent");
-        }
-      } catch (error) {
-        console.error(currentTimeStamp, "Error sending email:", error);
-      }
-    };
+  //       if (!response.ok) {
+  //         throw new Error(currentTimeStamp, "Email could not be sent");
+  //       }
+  //     } catch (error) {
+  //       console.error(currentTimeStamp, "Error sending email:", error);
+  //     }
+  //   };
 
-    if (midtransToken) {
-      sendEmail();
-      window.snap.pay(midtransToken, {
-        onSuccess: (result) => {
-          console.log(result);
-          console.log("Payment successful");
-          setMidtransToken("");
-        },
-        onPending: (result) => {
-          console.log(result);
-          console.log("pending payment");
-          setMidtransToken("");
-        },
-        onError: (error) => {
-          console.log(error);
-          console.log("Payment failed");
-          setMidtransToken("");
-        },
-        onClose: () => {
-          console.log("Payment Completed");
-          setMidtransToken("");
-        },
-      });
-    }
-  }, [midtransToken]);
+  //   if (midtransToken) {
+  //     sendEmail();
+  //     window.snap.pay(midtransToken, {
+  //       onSuccess: (result) => {
+  //         console.log(result);
+  //         console.log("Payment successful");
+  //         setMidtransToken("");
+  //       },
+  //       onPending: (result) => {
+  //         console.log(result);
+  //         console.log("pending payment");
+  //         setMidtransToken("");
+  //       },
+  //       onError: (error) => {
+  //         console.log(error);
+  //         console.log("Payment failed");
+  //         setMidtransToken("");
+  //       },
+  //       onClose: () => {
+  //         console.log("Payment Completed");
+  //         setMidtransToken("");
+  //       },
+  //     });
+  //   }
+  // }, [midtransToken]);
 
-  useEffect(() => {
-    let scriptTag = document.createElement("script");
-    scriptTag.src = midtransUrl;
+  // useEffect(() => {
+  //   let scriptTag = document.createElement("script");
+  //   scriptTag.src = midtransUrl;
 
-    scriptTag.setAttribute("data-client-key", clientKey);
+  //   scriptTag.setAttribute("data-client-key", clientKey);
 
-    document.body.appendChild(scriptTag);
+  //   document.body.appendChild(scriptTag);
 
-    return () => {
-      document.body.removeChild(scriptTag);
-    };
-  }, []);
+  //   return () => {
+  //     document.body.removeChild(scriptTag);
+  //   };
+  // }, []);
 
   useEffect(() => {
     const getData = async (bookid) => {
@@ -246,7 +248,7 @@ export default function Checkout() {
     };
 
     getData(book_id);
-  }, []);
+  }, [book_id]);
 
   return (
     <>

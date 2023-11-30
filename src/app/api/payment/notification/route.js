@@ -123,6 +123,7 @@ export async function POST(request) {
       );
     }
   } catch (error) {
+    // If the system or server error then return an error log
     const log = {
       created_at: currentTimeStamp,
       route: "/api/payment/notification",
