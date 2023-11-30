@@ -12,17 +12,13 @@ const currentTimeStamp = getTimeStamp(timeDiff);
 
 export default function Checkout() {
   const router = useRouter();
-
   const timeOut = 3000;
-
+  const redirectUrl = "https://msha.ke/bookingstudio";
   const host = process.env.NEXT_PUBLIC_HOST;
   const clientKey = process.env.NEXT_PUBLIC_CLIENT_KEY_DEV;
   const midtransUrl = process.env.NEXT_PUBLIC_MIDTRANS_URL_DEV;
-
   const searchParams = useSearchParams();
   const book_id = searchParams.get("book_id");
-  console.log("Get BookID:", book_id);
-
   const [loading, setLoading] = useState(true);
   const [view, setView] = useState(false);
 
@@ -198,89 +194,85 @@ export default function Checkout() {
       try {
         await new Promise((resolve) => setTimeout(resolve, timeOut));
         const response = await fetch(`${host}/api/data/book/${bookid}`);
+        const payload = await response.json();
+        console.log("payload:", payload);
 
-        console.log("response:", response);
-        console.log("response status:", response.status);
+        if (payload.status === 404) {
+          router.push(redirectUrl);
+        } else {
+          const name = payload.data.customers.cust_name.split(" ");
+          const firstName = name[0];
+          const lastName = name[1];
+          const [bookingDate, timeWithMillis] =
+            payload.data.booking_start.split("T");
+          const dateObj = new Date(bookingDate);
+          const day = dateObj.getDate();
+          const monthIndex = dateObj.getMonth();
+          const year = dateObj.getFullYear();
+          const monthNames = [
+            "Januari",
+            "Februari",
+            "Maret",
+            "April",
+            "Mei",
+            "Juni",
+            "Juli",
+            "Agustus",
+            "September",
+            "Oktober",
+            "November",
+            "Desember",
+          ];
+          const monthName = monthNames[monthIndex];
+          const bookingStartDate = `${day} ${monthName} ${year}`;
+          const bookingStartTime = timeWithMillis.replace(":00.000Z", "");
 
-        if (response.status === 404) {
-          console.log("redirect");
-          router.push("https://msha.ke/bookingstudio");
+          const voucherCode = payload.data.transactions.voucher_code
+            ? payload.data.transactions.voucher_code
+            : "-";
+          const isVoucherApplied =
+            voucherCode === "-"
+              ? "Tidak menggunakan voucher"
+              : payload.data.transactions.voucher_code
+              ? "Voucher dapat digunakan"
+              : "Voucher tidak dapat digunakan";
+
+          setOrderBook({
+            book_code: payload.data.book_code,
+            first_name: firstName,
+            last_name: lastName,
+            email: payload.data.customers.email,
+            phone_number: payload.data.customers.phone_number,
+            branch_address: payload.data.products.branches.branch_address,
+            booking_start_date: bookingStartDate,
+            booking_start_time: bookingStartTime,
+            product_name: payload.data.products.product_name,
+            product_price: payload.data.products.product_price,
+            additional_person_price:
+              payload.data.transactions.additional_person_price,
+            additional_pet_price:
+              payload.data.transactions.additional_pet_price,
+            additional_print5r_price:
+              payload.data.transactions.additional_print5r_price,
+            additional_softfile_price:
+              payload.data.transactions.additional_softfile_price,
+            total_price: payload.data.transactions.total_price,
+            voucher_code: voucherCode,
+            is_voucher_applied: isVoucherApplied,
+            total_paid_by_cust: payload.data.transactions.total_paid_by_cust,
+          });
+
+          setView(true);
         }
-
-        if (!response.ok) {
-          throw new Error(currentTimeStamp, "Failed to fetch data");
-        }
-
-        const book = await response.json();
-        console.log("data:", book);
-
-        const name = book.data.customers.cust_name.split(" ");
-        const firstName = name[0];
-        const lastName = name[1];
-        console.log("First name:", firstName);
-        console.log("Last Name:", lastName);
-
-        const [bookingDate, timeWithMillis] =
-          book.data.booking_start.split("T");
-        const dateObj = new Date(bookingDate);
-        const day = dateObj.getDate();
-        const monthIndex = dateObj.getMonth();
-        const year = dateObj.getFullYear();
-        const monthNames = [
-          "Januari",
-          "Februari",
-          "Maret",
-          "April",
-          "Mei",
-          "Juni",
-          "Juli",
-          "Agustus",
-          "September",
-          "Oktober",
-          "November",
-          "Desember",
-        ];
-        const monthName = monthNames[monthIndex];
-        const bookingStartDate = `${day} ${monthName} ${year}`;
-        const bookingStartTime = timeWithMillis.replace(":00.000Z", "");
-
-        const voucherCode = book.data.transactions.voucher_code
-          ? book.data.transactions.voucher_code
-          : "-";
-        const isVoucherApplied =
-          voucherCode === "-"
-            ? "Tidak menggunakan voucher"
-            : book.data.transactions.voucher_code
-            ? "Voucher dapat digunakan"
-            : "Voucher tidak dapat digunakan";
-
-        setOrderBook({
-          book_code: book.data.book_code,
-          first_name: firstName,
-          last_name: lastName,
-          email: book.data.customers.email,
-          phone_number: book.data.customers.phone_number,
-          branch_address: book.data.products.branches.branch_address,
-          booking_start_date: bookingStartDate,
-          booking_start_time: bookingStartTime,
-          product_name: book.data.products.product_name,
-          product_price: book.data.products.product_price,
-          additional_person_price:
-            book.data.transactions.additional_person_price,
-          additional_pet_price: book.data.transactions.additional_pet_price,
-          additional_print5r_price:
-            book.data.transactions.additional_print5r_price,
-          additional_softfile_price:
-            book.data.transactions.additional_softfile_price,
-          total_price: book.data.transactions.total_price,
-          voucher_code: voucherCode,
-          is_voucher_applied: isVoucherApplied,
-          total_paid_by_cust: book.data.transactions.total_paid_by_cust,
-        });
-
-        setView(true);
       } catch (error) {
-        console.error("Error fetching data:", error.message);
+        const log = {
+          created_at: currentTimeStamp,
+          route: "/checkout",
+          status: 400,
+          message: error,
+        };
+        errorLog(log);
+        console.error(log);
       } finally {
         setLoading(false);
       }

@@ -33,7 +33,7 @@ export async function GET(request, { params: { bookid } }) {
     console.log("orderBook:", orderBook);
 
     // if order book data not found then return an error log
-    if (!orderBook || orderBook === null) {
+    if (!orderBook) {
       const log = {
         created_at: currentTimeStamp,
         route: "/api/data/book/[bookid]",
