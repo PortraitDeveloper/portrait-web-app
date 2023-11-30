@@ -198,7 +198,7 @@ export default function Checkout() {
       try {
         await new Promise((resolve) => setTimeout(resolve, timeOut));
         const response = await fetch(`${host}/api/data/book/${bookid}`);
-        
+
         console.log("response:", response);
         console.log("response status:", response.status);
 
@@ -211,16 +211,17 @@ export default function Checkout() {
           throw new Error(currentTimeStamp, "Failed to fetch data");
         }
 
-        const data = await response.json();
-        console.log("data:", data);
+        const book = await response.json();
+        console.log("data:", book);
 
-        const name = data.customers.cust_name.split(" ");
+        const name = book.data.customers.cust_name.split(" ");
         const firstName = name[0];
         const lastName = name[1];
         console.log("First name:", firstName);
         console.log("Last Name:", lastName);
 
-        const [bookingDate, timeWithMillis] = data.booking_start.split("T");
+        const [bookingDate, timeWithMillis] =
+          book.data.booking_start.split("T");
         const dateObj = new Date(bookingDate);
         const day = dateObj.getDate();
         const monthIndex = dateObj.getMonth();
@@ -243,36 +244,38 @@ export default function Checkout() {
         const bookingStartDate = `${day} ${monthName} ${year}`;
         const bookingStartTime = timeWithMillis.replace(":00.000Z", "");
 
-        const voucherCode = data.transactions.voucher_code
-          ? data.transactions.voucher_code
+        const voucherCode = book.data.transactions.voucher_code
+          ? book.data.transactions.voucher_code
           : "-";
         const isVoucherApplied =
           voucherCode === "-"
             ? "Tidak menggunakan voucher"
-            : data.transactions.voucher_code
+            : book.data.transactions.voucher_code
             ? "Voucher dapat digunakan"
             : "Voucher tidak dapat digunakan";
 
         setOrderBook({
-          book_code: data.book_code,
+          book_code: book.data.book_code,
           first_name: firstName,
           last_name: lastName,
-          email: data.customers.email,
-          phone_number: data.customers.phone_number,
-          branch_address: data.products.branches.branch_address,
+          email: book.data.customers.email,
+          phone_number: book.data.customers.phone_number,
+          branch_address: book.data.products.branches.branch_address,
           booking_start_date: bookingStartDate,
           booking_start_time: bookingStartTime,
-          product_name: data.products.product_name,
-          product_price: data.products.product_price,
-          additional_person_price: data.transactions.additional_person_price,
-          additional_pet_price: data.transactions.additional_pet_price,
-          additional_print5r_price: data.transactions.additional_print5r_price,
+          product_name: book.data.products.product_name,
+          product_price: book.data.products.product_price,
+          additional_person_price:
+            book.data.transactions.additional_person_price,
+          additional_pet_price: book.data.transactions.additional_pet_price,
+          additional_print5r_price:
+            book.data.transactions.additional_print5r_price,
           additional_softfile_price:
-            data.transactions.additional_softfile_price,
-          total_price: data.transactions.total_price,
+            book.data.transactions.additional_softfile_price,
+          total_price: book.data.transactions.total_price,
           voucher_code: voucherCode,
           is_voucher_applied: isVoucherApplied,
-          total_paid_by_cust: data.transactions.total_paid_by_cust,
+          total_paid_by_cust: book.data.transactions.total_paid_by_cust,
         });
 
         setView(true);

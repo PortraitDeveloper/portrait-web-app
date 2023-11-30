@@ -13,6 +13,7 @@ const timeDiff = 7;
 const currentTimeStamp = getTimeStamp(timeDiff);
 
 export async function GET(request, { params: { bookid } }) {
+  console.log("bookid:", bookid);
   try {
     // Read the order book data by book ID
     const orderBook = await prisma.orders_book.findUnique({
@@ -29,6 +30,7 @@ export async function GET(request, { params: { bookid } }) {
         },
       },
     });
+    console.log("orderBook:", orderBook);
 
     // if order book data not found then return an error log
     if (!orderBook) {
