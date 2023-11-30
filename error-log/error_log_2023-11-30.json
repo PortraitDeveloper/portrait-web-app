@@ -1,0 +1,490 @@
+[
+  {
+    "created_at": "2023-11-30T08:08:51.258Z",
+    "route": "api/data/product/[productid]",
+    "status": 404,
+    "message": "Product data not found."
+  },
+  {
+    "created_at": "2023-11-30T11:27:54.904Z",
+    "route": "/api/data/product/[productid]",
+    "status": 404,
+    "message": "Product data not found."
+  },
+  {
+    "created_at": "2023-11-30T11:29:43.395Z",
+    "route": "/api/data/voucher/[vouchercode]",
+    "status": 404,
+    "message": "Voucher data not found."
+  },
+  {
+    "created_at": "2023-11-30T11:32:42.348Z",
+    "route": "/api/data/voucher",
+    "status": 500,
+    "message": {
+      "name": "PrismaClientValidationError",
+      "clientVersion": "5.5.2"
+    }
+  },
+  {
+    "created_at": "2023-11-30T11:32:42.348Z",
+    "route": "/api/data/voucher",
+    "status": 500,
+    "message": {
+      "name": "PrismaClientValidationError",
+      "clientVersion": "5.5.2"
+    }
+  },
+  {
+    "created_at": "2023-11-30T11:32:42.348Z",
+    "route": "/api/data/voucher",
+    "status": 500,
+    "message": {
+      "name": "PrismaClientValidationError",
+      "clientVersion": "5.5.2"
+    }
+  },
+  {
+    "created_at": "2023-11-30T11:32:42.348Z",
+    "route": "/api/data/voucher",
+    "status": 500,
+    "message": {
+      "name": "PrismaClientValidationError",
+      "clientVersion": "5.5.2"
+    }
+  },
+  {
+    "created_at": "2023-11-30T11:32:42.348Z",
+    "route": "/api/data/voucher",
+    "status": 500,
+    "message": {}
+  },
+  {
+    "created_at": "2023-11-30T11:32:42.348Z",
+    "route": "/api/data/voucher",
+    "status": 500,
+    "message": {}
+  },
+  {
+    "created_at": "2023-11-30T11:32:42.348Z",
+    "route": "/api/data/voucher",
+    "status": 500,
+    "message": {}
+  },
+  {
+    "created_at": "2023-11-30T11:32:42.348Z",
+    "route": "/api/data/voucher",
+    "status": 500,
+    "message": {}
+  },
+  {
+    "created_at": "2023-11-30T11:32:42.348Z",
+    "route": "/api/data/voucher",
+    "status": 500,
+    "message": {}
+  },
+  {
+    "created_at": "2023-11-30T11:32:42.348Z",
+    "route": "/api/data/voucher",
+    "status": 500,
+    "message": {}
+  },
+  {
+    "created_at": "2023-11-30T11:32:42.348Z",
+    "route": "/api/data/voucher",
+    "status": 500,
+    "message": {}
+  },
+  {
+    "created_at": "2023-11-30T11:32:42.348Z",
+    "route": "/api/data/voucher",
+    "status": 500,
+    "message": {}
+  },
+  {
+    "created_at": "2023-11-30T11:32:42.348Z",
+    "route": "/api/data/voucher",
+    "status": 500,
+    "message": {}
+  },
+  {
+    "created_at": "2023-11-30T11:32:42.348Z",
+    "route": "/api/data/voucher",
+    "status": 500,
+    "message": {}
+  },
+  {
+    "created_at": "2023-11-30T11:32:42.348Z",
+    "route": "/api/data/voucher",
+    "status": 500,
+    "message": {}
+  },
+  {
+    "created_at": "2023-11-30T11:32:42.348Z",
+    "route": "/api/data/voucher",
+    "status": 500,
+    "message": {}
+  },
+  {
+    "created_at": "2023-11-30T11:32:42.348Z",
+    "route": "/api/data/voucher",
+    "status": 500,
+    "message": {}
+  },
+  {
+    "created_at": "2023-11-30T11:32:42.348Z",
+    "route": "/api/data/voucher",
+    "status": 500,
+    "message": {}
+  },
+  {
+    "created_at": "2023-11-30T11:32:42.348Z",
+    "route": "/api/data/voucher",
+    "status": 500,
+    "message": {}
+  },
+  {
+    "created_at": "2023-11-30T11:32:42.348Z",
+    "route": "/api/data/voucher",
+    "status": 500,
+    "message": {}
+  },
+  {
+    "created_at": "2023-11-30T11:32:42.348Z",
+    "route": "/api/data/voucher",
+    "status": 500,
+    "message": {}
+  },
+  {
+    "created_at": "2023-11-30T11:32:42.348Z",
+    "route": "/api/data/voucher",
+    "status": 500,
+    "message": {}
+  },
+  {
+    "created_at": "2023-11-30T11:32:42.348Z",
+    "route": "/api/data/voucher",
+    "status": 500,
+    "message": {}
+  },
+  {
+    "created_at": "2023-11-30T11:32:42.348Z",
+    "route": "/api/data/voucher",
+    "status": 500,
+    "message": {}
+  },
+  {
+    "created_at": "2023-11-30T11:32:42.348Z",
+    "route": "/api/data/voucher",
+    "status": 500,
+    "message": {}
+  },
+  {
+    "created_at": "2023-11-30T11:32:42.348Z",
+    "route": "/api/data/voucher",
+    "status": 500,
+    "message": {}
+  },
+  {
+    "created_at": "2023-11-30T11:32:42.348Z",
+    "route": "/api/data/voucher",
+    "status": 500,
+    "message": {}
+  },
+  {
+    "created_at": "2023-11-30T11:32:42.348Z",
+    "route": "/api/data/voucher",
+    "status": 500,
+    "message": {}
+  },
+  {
+    "created_at": "2023-11-30T11:32:42.348Z",
+    "route": "/api/data/voucher",
+    "status": 500,
+    "message": {}
+  },
+  {
+    "created_at": "2023-11-30T11:32:42.348Z",
+    "route": "/api/data/voucher",
+    "status": 500,
+    "message": {}
+  },
+  {
+    "created_at": "2023-11-30T11:32:42.348Z",
+    "route": "/api/data/voucher",
+    "status": 500,
+    "message": {}
+  },
+  {
+    "created_at": "2023-11-30T11:32:42.348Z",
+    "route": "/api/data/voucher",
+    "status": 500,
+    "message": {}
+  },
+  {
+    "created_at": "2023-11-30T11:32:42.348Z",
+    "route": "/api/data/voucher",
+    "status": 500,
+    "message": {}
+  },
+  {
+    "created_at": "2023-11-30T11:32:42.348Z",
+    "route": "/api/data/voucher",
+    "status": 500,
+    "message": {}
+  },
+  {
+    "created_at": "2023-11-30T11:32:42.348Z",
+    "route": "/api/data/voucher",
+    "status": 500,
+    "message": {}
+  },
+  {
+    "created_at": "2023-11-30T11:32:42.348Z",
+    "route": "/api/data/voucher",
+    "status": 500,
+    "message": {}
+  },
+  {
+    "created_at": "2023-11-30T11:32:42.348Z",
+    "route": "/api/data/voucher",
+    "status": 500,
+    "message": {}
+  },
+  {
+    "created_at": "2023-11-30T11:32:42.348Z",
+    "route": "/api/data/voucher",
+    "status": 500,
+    "message": {}
+  },
+  {
+    "created_at": "2023-11-30T11:32:42.348Z",
+    "route": "/api/data/voucher",
+    "status": 500,
+    "message": {}
+  },
+  {
+    "created_at": "2023-11-30T11:32:42.348Z",
+    "route": "/api/data/voucher",
+    "status": 500,
+    "message": {}
+  },
+  {
+    "created_at": "2023-11-30T11:32:42.348Z",
+    "route": "/api/data/voucher",
+    "status": 500,
+    "message": {
+      "name": "PrismaClientValidationError",
+      "clientVersion": "5.5.2"
+    }
+  },
+  {
+    "created_at": "2023-11-30T11:32:42.348Z",
+    "route": "/api/data/voucher",
+    "status": 500,
+    "message": {
+      "name": "PrismaClientValidationError",
+      "clientVersion": "5.5.2"
+    }
+  },
+  {
+    "created_at": "2023-11-30T11:32:42.348Z",
+    "route": "/api/data/voucher",
+    "status": 500,
+    "message": {
+      "name": "PrismaClientValidationError",
+      "clientVersion": "5.5.2"
+    }
+  },
+  {
+    "created_at": "2023-11-30T11:32:42.348Z",
+    "route": "/api/data/voucher",
+    "status": 500,
+    "message": {}
+  },
+  {
+    "created_at": "2023-11-30T11:32:42.348Z",
+    "route": "/api/data/voucher",
+    "status": 500,
+    "message": {}
+  },
+  {
+    "created_at": "2023-11-30T11:43:45.894Z",
+    "route": "/api/data/voucher",
+    "status": 500,
+    "message": {
+      "name": "PrismaClientValidationError",
+      "clientVersion": "5.5.2"
+    }
+  },
+  {
+    "created_at": "2023-11-30T11:45:12.146Z",
+    "route": "/api/data/voucher",
+    "status": 500,
+    "message": {
+      "name": "PrismaClientValidationError",
+      "clientVersion": "5.5.2"
+    }
+  },
+  {
+    "created_at": "2023-11-30T11:45:41.964Z",
+    "route": "/api/data/voucher",
+    "status": 500,
+    "message": {
+      "name": "PrismaClientValidationError",
+      "clientVersion": "5.5.2"
+    }
+  },
+  {
+    "created_at": "2023-11-30T11:45:41.964Z",
+    "route": "/api/data/voucher",
+    "status": 500,
+    "message": {
+      "name": "PrismaClientValidationError",
+      "clientVersion": "5.5.2"
+    }
+  },
+  {
+    "created_at": "2023-11-30T11:48:36.569Z",
+    "route": "/api/data/voucher",
+    "status": 500,
+    "message": {
+      "name": "PrismaClientValidationError",
+      "clientVersion": "5.5.2"
+    }
+  },
+  {
+    "created_at": "2023-11-30T11:48:36.569Z",
+    "route": "/api/data/voucher",
+    "status": 500,
+    "message": {}
+  },
+  {
+    "created_at": "2023-11-30T11:48:36.569Z",
+    "route": "/api/data/voucher",
+    "status": 500,
+    "message": {}
+  },
+  {
+    "created_at": "2023-11-30T11:48:36.569Z",
+    "route": "/api/data/voucher",
+    "status": 500,
+    "message": {}
+  },
+  {
+    "created_at": "2023-11-30T11:50:40.280Z",
+    "route": "/api/data/voucher",
+    "status": 500,
+    "message": {
+      "name": "PrismaClientKnownRequestError",
+      "code": "P2025",
+      "clientVersion": "5.5.2",
+      "meta": {
+        "cause": "Record to delete does not exist."
+      }
+    }
+  },
+  {
+    "created_at": "2023-11-30T12:32:55.980Z",
+    "route": "/api/data/voucher",
+    "status": 500,
+    "message": {}
+  },
+  {
+    "created_at": "2023-11-30T12:32:55.980Z",
+    "route": "/api/data/voucher",
+    "status": 500,
+    "message": {
+      "name": "PrismaClientKnownRequestError",
+      "code": "P2025",
+      "clientVersion": "5.5.2",
+      "meta": {
+        "cause": "Record to update not found."
+      }
+    }
+  },
+  {
+    "created_at": "2023-11-30T12:32:55.980Z",
+    "route": "/api/data/voucher",
+    "status": 500,
+    "message": {
+      "name": "PrismaClientKnownRequestError",
+      "code": "P2025",
+      "clientVersion": "5.5.2",
+      "meta": {
+        "cause": "Record to update not found."
+      }
+    }
+  },
+  {
+    "created_at": "2023-11-30T13:02:12.819Z",
+    "route": "/api/data/product/[productid]",
+    "status": 404,
+    "message": "Product data not found."
+  },
+  {
+    "created_at": "2023-11-30T13:06:16.754Z",
+    "route": "/api/data/product",
+    "status": 500,
+    "message": {
+      "name": "PrismaClientValidationError",
+      "clientVersion": "5.5.2"
+    }
+  },
+  {
+    "created_at": "2023-11-30T13:12:07.777Z",
+    "route": "/api/data/product",
+    "status": 500,
+    "message": {
+      "name": "PrismaClientValidationError",
+      "clientVersion": "5.5.2"
+    }
+  },
+  {
+    "created_at": "2023-11-30T13:12:07.777Z",
+    "route": "/api/data/product",
+    "status": 500,
+    "message": {
+      "name": "PrismaClientKnownRequestError",
+      "code": "P2025",
+      "clientVersion": "5.5.2",
+      "meta": {
+        "cause": "Record to delete does not exist."
+      }
+    }
+  },
+  {
+    "created_at": "2023-11-30T13:21:52.347Z",
+    "route": "/api/data/additional",
+    "status": 500,
+    "message": {
+      "name": "PrismaClientValidationError",
+      "clientVersion": "5.5.2"
+    }
+  },
+  {
+    "created_at": "2023-11-30T13:21:52.347Z",
+    "route": "/api/data/additional",
+    "status": 500,
+    "message": {
+      "name": "PrismaClientKnownRequestError",
+      "code": "P2025",
+      "clientVersion": "5.5.2",
+      "meta": {
+        "cause": "Record to delete does not exist."
+      }
+    }
+  },
+  {
+    "created_at": "2023-11-30T14:06:06.846Z",
+    "route": "/api/data/book/[bookid]",
+    "status": 404,
+    "message": "Order book data not found."
+  },
+  {
+    "created_at": "2023-11-30T14:06:06.846Z",
+    "route": "/api/data/book/[bookid]",
+    "status": 404,
+    "message": "Order book data not found."
+  }
+]

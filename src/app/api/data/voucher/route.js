@@ -14,22 +14,22 @@ const currentTimeStamp = getTimeStamp(timeDiff);
 
 export async function GET(request) {
   try {
-    // Read all product data
-    const products = await prisma.products.findMany();
+    // Read all voucher data
+    const vouchers = await prisma.vouchers.findMany();
 
-    // Return all product data
+    // Return all voucher data
     return NextResponse.json({
       created_at: currentTimeStamp,
-      route: "/api/data/product",
+      route: "/api/data/voucher",
       status: 200,
-      message: "Products data found.",
-      data: products,
+      message: "Vouchers data found.",
+      data: vouchers,
     });
   } catch (error) {
     // If the system or database server error then return an error log
     const log = {
       created_at: currentTimeStamp,
-      route: "/api/data/product",
+      route: "/api/data/voucher",
       status: 500,
       message: error,
     };
@@ -43,53 +43,49 @@ export async function GET(request) {
 export async function POST(request) {
   try {
     // Read the body data
-    const { product_name, product_price, product_desc, branch_id } =
-      await request.json();
+    const {
+      voucher_code,
+      percentage_discount,
+      nominal_discount,
+      expired_date,
+    } = await request.json();
 
-    // Check whether the product data already exists
-    const product = await prisma.products.findFirst({
+    // Check whether the voucher data already exists
+    const voucher = await prisma.vouchers.findFirst({
       where: {
-        product_name,
-        branch_id,
+        voucher_code,
       },
     });
 
-    // If product data already exists then return an error log
-    if (product) {
+    // If voucher data already exists then return an error log
+    if (voucher) {
       const log = {
         created_at: currentTimeStamp,
-        route: "/api/data/product",
+        route: "/api/data/voucher",
         status: 400,
-        message: "Product data already exists.",
+        message: "Voucher data already exists.",
       };
       return NextResponse.json(log);
     } else {
-      // Generate a product ID
-      const rowCount = await prisma.products.count();
-      const rowNumber = rowCount + 1;
-      const product_id = `pr-${rowNumber}`;
-
-      // Create a new product data
-      const newData = await prisma.products.create({
+      // Create a new voucher data
+      const newData = await prisma.vouchers.create({
         data: {
-          product_id,
-          product_name,
-          product_price,
-          product_desc,
-          branches: {
-            connect: {
-              branch_id,
-            },
-          },
+          voucher_code,
+          percentage_discount,
+          nominal_discount,
+          start_date: currentTimeStamp,
+          expired_date,
         },
       });
+
+      console.log(newData);
 
       // Return a success log
       return NextResponse.json({
         created_at: currentTimeStamp,
-        route: "/api/data/product",
+        route: "/api/data/voucher",
         status: 201,
-        message: "Product data inserted.",
+        message: "Voucher data inserted.",
         data: newData,
       });
     }
@@ -97,7 +93,7 @@ export async function POST(request) {
     // If the system or database server error then return an error log
     const log = {
       created_at: currentTimeStamp,
-      route: "/api/data/product",
+      route: "/api/data/voucher",
       status: 500,
       message: error,
     };
@@ -111,28 +107,36 @@ export async function POST(request) {
 export async function PATCH(request) {
   try {
     // Read the body data
-    const { product_id, product_name, product_price, product_desc, branch_id } =
-      await request.json();
+    const {
+      voucher_code,
+      percentage_discount,
+      nominal_discount,
+      expired_date,
+    } = await request.json();
 
-    // Update the product data
-    const newData = await prisma.products.update({
-      where: { product_id },
-      data: { product_name, product_price, product_desc, branch_id },
+    // Update the voucher data
+    const newData = await prisma.vouchers.update({
+      where: { voucher_code },
+      data: {
+        percentage_discount: percentage_discount ? percentage_discount : null,
+        nominal_discount: nominal_discount ? nominal_discount : null,
+        expired_date,
+      },
     });
 
     // Return a success log
     return NextResponse.json({
       created_at: currentTimeStamp,
-      route: "/api/data/product",
+      route: "/api/data/voucher",
       status: 200,
-      message: "Product data updated.",
+      message: "Voucher data updated.",
       data: newData,
     });
   } catch (error) {
     // If the system or database server error then return an error log
     const log = {
       created_at: currentTimeStamp,
-      route: "/api/data/product",
+      route: "/api/data/voucher",
       status: 500,
       message: error,
     };
@@ -146,25 +150,25 @@ export async function PATCH(request) {
 export async function DELETE(request) {
   try {
     // Read the body data
-    const { product_id } = await request.json();
+    const { voucher_code } = await request.json();
 
-    // Delete the product data by product ID
-    await prisma.products.delete({
-      where: { product_id },
+    // Delete the voucher data by voucher code
+    await prisma.vouchers.delete({
+      where: { voucher_code },
     });
 
     // Return a success log
     return NextResponse.json({
       created_at: currentTimeStamp,
-      route: "/api/data/product",
+      route: "/api/data/voucher",
       status: 200,
-      message: "Product data has been deleted.",
+      message: "Voucher data has been deleted.",
     });
   } catch (error) {
     // If the system or database server error then return an error log
     const log = {
       created_at: currentTimeStamp,
-      route: "/api/data/product",
+      route: "/api/data/voucher",
       status: 500,
       message: error,
     };

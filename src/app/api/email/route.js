@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 import getTimeStamp from "@/utils/getTimeStamp";
+import errorLog from "@/utils/errorLog";
 
 // Set Time Zone from UTC to WIB or Asia/Jakarta Timezone where time difference is 7
 const timeDiff = 7;
@@ -8,7 +9,6 @@ const timeDiff = 7;
 // Generate timestamp / current datetime
 const currentTimeStamp = getTimeStamp(timeDiff);
 
-// Create data
 export async function POST(request) {
   try {
     // Read the body data
@@ -48,16 +48,14 @@ export async function POST(request) {
       { status: 200 }
     );
   } catch (error) {
-    console.log(
-      currentTimeStamp,
-      "api/email, Status: 500, An error occurred while processing the request"
-    );
-    return NextResponse.json(
-      {
-        error:
-          "api/email, Status: 500, An error occurred while processing the request",
-      },
-      { status: 500 }
-    );
+    // If the system or server error then return an error log
+    const log = {
+      created_at: currentTimeStamp,
+      route: "/api/email",
+      status: 500,
+      message: error,
+    };
+    errorLog(log);
+    return NextResponse.json(log);
   }
 }

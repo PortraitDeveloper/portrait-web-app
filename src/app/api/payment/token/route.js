@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import getTimeStamp from "@/utils/getTimeStamp";
 import midtransClient from "midtrans-client";
+import errorLog from "@/utils/errorLog";
 
 // Set Time Zone from UTC to WIB or Asia/Jakarta Timezone where time difference is 7
 const timeDiff = 7;
@@ -41,13 +42,13 @@ export async function POST(request) {
     console.log(currentTimeStamp, `Status: 200, Payment URL: ${paymentUrl}`);
     return NextResponse.json({ token, paymentUrl }, { status: 200 });
   } catch (error) {
-    console.log(
-      currentTimeStamp,
-      "Status: 500, An error occurred while processing the request"
-    );
-    return NextResponse.json(
-      { error: "Status: 500, An error occurred while processing the request" },
-      { status: 500 }
-    );
+    const log = {
+      created_at: currentTimeStamp,
+      route: "/api/payment/token",
+      status: 500,
+      message: error,
+    };
+    errorLog(log);
+    return NextResponse.json(log);
   }
 }

@@ -12,49 +12,40 @@ const timeDiff = 7;
 // Generate timestamp / current datetime
 const currentTimeStamp = getTimeStamp(timeDiff);
 
-export async function GET(request, { params: { bookid } }) {
+export async function GET(request, { params: { vouchercode } }) {
   try {
-    // Read the order book data by book ID
-    const orderBook = await prisma.orders_book.findUnique({
+    // Read a the voucher data by voucher code
+    const voucher = await prisma.vouchers.findUnique({
       where: {
-        book_id: bookid,
-      },
-      include: {
-        transactions: true,
-        customers: true,
-        products: {
-          include: {
-            branches: true,
-          },
-        },
+        voucher_code: vouchercode,
       },
     });
 
-    // if order book data not found then return an error log
-    if (!orderBook) {
+    // If voucher data not found then return an error log
+    if (!voucher) {
       const log = {
         created_at: currentTimeStamp,
-        route: "/api/data/book/[bookid]",
+        route: "/api/data/voucher/[vouchercode]",
         status: 404,
-        message: "Order book data not found.",
+        message: "Voucher data not found.",
       };
       errorLog(log);
       return NextResponse.json(log);
     } else {
-      // If order book data found then return a success log and order book data
+      // If voucher data found then return a success log
       return NextResponse.json({
         created_at: currentTimeStamp,
-        route: "/api/data/book/[bookid]",
+        route: "/api/data/voucher/[vouchercode]",
         status: 200,
-        message: "Order book data found.",
-        data: orderBook,
+        message: "Voucher data found.",
+        data: voucher,
       });
     }
   } catch (error) {
     // If the system or database server error then return an error log
     const log = {
       created_at: currentTimeStamp,
-      route: "/api/data/book/[bookid]",
+      route: "/api/data/voucher/[vouchercode]",
       status: 500,
       message: error,
     };

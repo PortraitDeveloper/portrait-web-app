@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
 import getTimeStamp from "@/utils/getTimeStamp";
 import is8601Format from "@/utils/iso8601Format";
+import errorLog from "@/utils/errorLog";
 
 // Prisma initial
 const prisma = new PrismaClient();
@@ -65,14 +66,15 @@ export async function PATCH(request) {
       );
     }
   } catch (error) {
-    console.log(
-      currentTimeStamp,
-      "Status: 500, An error occurred while processing the request"
-    );
-    return NextResponse.json(
-      { error: "Status: 500, An error occurred while processing the request" },
-      { status: 500 }
-    );
+    // If the system or database server error then return an error log
+    const log = {
+      created_at: currentTimeStamp,
+      route: "/api/order/reschedule",
+      status: 500,
+      message: error,
+    };
+    errorLog(log);
+    return NextResponse.json(log);
   } finally {
     await prisma.$disconnect();
   }

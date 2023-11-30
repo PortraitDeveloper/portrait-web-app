@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
 import getTimeStamp from "@/utils/getTimeStamp";
+import errorLog from "@/utils/errorLog";
 import crypto from "crypto";
 
 // Prisma initial
@@ -122,13 +123,13 @@ export async function POST(request) {
       );
     }
   } catch (error) {
-    console.log(
-      currentTimeStamp,
-      "Status: 500, An error occurred while processing the request"
-    );
-    return NextResponse.json(
-      { error: "Status: 500, An error occurred while processing the request" },
-      { status: 500 }
-    );
+    const log = {
+      created_at: currentTimeStamp,
+      route: "/api/payment/notification",
+      status: 500,
+      message: error,
+    };
+    errorLog(log);
+    return NextResponse.json(log);
   }
 }

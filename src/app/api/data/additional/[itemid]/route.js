@@ -12,49 +12,40 @@ const timeDiff = 7;
 // Generate timestamp / current datetime
 const currentTimeStamp = getTimeStamp(timeDiff);
 
-export async function GET(request, { params: { bookid } }) {
+export async function GET(request, { params: { itemid } }) {
   try {
-    // Read the order book data by book ID
-    const orderBook = await prisma.orders_book.findUnique({
+    // Read a the item data by item ID
+    const item = await prisma.additionals.findUnique({
       where: {
-        book_id: bookid,
-      },
-      include: {
-        transactions: true,
-        customers: true,
-        products: {
-          include: {
-            branches: true,
-          },
-        },
+        item_id: itemid,
       },
     });
 
-    // if order book data not found then return an error log
-    if (!orderBook) {
+    // If item data not found then return an error log
+    if (!item) {
       const log = {
         created_at: currentTimeStamp,
-        route: "/api/data/book/[bookid]",
+        route: "/api/data/additional/[itemid]",
         status: 404,
-        message: "Order book data not found.",
+        message: "Item data not found.",
       };
       errorLog(log);
       return NextResponse.json(log);
     } else {
-      // If order book data found then return a success log and order book data
+      // If item data found then return a success log
       return NextResponse.json({
         created_at: currentTimeStamp,
-        route: "/api/data/book/[bookid]",
+        route: "/api/data/additional/[itemid]",
         status: 200,
-        message: "Order book data found.",
-        data: orderBook,
+        message: "Item data found.",
+        data: item,
       });
     }
   } catch (error) {
     // If the system or database server error then return an error log
     const log = {
       created_at: currentTimeStamp,
-      route: "/api/data/book/[bookid]",
+      route: "/api/data/additional/[itemid]",
       status: 500,
       message: error,
     };

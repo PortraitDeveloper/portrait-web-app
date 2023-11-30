@@ -13,47 +13,43 @@ const timeDiff = 7;
 const currentTimeStamp = getTimeStamp(timeDiff);
 
 export async function GET(request, { params: { productid } }) {
-  console.log("productid:", productid);
-
   try {
+    // Read a the product data by product ID
     const product = await prisma.products.findUnique({
       where: {
         product_id: productid,
       },
     });
 
+    // If product data not found then return an error log
     if (!product) {
-      console.log(currentTimeStamp, "status: 404", "error: Data not found");
-      return NextResponse.json({
+      const log = {
         created_at: currentTimeStamp,
+        route: "/api/data/product/[productid]",
         status: 404,
-        error: "Data not found",
-      });
+        message: "Product data not found.",
+      };
+      errorLog(log);
+      return NextResponse.json(log);
     } else {
-      console.log(
-        currentTimeStamp,
-        "status: 200",
-        "message: Data found",
-        product
-      );
+      // If product data found then return a success log
       return NextResponse.json({
         created_at: currentTimeStamp,
+        route: "/api/data/product/[productid]",
         status: 200,
-        message: "Data found",
+        message: "Product data found.",
         data: product,
       });
     }
   } catch (error) {
-    console.log(currentTimeStamp, "Status: 500", error);
-
+    // If the system or database server error then return an error log
     const log = {
       created_at: currentTimeStamp,
+      route: "/api/data/product/[productid]",
       status: 500,
-      error,
+      message: error,
     };
-
     errorLog(log);
-
     return NextResponse.json(log);
   } finally {
     await prisma.$disconnect();

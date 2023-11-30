@@ -14,22 +14,22 @@ const currentTimeStamp = getTimeStamp(timeDiff);
 
 export async function GET(request) {
   try {
-    // Read all product data
-    const products = await prisma.products.findMany();
+    // Read all item data
+    const items = await prisma.additionals.findMany();
 
-    // Return all product data
+    // Return all item data
     return NextResponse.json({
       created_at: currentTimeStamp,
-      route: "/api/data/product",
+      route: "/api/data/additional",
       status: 200,
-      message: "Products data found.",
-      data: products,
+      message: "Items data found.",
+      data: items,
     });
   } catch (error) {
     // If the system or database server error then return an error log
     const log = {
       created_at: currentTimeStamp,
-      route: "/api/data/product",
+      route: "/api/data/additional",
       status: 500,
       message: error,
     };
@@ -43,53 +43,46 @@ export async function GET(request) {
 export async function POST(request) {
   try {
     // Read the body data
-    const { product_name, product_price, product_desc, branch_id } =
-      await request.json();
+    const { item_name, item_price, item_desc } = await request.json();
 
-    // Check whether the product data already exists
-    const product = await prisma.products.findFirst({
+    // Check whether the item data already exists
+    const item = await prisma.additionals.findFirst({
       where: {
-        product_name,
-        branch_id,
+        item_name,
       },
     });
 
-    // If product data already exists then return an error log
-    if (product) {
+    // If item data already exists then return an error log
+    if (item) {
       const log = {
         created_at: currentTimeStamp,
-        route: "/api/data/product",
+        route: "/api/data/additional",
         status: 400,
-        message: "Product data already exists.",
+        message: "Item data already exists.",
       };
       return NextResponse.json(log);
     } else {
-      // Generate a product ID
-      const rowCount = await prisma.products.count();
+      // Generate a item ID
+      const rowCount = await prisma.additionals.count();
       const rowNumber = rowCount + 1;
-      const product_id = `pr-${rowNumber}`;
+      const item_id = `it-${rowNumber}`;
 
-      // Create a new product data
-      const newData = await prisma.products.create({
+      // Create a new item data
+      const newData = await prisma.additionals.create({
         data: {
-          product_id,
-          product_name,
-          product_price,
-          product_desc,
-          branches: {
-            connect: {
-              branch_id,
-            },
-          },
+          item_id,
+          item_name,
+          item_price,
+          item_desc,
         },
       });
 
       // Return a success log
       return NextResponse.json({
         created_at: currentTimeStamp,
-        route: "/api/data/product",
+        route: "/api/data/additional",
         status: 201,
-        message: "Product data inserted.",
+        message: "Item data inserted.",
         data: newData,
       });
     }
@@ -97,7 +90,7 @@ export async function POST(request) {
     // If the system or database server error then return an error log
     const log = {
       created_at: currentTimeStamp,
-      route: "/api/data/product",
+      route: "/api/data/additional",
       status: 500,
       message: error,
     };
@@ -111,28 +104,27 @@ export async function POST(request) {
 export async function PATCH(request) {
   try {
     // Read the body data
-    const { product_id, product_name, product_price, product_desc, branch_id } =
-      await request.json();
+    const { item_id, item_name, item_price, item_desc } = await request.json();
 
-    // Update the product data
-    const newData = await prisma.products.update({
-      where: { product_id },
-      data: { product_name, product_price, product_desc, branch_id },
+    // Update the item data
+    const newData = await prisma.additionals.update({
+      where: { item_id },
+      data: { item_name, item_price, item_desc },
     });
 
     // Return a success log
     return NextResponse.json({
       created_at: currentTimeStamp,
-      route: "/api/data/product",
+      route: "/api/data/additional",
       status: 200,
-      message: "Product data updated.",
+      message: "Item data updated.",
       data: newData,
     });
   } catch (error) {
     // If the system or database server error then return an error log
     const log = {
       created_at: currentTimeStamp,
-      route: "/api/data/product",
+      route: "/api/data/additional",
       status: 500,
       message: error,
     };
@@ -146,25 +138,25 @@ export async function PATCH(request) {
 export async function DELETE(request) {
   try {
     // Read the body data
-    const { product_id } = await request.json();
+    const { item_id } = await request.json();
 
-    // Delete the product data by product ID
-    await prisma.products.delete({
-      where: { product_id },
+    // Delete the item data by item ID
+    await prisma.additionals.delete({
+      where: { item_id },
     });
 
     // Return a success log
     return NextResponse.json({
       created_at: currentTimeStamp,
-      route: "/api/data/product",
+      route: "/api/data/additional",
       status: 200,
-      message: "Product data has been deleted.",
+      message: "Item data has been deleted.",
     });
   } catch (error) {
     // If the system or database server error then return an error log
     const log = {
       created_at: currentTimeStamp,
-      route: "/api/data/product",
+      route: "/api/data/additional",
       status: 500,
       message: error,
     };
