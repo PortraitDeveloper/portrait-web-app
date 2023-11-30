@@ -76,7 +76,7 @@ export default function Checkout() {
       const payload = await response.json();
       console.log("Midtrans Payload:", payload);
 
-      const paymentUrl = payload.data.paymentUrl;
+      const paymentUrl = payload.data.redirect_url;
       const token = payload.data.token;
       console.log("token:", token);
       console.log("paymentUrl:", paymentUrl);
