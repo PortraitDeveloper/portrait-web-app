@@ -128,22 +128,11 @@ export default function Checkout() {
         await new Promise((resolve) => setTimeout(resolve, timeOut));
         const response = await fetch(`${host}/api/data/book/${bookid}`);
         const payload = await response.json();
-        const paymentUrl = payload.data.transactions.payment_url;
-        const paymentStatus = payload.data.transactions.payment_status;
 
-        if (
-          payload.status === 404 ||
-          paymentStatus === "paid" ||
-          paymentStatus === "expire" ||
-          paymentStatus === "deny" ||
-          paymentStatus === "cancel"
-        ) {
+        if (payload.status === 404) {
           router.push(redirectUrl);
         } else {
-          if (
-            paymentUrl &&
-            (paymentStatus === "unpaid" || paymentStatus === "pending")
-          ) {
+          if (payload.data.transactions.payment_url) {
             router.push(paymentUrl);
           } else {
             const name = payload.data.customers.cust_name.split(" ");
