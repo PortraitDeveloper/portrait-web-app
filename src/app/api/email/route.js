@@ -16,6 +16,8 @@ export async function POST(request) {
     const user = process.env.EMAIL_HOST;
     const pass = process.env.EMAIL_APP_PASS;
 
+    console.log("Email Payload:", email, subject, text);
+
     // Transporter config
     const transporter = nodemailer.createTransport({
       service: "gmail",
@@ -34,14 +36,14 @@ export async function POST(request) {
     };
 
     // Send email and get response
-    const response = await transporter.sendMail(mailOptions);
+    const generateEmail = await transporter.sendMail(mailOptions);
 
     // Return success log
     return NextResponse.json({
       created_at: currentTimeStamp,
       route: "/api/email",
       status: 200,
-      message: response,
+      message: generateEmail.response,
     });
   } catch (error) {
     // If the system or server error then return an error log

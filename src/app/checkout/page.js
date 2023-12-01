@@ -18,7 +18,7 @@ export default function Checkout() {
   const timeOut = 4000;
   const redirectUrl = "https://msha.ke/bookingstudio";
   const host = process.env.NEXT_PUBLIC_HOST;
-  
+
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const [orderBook, setOrderBook] = useState({
@@ -57,6 +57,7 @@ export default function Checkout() {
         },
         body: JSON.stringify(payload),
       });
+      console.log("Email Response:", response);
 
       if (!response.ok) {
         const log = {
@@ -66,6 +67,9 @@ export default function Checkout() {
         };
         console.error(log);
       }
+
+      const data = await response.json();
+      console.log("Data:", data);
     } catch (error) {
       const log = {
         created_at: currentTimeStamp,
