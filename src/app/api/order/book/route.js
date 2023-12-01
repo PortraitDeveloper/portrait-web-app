@@ -58,7 +58,7 @@ export async function POST(request) {
 
     // Check if customer doesn't exist
     if (!customer) {
-      // Create new customer data
+      // If customer data doesn't exist then create new customer data
       customer = await prisma.customers.create({
         data: {
           cust_name: body.cust_name,
@@ -215,7 +215,7 @@ export async function POST(request) {
         book_status: "booked",
       },
     });
-
+    
     console.log(
       currentTimeStamp,
       "Status: 201",
