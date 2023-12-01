@@ -110,24 +110,24 @@ export default function Checkout() {
         const payload = await response.json();
         // console.log("Midtrans Payload:", payload);
 
-        // const paymentUrl = payload.data.redirect_url;
+        const paymentUrl = payload.data.redirect_url;
 
         const body = {
           email: orderBook.email,
           subject: "Link Pembayaran",
-          text: `Hi ${orderBook.first_name},\nPesanan Anda dengan kode booking ${orderBook.book_code} \nBerikut adalah link pembayaran ${payload.data.redirect_url}. \nSegera lakukan pembayaran dalam waktu 15 menit kedepan, jika lewat batas waktu maka order booking anda akan dicancel secara otomatis.`,
+          text: `Hi ${orderBook.first_name},\nPesanan Anda dengan kode booking ${orderBook.book_code} \nBerikut adalah link pembayaran ${paymentUrl}. \nSegera lakukan pembayaran dalam waktu 15 menit kedepan, jika lewat batas waktu maka order booking anda akan dicancel secara otomatis.`,
         };
 
-        const response = await fetch(`${host}/api/email`, {
+        const responseEmail = await fetch(`${host}/api/email`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(body),
         });
-        console.log("Email Response:", response);
+        console.log("Email Response:", responseEmail);
 
-        if (!response.ok) {
+        if (!responseEmail.ok) {
           const log = {
             created_at: currentTimeStamp,
             route: "/checkout",
@@ -136,7 +136,7 @@ export default function Checkout() {
           console.error(log);
         }
 
-        const data = await response.json();
+        const data = await responseEmail.json();
         console.log("Data:", data);
 
         router.push(paymentUrl);
