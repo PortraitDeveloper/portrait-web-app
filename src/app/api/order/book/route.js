@@ -10,11 +10,11 @@ const prisma = new PrismaClient();
 // Set Time Zone from UTC to WIB or Asia/Jakarta Timezone where time difference is 7
 const timeDiff = 7;
 
-// Generate timestamp / current datetime
-const currentTimeStamp = getTimeStamp(timeDiff);
-
 // Create data
 export async function POST(request) {
+  // Generate timestamp / current datetime
+  const currentTimeStamp = getTimeStamp(timeDiff);
+  
   try {
     // Read the body data
     const body = await request.json();
@@ -215,13 +215,13 @@ export async function POST(request) {
         book_status: "booked",
       },
     });
-    
+
     console.log(
       currentTimeStamp,
       "Status: 201",
       "New order book data inserted."
     );
-    
+
     return NextResponse.json({
       created_at: currentTimeStamp,
       route: "/api/order/book",
