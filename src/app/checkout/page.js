@@ -134,7 +134,7 @@ export default function Checkout() {
           router.push(redirectUrl);
         } else {
           if (payload.data.transactions.payment_url) {
-            router.push(paymentUrl);
+            router.push(payload.data.transactions.payment_url);
           } else {
             const name = payload.data.customers.cust_name.split(" ");
             const firstName = name[0];
@@ -197,6 +197,8 @@ export default function Checkout() {
               is_voucher_applied: isVoucherApplied,
               total_paid_by_cust: payload.data.transactions.total_paid_by_cust,
             });
+
+            setLoading(false);
           }
         }
       } catch (error) {
@@ -207,8 +209,6 @@ export default function Checkout() {
           message: error,
         };
         console.error(log);
-      } finally {
-        setLoading(false);
       }
     };
 
