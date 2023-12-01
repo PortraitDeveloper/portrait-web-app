@@ -42,43 +42,43 @@ export default function Checkout() {
     total_paid_by_cust: "",
   });
 
-  const generateEmail = async (paymentUrl) => {
-    try {
-      const body = {
-        email: orderBook.email,
-        subject: "Link Pembayaran",
-        text: `Hi ${orderBook.first_name},\nPesanan Anda dengan kode booking ${orderBook.book_code} \nBerikut adalah link pembayaran ${paymentUrl}. \nSegera lakukan pembayaran dalam waktu 15 menit kedepan, jika lewat batas waktu maka order booking anda akan dicancel secara otomatis.`,
-      };
+  // const generateEmail = async (paymentUrl) => {
+  //   try {
+  //     const body = {
+  //       email: orderBook.email,
+  //       subject: "Link Pembayaran",
+  //       text: `Hi ${orderBook.first_name},\nPesanan Anda dengan kode booking ${orderBook.book_code} \nBerikut adalah link pembayaran ${paymentUrl}. \nSegera lakukan pembayaran dalam waktu 15 menit kedepan, jika lewat batas waktu maka order booking anda akan dicancel secara otomatis.`,
+  //     };
 
-      const response = await fetch(`${host}/api/email`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(body),
-      });
-      console.log("Email Response:", response);
+  //     const response = await fetch(`${host}/api/email`, {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify(body),
+  //     });
+  //     console.log("Email Response:", response);
 
-      if (!response.ok) {
-        const log = {
-          created_at: currentTimeStamp,
-          route: "/checkout",
-          message: "Something went wrong: Email could not be sent.",
-        };
-        console.error(log);
-      }
+  //     if (!response.ok) {
+  //       const log = {
+  //         created_at: currentTimeStamp,
+  //         route: "/checkout",
+  //         message: "Something went wrong: Email could not be sent.",
+  //       };
+  //       console.error(log);
+  //     }
 
-      const data = await response.json();
-      console.log("Data:", data);
-    } catch (error) {
-      const log = {
-        created_at: currentTimeStamp,
-        route: "/checkout",
-        message: error,
-      };
-      console.error(log);
-    }
-  };
+  //     const data = await response.json();
+  //     console.log("Data:", data);
+  //   } catch (error) {
+  //     const log = {
+  //       created_at: currentTimeStamp,
+  //       route: "/checkout",
+  //       message: error,
+  //     };
+  //     console.error(log);
+  //   }
+  // };
 
   const generateTransaction = async () => {
     try {
@@ -110,8 +110,35 @@ export default function Checkout() {
         const payload = await response.json();
         // console.log("Midtrans Payload:", payload);
 
-        const paymentUrl = payload.data.redirect_url;
-        generateEmail(paymentUrl);
+        // const paymentUrl = payload.data.redirect_url;
+
+        const body = {
+          email: orderBook.email,
+          subject: "Link Pembayaran",
+          text: `Hi ${orderBook.first_name},\nPesanan Anda dengan kode booking ${orderBook.book_code} \nBerikut adalah link pembayaran ${payload.data.redirect_url}. \nSegera lakukan pembayaran dalam waktu 15 menit kedepan, jika lewat batas waktu maka order booking anda akan dicancel secara otomatis.`,
+        };
+
+        const response = await fetch(`${host}/api/email`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(body),
+        });
+        console.log("Email Response:", response);
+
+        if (!response.ok) {
+          const log = {
+            created_at: currentTimeStamp,
+            route: "/checkout",
+            message: "Something went wrong, email could not be sent.",
+          };
+          console.error(log);
+        }
+
+        const data = await response.json();
+        console.log("Data:", data);
+
         router.push(paymentUrl);
       }
     } catch (error) {
