@@ -109,6 +109,7 @@ export default function Checkout() {
       } else {
         const payload = await response.json();
         const paymentUrl = payload.data.redirect_url;
+
         const body = {
           email: orderBook.email,
           subject: "Link Pembayaran",
@@ -120,7 +121,16 @@ export default function Checkout() {
         };
         console.log("Email body:", body);
 
-        router.push(paymentUrl);
+        const emailResponse = await fetch(`${host}/api/email`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(body),
+        });
+        console.log("Email Response:", emailResponse);
+
+        // router.push(paymentUrl);
       }
     } catch (error) {
       const log = {
