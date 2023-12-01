@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import getTimeStamp from "@/utils/getTimeStamp";
-import errorLog from "@/utils/errorLog";
+// import errorLog from "../../utils/errorLog";
 
 // Set Time Zone from UTC to WIB or Asia/Jakarta Timezone where time difference is 7
 const timeDiff = 7;
@@ -15,14 +15,12 @@ export default function Checkout() {
   const searchParams = useSearchParams();
   const book_id = searchParams.get("book_id");
 
-  const router = useRouter();
   const timeOut = 4000;
   const redirectUrl = "https://msha.ke/bookingstudio";
   const host = process.env.NEXT_PUBLIC_HOST;
-
+  
+  const router = useRouter();
   const [loading, setLoading] = useState(true);
-  const [view, setView] = useState(false);
-
   const [orderBook, setOrderBook] = useState({
     book_code: "",
     first_name: "",
@@ -44,7 +42,7 @@ export default function Checkout() {
     total_paid_by_cust: "",
   });
 
-  const sendEmail = async (paymentUrl) => {
+  const generateEmail = async (paymentUrl) => {
     try {
       const payload = {
         email: orderBook.email,
@@ -60,17 +58,25 @@ export default function Checkout() {
         body: JSON.stringify(payload),
       });
 
-      console.log("Email Response:", response);
-
       if (!response.ok) {
-        throw new Error(currentTimeStamp, "Email could not be sent");
+        const log = {
+          created_at: currentTimeStamp,
+          route: "/checkout",
+          message: "Something went wrong: Email could not be sent.",
+        };
+        console.error(log);
       }
     } catch (error) {
-      console.error(currentTimeStamp, "Error sending email:", error);
+      const log = {
+        created_at: currentTimeStamp,
+        route: "/checkout",
+        message: error,
+      };
+      console.error(log);
     }
   };
 
-  const clickHandler = async () => {
+  const generateTransaction = async () => {
     try {
       const body = {
         order_id: orderBook.book_code,
@@ -93,29 +99,23 @@ export default function Checkout() {
         const log = {
           created_at: currentTimeStamp,
           route: "/checkout",
-          status: 400,
-          message: "Failed to fetch data to midtrans",
+          message: "Something went wrong: Failed to fetch data to midtrans.",
         };
-
-        errorLog(log);
-        throw new Error(log);
+        console.error(log);
       } else {
         const payload = await response.json();
         // console.log("Midtrans Payload:", payload);
 
         const paymentUrl = payload.data.redirect_url;
-        sendEmail(paymentUrl)
+        generateEmail(paymentUrl);
         router.push(paymentUrl);
       }
     } catch (error) {
       const log = {
         created_at: currentTimeStamp,
         route: "/checkout",
-        status: 400,
         message: error,
       };
-
-      errorLog(log);
       console.error(log);
     }
   };
@@ -191,8 +191,6 @@ export default function Checkout() {
             is_voucher_applied: isVoucherApplied,
             total_paid_by_cust: payload.data.transactions.total_paid_by_cust,
           });
-
-          setView(true);
         }
       } catch (error) {
         const log = {
@@ -201,7 +199,7 @@ export default function Checkout() {
           status: 400,
           message: error,
         };
-        errorLog(log);
+        console.error(log);
       } finally {
         setLoading(false);
       }
@@ -212,8 +210,8 @@ export default function Checkout() {
 
   return (
     <>
-      {loading && !view && <p>loading...</p>}
-      {!loading && view && (
+      {loading && <p>loading...</p>}
+      {!loading && (
         <div className="h-screen flex justify-center items-center">
           <div className="border border-black rounded-3xl px-6 py-4">
             <h1 className="text-center text-2xl font-bold">Ringkasan Order</h1>
@@ -276,7 +274,7 @@ export default function Checkout() {
             <div className="flex justify-center items-center mt-4">
               <button
                 className="bg-blue-500 text-white hover:bg-blue-700 rounded-xl w-64 h-8 font-bold"
-                onClick={clickHandler}
+                onClick={generateTransaction}
               >
                 Pilih Pembayaran
               </button>
