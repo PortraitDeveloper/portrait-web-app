@@ -9,14 +9,19 @@ const prisma = new PrismaClient();
 
 // Set Time Zone from UTC to WIB or Asia/Jakarta Timezone where time difference is 7
 const timeDiff = 7;
+
 // Generate timestamp / current datetime
 const currentTimeStamp = getTimeStamp(timeDiff);
 
+const server_key = process.env.NEXT_PUBLIC_SERVER_KEY_DEV;
+
 export async function POST(request) {
-  const updateTransaction = async (orderId, paymentStatus) => {
+  // Function for update a transaction data
+  const updateTransaction = async (order_id, paymentStatus) => {
+    // Update payment status transaction data by book code or order ID
     await prisma.transactions.update({
       where: {
-        book_code: orderId,
+        book_code: order_id,
       },
       data: {
         payment_status: paymentStatus,
@@ -26,19 +31,18 @@ export async function POST(request) {
 
   try {
     // Read the body data
-    const body = await request.json();
-    console.log("body:", body);
-
-    const serverKey = process.env.NEXT_PUBLIC_SERVER_KEY_DEV;
-    const orderId = body.order_id;
-    const statusCode = body.status_code;
-    const grossAmount = body.gross_amount;
-    const signatureKey = body.signature_key;
-    const transactionStatus = body.transaction_status;
-    const fraudStatus = body.fraud_status;
+    const {
+      order_id,
+      status_code,
+      gross_amount,
+      signature_key,
+      transaction_status,
+      fraud_status,
+    } = await request.json();
 
     // Concatenate the values
-    const concatenatedString = orderId + statusCode + grossAmount + serverKey;
+    const concatenatedString =
+      order_id + status_code + gross_amount + server_key;
 
     // Create a SHA-512 hash
     const hashed = crypto
@@ -46,72 +50,68 @@ export async function POST(request) {
       .update(concatenatedString)
       .digest("hex");
 
-    console.log("SHA-512 Hash:", hashed);
-    console.log("SignatureKey:", signatureKey);
-
-    if (hashed === signatureKey) {
-      if (transactionStatus == "capture") {
-        if (fraudStatus == "accept") {
-          // TODO set transaction status on your database to 'success'
+    if (hashed === signature_key) {
+      if (transaction_status == "capture") {
+        if (fraud_status == "accept") {
           const paymentStatus = "paid";
-          updateTransaction(orderId, paymentStatus);
+          updateTransaction(order_id, paymentStatus);
 
           // and response with 200 OK
           console.log(
             currentTimeStamp,
-            `Status: 200, Payment status is ${transactionStatus}`
+            `Status: 200, Payment status is ${transaction_status}`
           );
 
           return NextResponse.json(
-            { message: `Payment status is ${transactionStatus}` },
+            { message: `Payment status is ${transaction_status}` },
             { status: 200 }
           );
         }
-      } else if (transactionStatus == "settlement") {
+      } else if (transaction_status == "settlement") {
         // TODO set transaction status on your database to 'success'
         const paymentStatus = "paid";
-        updateTransaction(orderId, paymentStatus);
+        updateTransaction(order_id, paymentStatus);
 
         // and response with 200 OK
         console.log(
           currentTimeStamp,
-          `Status: 200, Payment status is ${transactionStatus}`
+          `Status: 200, Payment status is ${transaction_status}`
         );
 
         return NextResponse.json(
-          { message: `Payment status is ${transactionStatus}` },
+          { message: `Payment status is ${transaction_status}` },
           { status: 200 }
         );
       } else if (
-        transactionStatus == "cancel" ||
-        transactionStatus == "deny" ||
-        transactionStatus == "expire"
+        transaction_status == "cancel" ||
+        transaction_status == "deny" ||
+        transaction_status == "expire"
       ) {
         // TODO set transaction status on your database to 'failure'
-        const paymentStatus = transactionStatus;
-        updateTransaction(orderId, paymentStatus);
+        const paymentStatus = transaction_status;
+        updateTransaction(order_id, paymentStatus);
 
         // and response with 200 OK
         console.log(
           currentTimeStamp,
-          `Status: 200, Payment status is ${transactionStatus}`
+          `Status: 200, Payment status is ${transaction_status}`
         );
         return NextResponse.json(
-          { message: `Payment status is ${transactionStatus}` },
+          { message: `Payment status is ${transaction_status}` },
           { status: 200 }
         );
-      } else if (transactionStatus == "pending") {
+      } else if (transaction_status == "pending") {
         // TODO set transaction status on your database to 'pending' / waiting payment
-        const paymentStatus = transactionStatus;
-        updateTransaction(orderId, paymentStatus);
+        const paymentStatus = transaction_status;
+        updateTransaction(order_id, paymentStatus);
 
         // and response with 200 OK
         console.log(
           currentTimeStamp,
-          `Status: 200, Payment status is ${transactionStatus}`
+          `Status: 200, Payment status is ${transaction_status}`
         );
         return NextResponse.json(
-          { message: `Payment status is ${transactionStatus}` },
+          { message: `Payment status is ${transaction_status}` },
           { status: 200 }
         );
       }

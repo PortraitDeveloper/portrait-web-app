@@ -10,14 +10,13 @@ import getTimeStamp from "@/utils/getTimeStamp";
 const timeDiff = 7;
 // Generate timestamp / current datetime
 const currentTimeStamp = getTimeStamp(timeDiff);
+const timeOut = 4000;
+const redirectUrl = "https://msha.ke/bookingstudio";
+const host = process.env.NEXT_PUBLIC_HOST;
 
 export default function Checkout() {
   const searchParams = useSearchParams();
   const book_id = searchParams.get("book_id");
-
-  const timeOut = 4000;
-  const redirectUrl = "https://msha.ke/bookingstudio";
-  const host = process.env.NEXT_PUBLIC_HOST;
 
   const router = useRouter();
   const [loading, setLoading] = useState(true);
