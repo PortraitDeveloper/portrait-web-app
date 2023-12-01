@@ -37,13 +37,14 @@ export async function POST(request) {
 
     // Send email and get response
     const generateEmail = await transporter.sendMail(mailOptions);
+    console.log("Email sent:", generateEmail.response)
 
     // Return success log
     return NextResponse.json({
       created_at: currentTimeStamp,
       route: "/api/email",
       status: 200,
-      message: generateEmail.response,
+      message: "Email sent succesfully",
     });
   } catch (error) {
     // If the system or server error then return an error log

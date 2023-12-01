@@ -44,7 +44,7 @@ export default function Checkout() {
 
   const generateEmail = async (paymentUrl) => {
     try {
-      const payload = {
+      const body = {
         email: orderBook.email,
         subject: "Link Pembayaran",
         text: `Hi ${orderBook.first_name},\nPesanan Anda dengan kode booking ${orderBook.book_code} \nBerikut adalah link pembayaran ${paymentUrl}. \nSegera lakukan pembayaran dalam waktu 15 menit kedepan, jika lewat batas waktu maka order booking anda akan dicancel secara otomatis.`,
@@ -55,7 +55,7 @@ export default function Checkout() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(payload),
+        body: JSON.stringify(body),
       });
       console.log("Email Response:", response);
 
