@@ -128,71 +128,86 @@ export default function Checkout() {
         await new Promise((resolve) => setTimeout(resolve, timeOut));
         const response = await fetch(`${host}/api/data/book/${bookid}`);
         const payload = await response.json();
+        const paymentUrl = payload.data.transactions.payment_url;
+        const paymentStatus = payload.data.transactions.payment_status;
 
-        if (payload.status === 404) {
+        if (
+          payload.status === 404 ||
+          paymentStatus === "paid" ||
+          paymentStatus === "expire" ||
+          paymentStatus === "deny" ||
+          paymentStatus === "cancel"
+        ) {
           router.push(redirectUrl);
         } else {
-          const name = payload.data.customers.cust_name.split(" ");
-          const firstName = name[0];
-          const lastName = name[1];
-          const [bookingDate, timeWithMillis] =
-            payload.data.booking_start.split("T");
-          const dateObj = new Date(bookingDate);
-          const day = dateObj.getDate();
-          const monthIndex = dateObj.getMonth();
-          const year = dateObj.getFullYear();
-          const monthNames = [
-            "Januari",
-            "Februari",
-            "Maret",
-            "April",
-            "Mei",
-            "Juni",
-            "Juli",
-            "Agustus",
-            "September",
-            "Oktober",
-            "November",
-            "Desember",
-          ];
-          const monthName = monthNames[monthIndex];
-          const bookingStartDate = `${day} ${monthName} ${year}`;
-          const bookingStartTime = timeWithMillis.replace(":00.000Z", "");
+          if (
+            paymentUrl &&
+            (paymentStatus === "unpaid" || paymentStatus === "pending")
+          ) {
+            router.push(paymentUrl);
+          } else {
+            const name = payload.data.customers.cust_name.split(" ");
+            const firstName = name[0];
+            const lastName = name[1];
+            const [bookingDate, timeWithMillis] =
+              payload.data.booking_start.split("T");
+            const dateObj = new Date(bookingDate);
+            const day = dateObj.getDate();
+            const monthIndex = dateObj.getMonth();
+            const year = dateObj.getFullYear();
+            const monthNames = [
+              "Januari",
+              "Februari",
+              "Maret",
+              "April",
+              "Mei",
+              "Juni",
+              "Juli",
+              "Agustus",
+              "September",
+              "Oktober",
+              "November",
+              "Desember",
+            ];
+            const monthName = monthNames[monthIndex];
+            const bookingStartDate = `${day} ${monthName} ${year}`;
+            const bookingStartTime = timeWithMillis.replace(":00.000Z", "");
 
-          const voucherCode = payload.data.transactions.voucher_code
-            ? payload.data.transactions.voucher_code
-            : "-";
-          const isVoucherApplied =
-            voucherCode === "-"
-              ? "Tidak menggunakan voucher"
-              : payload.data.transactions.voucher_code
-              ? "Voucher dapat digunakan"
-              : "Voucher tidak dapat digunakan";
+            const voucherCode = payload.data.transactions.voucher_code
+              ? payload.data.transactions.voucher_code
+              : "-";
+            const isVoucherApplied =
+              voucherCode === "-"
+                ? "Tidak menggunakan voucher"
+                : payload.data.transactions.voucher_code
+                ? "Voucher dapat digunakan"
+                : "Voucher tidak dapat digunakan";
 
-          setOrderBook({
-            book_code: payload.data.book_code,
-            first_name: firstName,
-            last_name: lastName,
-            email: payload.data.customers.email,
-            phone_number: payload.data.customers.phone_number,
-            branch_address: payload.data.products.branches.branch_address,
-            booking_start_date: bookingStartDate,
-            booking_start_time: bookingStartTime,
-            product_name: payload.data.products.product_name,
-            product_price: payload.data.products.product_price,
-            additional_person_price:
-              payload.data.transactions.additional_person_price,
-            additional_pet_price:
-              payload.data.transactions.additional_pet_price,
-            additional_print5r_price:
-              payload.data.transactions.additional_print5r_price,
-            additional_softfile_price:
-              payload.data.transactions.additional_softfile_price,
-            total_price: payload.data.transactions.total_price,
-            voucher_code: voucherCode,
-            is_voucher_applied: isVoucherApplied,
-            total_paid_by_cust: payload.data.transactions.total_paid_by_cust,
-          });
+            setOrderBook({
+              book_code: payload.data.book_code,
+              first_name: firstName,
+              last_name: lastName,
+              email: payload.data.customers.email,
+              phone_number: payload.data.customers.phone_number,
+              branch_address: payload.data.products.branches.branch_address,
+              booking_start_date: bookingStartDate,
+              booking_start_time: bookingStartTime,
+              product_name: payload.data.products.product_name,
+              product_price: payload.data.products.product_price,
+              additional_person_price:
+                payload.data.transactions.additional_person_price,
+              additional_pet_price:
+                payload.data.transactions.additional_pet_price,
+              additional_print5r_price:
+                payload.data.transactions.additional_print5r_price,
+              additional_softfile_price:
+                payload.data.transactions.additional_softfile_price,
+              total_price: payload.data.transactions.total_price,
+              voucher_code: voucherCode,
+              is_voucher_applied: isVoucherApplied,
+              total_paid_by_cust: payload.data.transactions.total_paid_by_cust,
+            });
+          }
         }
       } catch (error) {
         const log = {

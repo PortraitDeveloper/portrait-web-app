@@ -14,7 +14,7 @@ const timeDiff = 7;
 export async function POST(request) {
   // Generate timestamp / current datetime
   const currentTimeStamp = getTimeStamp(timeDiff);
-  
+
   try {
     // Read the body data
     const body = await request.json();
@@ -193,6 +193,7 @@ export async function POST(request) {
         voucher_code: voucherCode,
         is_voucher_applied: isVoucherApplied,
         total_paid_by_cust: totalPaidByCust,
+        payment_url: null,
         payment_status: "unpaid",
       },
     });
