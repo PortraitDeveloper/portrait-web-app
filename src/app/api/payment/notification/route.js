@@ -18,6 +18,8 @@ const server_key = process.env.NEXT_PUBLIC_SERVER_KEY_DEV;
 export async function POST(request) {
   // Function for update a transaction data
   const updateTransaction = async (order_id, paymentStatus) => {
+    try {
+    } catch (error) {}
     // Update payment status transaction data by book code or order ID
     await prisma.transactions.update({
       where: {
@@ -50,77 +52,68 @@ export async function POST(request) {
       .update(concatenatedString)
       .digest("hex");
 
+    // Checking whether the payment is valid. If the signature key is the same as the hashed one then the transaction is valid
     if (hashed === signature_key) {
       if (transaction_status == "capture") {
         if (fraud_status == "accept") {
-          const paymentStatus = "paid";
-          updateTransaction(order_id, paymentStatus);
+          const log = {
+            created_at: currentTimeStamp,
+            route: "/api/payment/notification",
+            status: 200,
+            message: "paid",
+          };
 
-          // and response with 200 OK
-          console.log(
-            currentTimeStamp,
-            `Status: 200, Payment status is ${transaction_status}`
-          );
-
-          return NextResponse.json(
-            { message: `Payment status is ${transaction_status}` },
-            { status: 200 }
-          );
+          updateTransaction(order_id, log.message);
+          console.log(log);
+          return NextResponse.json(log);
         }
       } else if (transaction_status == "settlement") {
-        // TODO set transaction status on your database to 'success'
-        const paymentStatus = "paid";
-        updateTransaction(order_id, paymentStatus);
+        const log = {
+          created_at: currentTimeStamp,
+          route: "/api/payment/notification",
+          status: 200,
+          message: "paid",
+        };
 
-        // and response with 200 OK
-        console.log(
-          currentTimeStamp,
-          `Status: 200, Payment status is ${transaction_status}`
-        );
-
-        return NextResponse.json(
-          { message: `Payment status is ${transaction_status}` },
-          { status: 200 }
-        );
+        updateTransaction(order_id, log.message);
+        console.log(log);
+        return NextResponse.json(log);
       } else if (
         transaction_status == "cancel" ||
         transaction_status == "deny" ||
         transaction_status == "expire"
       ) {
-        // TODO set transaction status on your database to 'failure'
-        const paymentStatus = transaction_status;
-        updateTransaction(order_id, paymentStatus);
+        const log = {
+          created_at: currentTimeStamp,
+          route: "/api/payment/notification",
+          status: 200,
+          message: transaction_status,
+        };
 
-        // and response with 200 OK
-        console.log(
-          currentTimeStamp,
-          `Status: 200, Payment status is ${transaction_status}`
-        );
-        return NextResponse.json(
-          { message: `Payment status is ${transaction_status}` },
-          { status: 200 }
-        );
+        updateTransaction(order_id, log.message);
+        console.log(log);
+        return NextResponse.json(log);
       } else if (transaction_status == "pending") {
-        // TODO set transaction status on your database to 'pending' / waiting payment
-        const paymentStatus = transaction_status;
-        updateTransaction(order_id, paymentStatus);
+        const log = {
+          created_at: currentTimeStamp,
+          route: "/api/payment/notification",
+          status: 200,
+          message: transaction_status,
+        };
 
-        // and response with 200 OK
-        console.log(
-          currentTimeStamp,
-          `Status: 200, Payment status is ${transaction_status}`
-        );
-        return NextResponse.json(
-          { message: `Payment status is ${transaction_status}` },
-          { status: 200 }
-        );
+        updateTransaction(order_id, log.message);
+        console.log(log);
+        return NextResponse.json(log);
       }
     } else {
-      console.log(currentTimeStamp, `Status: 400, Payment is not valid`);
-      return NextResponse.json(
-        { message: `Payment is not valid` },
-        { status: 400 }
-      );
+      const log = {
+        created_at: currentTimeStamp,
+        route: "/api/payment/notification",
+        status: 400,
+        message: "Payment is not valid",
+      };
+      errorLog(log);
+      return NextResponse.json(log);
     }
   } catch (error) {
     // If the system or server error then return an error log
