@@ -20,7 +20,7 @@ export default function Checkout() {
   console.log("bookid:", book_id);
 
   const router = useRouter();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [orderBook, setOrderBook] = useState({
     book_code: "",
     first_name: "",
@@ -198,7 +198,7 @@ export default function Checkout() {
               total_paid_by_cust: payload.data.transactions.total_paid_by_cust,
             });
 
-            setLoading(false);
+            setLoading(true);
           }
         }
       } catch (error) {
@@ -221,8 +221,8 @@ export default function Checkout() {
 
   return (
     <>
-      {loading && <p>loading...</p>}
-      {!loading && (
+      {!loading && <p>loading...</p>}
+      {loading && (
         <div className="h-screen flex justify-center items-center">
           <div className="border border-black rounded-3xl px-6 py-4">
             <h1 className="text-center text-2xl font-bold">Ringkasan Order</h1>
