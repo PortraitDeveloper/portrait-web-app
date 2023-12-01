@@ -103,41 +103,22 @@ export default function Checkout() {
         const log = {
           created_at: currentTimeStamp,
           route: "/checkout",
-          message: "Something went wrong: Failed to fetch data to midtrans.",
+          message: "Something went wrong, failed to fetch data to midtrans.",
         };
         console.error(log);
       } else {
         const payload = await response.json();
-        // console.log("Midtrans Payload:", payload);
-
         const paymentUrl = payload.data.redirect_url;
-
         const body = {
           email: orderBook.email,
           subject: "Link Pembayaran",
-          text: `Hi ${orderBook.first_name},\nPesanan Anda dengan kode booking ${orderBook.book_code} \nBerikut adalah link pembayaran ${paymentUrl}. \nSegera lakukan pembayaran dalam waktu 15 menit kedepan, jika lewat batas waktu maka order booking anda akan dicancel secara otomatis.`,
+          text: `Hi ${orderBook.first_name},\n
+                 Pesanan Anda dengan kode booking ${orderBook.book_code}\n
+                 Berikut adalah link pembayaran ${paymentUrl}.\n
+                 Segera lakukan pembayaran dalam waktu 15 menit kedepan, 
+                 jika lewat batas waktu maka order booking anda akan dicancel secara otomatis.`,
         };
-
-        const responseEmail = await fetch(`${host}/api/email`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(body),
-        });
-        console.log("Email Response:", responseEmail);
-
-        if (!responseEmail.ok) {
-          const log = {
-            created_at: currentTimeStamp,
-            route: "/checkout",
-            message: "Something went wrong, email could not be sent.",
-          };
-          console.error(log);
-        }
-
-        const data = await responseEmail.json();
-        console.log("Data:", data);
+        console.log("Email body:", body);
 
         router.push(paymentUrl);
       }
