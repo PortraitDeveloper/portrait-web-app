@@ -1,17 +1,48 @@
 import { NextResponse } from "next/server";
+import { PrismaClient } from "@prisma/client";
 import getTimeStamp from "@/utils/getTimeStamp";
 import midtransClient from "midtrans-client";
 import errorLog from "@/utils/errorLog";
 
+// Prisma initial
+const prisma = new PrismaClient();
+
 // Set Time Zone from UTC to WIB or Asia/Jakarta Timezone where time difference is 7
 const timeDiff = 7;
-// Generate timestamp / current datetime
-const currentTimeStamp = getTimeStamp(timeDiff);
 
 export async function POST(request) {
+  // Generate timestamp / current datetime
+  const currentTimeStamp = getTimeStamp(timeDiff);
+
+  // Function for update a transaction data
+  const updateTransaction = async (order_id, paymentUrl) => {
+    try {
+      // Update payment status transaction data by book code or order ID
+      await prisma.transactions.update({
+        where: {
+          book_code: order_id,
+        },
+        data: {
+          payment_url: paymentUrl,
+        },
+      });
+    } catch (error) {
+      // If the system or server error then return an error log
+      const log = {
+        created_at: currentTimeStamp,
+        route: "/api/payment/notification",
+        status: 500,
+        message: error,
+      };
+      errorLog(log);
+      return NextResponse.json(log);
+    }
+  };
+
   try {
     // Read the body data
-    const body = await request.json();
+    const { order_id, gross_amount, first_name, last_name, email, phone } =
+      await request.json();
 
     // Midtrans client config
     const snap = new midtransClient.Snap({
@@ -24,19 +55,20 @@ export async function POST(request) {
     // Parameter config
     const parameter = {
       transaction_details: {
-        order_id: body.order_id,
-        gross_amount: body.gross_amount,
+        order_id,
+        gross_amount,
       },
       customer_details: {
-        first_name: body.first_name,
-        last_name: body.last_name,
-        email: body.email,
-        phone: body.phone,
+        first_name,
+        last_name,
+        email,
+        phone,
       },
     };
 
     // Create midtrans transaction
     const transaction = await snap.createTransaction(parameter);
+    updateTransaction(order_id, transaction.redirect_url);
 
     // return a success log which has token and url transaction
     return NextResponse.json({

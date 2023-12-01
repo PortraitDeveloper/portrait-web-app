@@ -9,10 +9,10 @@ const prisma = new PrismaClient();
 // Set Time Zone from UTC to WIB or Asia/Jakarta Timezone where time difference is 7
 const timeDiff = 7;
 
-// Generate timestamp / current datetime
-const currentTimeStamp = getTimeStamp(timeDiff);
-
 export async function GET(request, { params: { vouchercode } }) {
+  // Generate timestamp / current datetime
+  const currentTimeStamp = getTimeStamp(timeDiff);
+
   try {
     // Read a the voucher data by voucher code
     const voucher = await prisma.vouchers.findUnique({

@@ -9,10 +9,10 @@ const prisma = new PrismaClient();
 // Set Time Zone from UTC to WIB or Asia/Jakarta Timezone where time difference is 7
 const timeDiff = 7;
 
-// Generate timestamp / current datetime
-const currentTimeStamp = getTimeStamp(timeDiff);
-
 export async function GET(request) {
+  // Generate timestamp / current datetime
+  const currentTimeStamp = getTimeStamp(timeDiff);
+
   try {
     // Read all item data
     const items = await prisma.additionals.findMany();
@@ -41,6 +41,9 @@ export async function GET(request) {
 }
 
 export async function POST(request) {
+  // Generate timestamp / current datetime
+  const currentTimeStamp = getTimeStamp(timeDiff);
+
   try {
     // Read the body data
     const { item_name, item_price, item_desc } = await request.json();
@@ -102,6 +105,9 @@ export async function POST(request) {
 }
 
 export async function PATCH(request) {
+  // Generate timestamp / current datetime
+  const currentTimeStamp = getTimeStamp(timeDiff);
+
   try {
     // Read the body data
     const { item_id, item_name, item_price, item_desc } = await request.json();
@@ -136,6 +142,9 @@ export async function PATCH(request) {
 }
 
 export async function DELETE(request) {
+  // Generate timestamp / current datetime
+  const currentTimeStamp = getTimeStamp(timeDiff);
+
   try {
     // Read the body data
     const { item_id } = await request.json();

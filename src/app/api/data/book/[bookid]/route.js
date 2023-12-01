@@ -9,11 +9,11 @@ const prisma = new PrismaClient();
 // Set Time Zone from UTC to WIB or Asia/Jakarta Timezone where time difference is 7
 const timeDiff = 7;
 
-// Generate timestamp / current datetime
-const currentTimeStamp = getTimeStamp(timeDiff);
-
 export async function GET(request, { params: { bookid } }) {
   try {
+    // Generate timestamp / current datetime
+    const currentTimeStamp = getTimeStamp(timeDiff);
+
     // Read the order book data by book ID
     const orderBook = await prisma.orders_book.findUnique({
       where: {

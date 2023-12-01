@@ -10,25 +10,35 @@ const prisma = new PrismaClient();
 // Set Time Zone from UTC to WIB or Asia/Jakarta Timezone where time difference is 7
 const timeDiff = 7;
 
-// Generate timestamp / current datetime
-const currentTimeStamp = getTimeStamp(timeDiff);
-
 const server_key = process.env.NEXT_PUBLIC_SERVER_KEY_DEV;
 
 export async function POST(request) {
+  // Generate timestamp / current datetime
+  const currentTimeStamp = getTimeStamp(timeDiff);
+
   // Function for update a transaction data
   const updateTransaction = async (order_id, paymentStatus) => {
     try {
-    } catch (error) {}
-    // Update payment status transaction data by book code or order ID
-    await prisma.transactions.update({
-      where: {
-        book_code: order_id,
-      },
-      data: {
-        payment_status: paymentStatus,
-      },
-    });
+      // Update payment status transaction data by book code or order ID
+      await prisma.transactions.update({
+        where: {
+          book_code: order_id,
+        },
+        data: {
+          payment_status: paymentStatus,
+        },
+      });
+    } catch (error) {
+      // If the system or server error then return an error log
+      const log = {
+        created_at: currentTimeStamp,
+        route: "/api/payment/notification",
+        status: 500,
+        message: error,
+      };
+      errorLog(log);
+      return NextResponse.json(log);
+    }
   };
 
   try {

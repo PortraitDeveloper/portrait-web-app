@@ -4,20 +4,26 @@ import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import getTimeStamp from "@/utils/getTimeStamp";
-// import errorLog from "../../utils/errorLog";
 
 // Set Time Zone from UTC to WIB or Asia/Jakarta Timezone where time difference is 7
 const timeDiff = 7;
-// Generate timestamp / current datetime
-const currentTimeStamp = getTimeStamp(timeDiff);
+
+// Set delay for 4s
 const timeOut = 4000;
+
+// Set redirect URL
 const redirectUrl = "https://msha.ke/bookingstudio";
+
+// Set host
 const host = process.env.NEXT_PUBLIC_HOST;
 
 export default function Checkout() {
+  // Generate timestamp / current datetime
+  const currentTimeStamp = getTimeStamp(timeDiff);
+
+  // Read book ID parameter
   const searchParams = useSearchParams();
   const book_id = searchParams.get("book_id");
-  console.log("bookid:", book_id);
 
   const router = useRouter();
   const [loading, setLoading] = useState(false);
@@ -47,11 +53,7 @@ export default function Checkout() {
       const body = {
         email: orderBook.email,
         subject: "Link Pembayaran",
-        text: `Hi ${orderBook.first_name},\n
-                 Pesanan Anda dengan kode booking ${orderBook.book_code}\n
-                 Berikut adalah link pembayaran ${paymentUrl}.\n
-                 Segera lakukan pembayaran dalam waktu 15 menit kedepan, 
-                 jika lewat batas waktu maka order booking anda akan dicancel secara otomatis.`,
+        text: `Hi ${orderBook.first_name},\nPesanan Anda dengan kode booking ${orderBook.book_code}\nBerikut adalah link pembayaran ${paymentUrl}.\nSegera lakukan pembayaran dalam waktu 15 menit kedepan, jika lewat batas waktu maka order booking anda akan dicancel secara otomatis.`,
       };
 
       const response = await fetch(`${host}/api/email`, {
