@@ -214,11 +214,7 @@ export default function Checkout() {
       }
     };
 
-    if (!book_id || book_id === "") {
-      router.push(redirectUrl);
-    } else {
-      getData(book_id);
-    }
+    getData(book_id);
   }, [book_id]);
 
   return (
