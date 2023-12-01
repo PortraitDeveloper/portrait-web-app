@@ -2,8 +2,9 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
-import getTimeStamp from "@/utils/getTimeStamp";
 import { useRouter } from "next/navigation";
+import getTimeStamp from "@/utils/getTimeStamp";
+import errorLog from "@/utils/errorLog";
 
 // Set Time Zone from UTC to WIB or Asia/Jakarta Timezone where time difference is 7
 const timeDiff = 7;
@@ -18,14 +19,9 @@ export default function Checkout() {
   const timeOut = 4000;
   const redirectUrl = "https://msha.ke/bookingstudio";
   const host = process.env.NEXT_PUBLIC_HOST;
-  const clientKey = process.env.NEXT_PUBLIC_CLIENT_KEY_DEV;
-  const midtransUrl = process.env.NEXT_PUBLIC_MIDTRANS_URL_DEV;
 
   const [loading, setLoading] = useState(true);
   const [view, setView] = useState(false);
-
-  const [midtransToken, setMidtransToken] = useState(null);
-  const [paymentUrl, setPaymentUrl] = useState(null);
 
   const [orderBook, setOrderBook] = useState({
     book_code: "",
@@ -48,6 +44,32 @@ export default function Checkout() {
     total_paid_by_cust: "",
   });
 
+  const sendEmail = async (paymentUrl) => {
+    try {
+      const payload = {
+        email: orderBook.email,
+        subject: "Link Pembayaran",
+        text: `Hi ${orderBook.first_name},\nPesanan Anda dengan kode booking ${orderBook.book_code} \nBerikut adalah link pembayaran ${paymentUrl}. \nSegera lakukan pembayaran dalam waktu 15 menit kedepan, jika lewat batas waktu maka order booking anda akan dicancel secara otomatis.`,
+      };
+
+      const response = await fetch(`${host}/api/email`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
+
+      console.log("Email Response:", response);
+
+      if (!response.ok) {
+        throw new Error(currentTimeStamp, "Email could not be sent");
+      }
+    } catch (error) {
+      console.error(currentTimeStamp, "Error sending email:", error);
+    }
+  };
+
   const clickHandler = async () => {
     try {
       const body = {
@@ -67,98 +89,36 @@ export default function Checkout() {
         body: JSON.stringify(body),
       });
 
-      console.log("Midtrans Response:", response);
-
       if (!response.ok) {
-        throw new Error(currentTimeStamp, "Failed to fetch data to midtrans");
+        const log = {
+          created_at: currentTimeStamp,
+          route: "/checkout",
+          status: 400,
+          message: "Failed to fetch data to midtrans",
+        };
+
+        errorLog(log);
+        throw new Error(log);
+      } else {
+        const payload = await response.json();
+        // console.log("Midtrans Payload:", payload);
+
+        const paymentUrl = payload.data.redirect_url;
+        sendEmail(paymentUrl)
+        router.push(paymentUrl);
       }
-
-      const payload = await response.json();
-      console.log("Midtrans Payload:", payload);
-
-      const paymentUrl = payload.data.redirect_url;
-      const token = payload.data.token;
-      console.log("token:", token);
-      console.log("paymentUrl:", paymentUrl);
-
-      // setPaymentUrl(paymentUrl);
-      // setMidtransToken(token);
-
-      router.push(paymentUrl);
     } catch (error) {
-      console.error(
-        currentTimeStamp,
-        "Error during payment at midtrans:",
-        error.message
-      );
+      const log = {
+        created_at: currentTimeStamp,
+        route: "/checkout",
+        status: 400,
+        message: error,
+      };
+
+      errorLog(log);
+      console.error(log);
     }
   };
-
-  // useEffect(() => {
-  //   const sendEmail = async () => {
-  //     try {
-  //       const payload = {
-  //         email: orderBook.email,
-  //         subject: "Link Pembayaran",
-  //         text: `Hi ${orderBook.first_name},\nPesanan Anda dengan kode booking ${orderBook.book_code} \nBerikut adalah link pembayaran ${paymentUrl}. \nSegera lakukan pembayaran dalam waktu 15 menit kedepan, jika lewat batas waktu maka order booking anda akan dicancel secara otomatis.`,
-  //       };
-
-  //       const response = await fetch(`${host}/api/email`, {
-  //         method: "POST",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //         body: JSON.stringify(payload),
-  //       });
-
-  //       console.log("Email Response:", response);
-
-  //       if (!response.ok) {
-  //         throw new Error(currentTimeStamp, "Email could not be sent");
-  //       }
-  //     } catch (error) {
-  //       console.error(currentTimeStamp, "Error sending email:", error);
-  //     }
-  //   };
-
-  //   if (midtransToken) {
-  //     sendEmail();
-  //     window.snap.pay(midtransToken, {
-  //       onSuccess: (result) => {
-  //         console.log(result);
-  //         console.log("Payment successful");
-  //         setMidtransToken("");
-  //       },
-  //       onPending: (result) => {
-  //         console.log(result);
-  //         console.log("pending payment");
-  //         setMidtransToken("");
-  //       },
-  //       onError: (error) => {
-  //         console.log(error);
-  //         console.log("Payment failed");
-  //         setMidtransToken("");
-  //       },
-  //       onClose: () => {
-  //         console.log("Payment Completed");
-  //         setMidtransToken("");
-  //       },
-  //     });
-  //   }
-  // }, [midtransToken]);
-
-  // useEffect(() => {
-  //   let scriptTag = document.createElement("script");
-  //   scriptTag.src = midtransUrl;
-
-  //   scriptTag.setAttribute("data-client-key", clientKey);
-
-  //   document.body.appendChild(scriptTag);
-
-  //   return () => {
-  //     document.body.removeChild(scriptTag);
-  //   };
-  // }, []);
 
   useEffect(() => {
     const getData = async (bookid) => {
