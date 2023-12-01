@@ -17,6 +17,7 @@ const host = process.env.NEXT_PUBLIC_HOST;
 export default function Checkout() {
   const searchParams = useSearchParams();
   const book_id = searchParams.get("book_id");
+  console.log("bookid:", book_id);
 
   const router = useRouter();
   const [loading, setLoading] = useState(true);
@@ -211,7 +212,11 @@ export default function Checkout() {
       }
     };
 
-    getData(book_id);
+    if (!book_id || book_id === "") {
+      router.push(redirectUrl);
+    } else {
+      getData(book_id);
+    }
   }, [book_id]);
 
   return (
