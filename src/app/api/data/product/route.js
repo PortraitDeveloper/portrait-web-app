@@ -172,7 +172,7 @@ export async function DELETE(request) {
   } catch (error) {
     // If the system or database server error then return an error log
     const log = {
-      created_at: currentTimeStamp,
+      created_at: getTimeStamp(timeDiff),
       route: "/api/data/product",
       status: 500,
       message: error,
