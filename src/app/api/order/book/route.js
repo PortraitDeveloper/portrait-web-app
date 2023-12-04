@@ -41,7 +41,7 @@ export async function POST(request) {
       data: {
         book_id,
         book_code,
-        created_at,
+        created_at: currentTimeStamp,
         booking_date,
         start_at,
         end_at,
