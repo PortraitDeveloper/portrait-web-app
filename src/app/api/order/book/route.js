@@ -59,26 +59,26 @@ export async function POST(request) {
     });
 
     // Read customer data
-    let customer = await prisma.customers.findFirst({
-      where: {
-        cust_name,
-        email,
-        phone_number,
-      },
-    });
+    // let customer = await prisma.customers.findFirst({
+    //   where: {
+    //     cust_name,
+    //     email,
+    //     phone_number,
+    //   },
+    // });
 
-    // Check if customer doesn't exist
-    if (!customer) {
-      // If customer data doesn't exist then create new customer data
-      customer = await prisma.customers.create({
-        data: {
-          cust_name,
-          email,
-          phone_number,
-        },
-      });
-    }
-    console.log("customer:", customer);
+    // // Check if customer doesn't exist
+    // if (!customer) {
+    //   // If customer data doesn't exist then create new customer data
+    //   customer = await prisma.customers.create({
+    //     data: {
+    //       cust_name,
+    //       email,
+    //       phone_number,
+    //     },
+    //   });
+    // }
+    // console.log("customer:", customer);
 
     // // Fix product_name string
     // const productNameArray = product_name.toLowerCase().split("  ");
