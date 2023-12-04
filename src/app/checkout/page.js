@@ -123,13 +123,14 @@ export default function Checkout() {
   };
 
   useEffect(() => {
+    const delay = async (timeOut) => {
+      await new Promise((resolve) => setTimeout(resolve, timeOut));
+    };
+
     const getData = async (bookid) => {
       try {
         const response = await fetch(`${host}/api/data/book/${bookid}`);
         const payload = await response.json();
-
-        console.log("Booking Date:", payload.data.booking_date);
-        console.log("Booking_time", payload.data.start_at);
 
         if (payload.status === 404) {
           router.push(redirectUrl);
@@ -211,6 +212,7 @@ export default function Checkout() {
       }
     };
 
+    delay(2000);
     getData(book_id);
   }, [book_id]);
 

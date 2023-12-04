@@ -9,12 +9,7 @@ const prisma = new PrismaClient();
 // Set Time Zone from UTC to WIB or Asia/Jakarta Timezone where time difference is 7
 const timeDiff = 7;
 
-// Set delay for 2s
-const timeOut = 2000;
-
 export async function GET(request, { params: { bookid } }) {
-  await new Promise((resolve) => setTimeout(resolve, timeOut));
-
   // Generate timestamp / current datetime
   const currentTimeStamp = getTimeStamp(timeDiff);
 
