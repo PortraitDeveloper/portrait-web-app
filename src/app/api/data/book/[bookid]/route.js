@@ -10,10 +10,10 @@ const prisma = new PrismaClient();
 const timeDiff = 7;
 
 export async function GET(request, { params: { bookid } }) {
-  try {
-    // Generate timestamp / current datetime
-    const currentTimeStamp = getTimeStamp(timeDiff);
+  // Generate timestamp / current datetime
+  const currentTimeStamp = getTimeStamp(timeDiff);
 
+  try {
     // Read the order book data by book ID
     const orderBook = await prisma.orders_book.findUnique({
       where: {
