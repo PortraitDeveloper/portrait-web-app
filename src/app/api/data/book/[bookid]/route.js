@@ -13,6 +13,8 @@ export async function GET(request, { params: { bookid } }) {
   // Generate timestamp / current datetime
   const currentTimeStamp = getTimeStamp(timeDiff);
 
+  console.log("bookid:", bookid);
+
   try {
     // Read the order book data by book ID
     const orderBook = await prisma.orders_book.findUnique({
