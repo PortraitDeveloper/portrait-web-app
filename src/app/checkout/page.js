@@ -211,8 +211,7 @@ export default function Checkout() {
         console.error(log);
       }
     };
-
-    console.log("book_id client:", book_id);
+    
     getData(book_id);
   }, [book_id]);
 
