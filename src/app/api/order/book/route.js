@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
 import getTimeStamp from "@/utils/getTimeStamp";
-import is8601Format from "@/utils/iso8601Format";
 import errorLog from "@/utils/errorLog";
 
 // Prisma initial

@@ -16,13 +16,13 @@ export async function PATCH(request) {
 
   try {
     // Read the body data
-    const body = await request.json();
+    const { book_id, book_code } = await request.json();
 
     // Read orders_book data by current book_id and book_code
     const orderBook = await prisma.orders_book.findFirst({
       where: {
-        book_id: body.book_id,
-        book_code: body.book_code,
+        book_id: book_id,
+        book_code: book_code,
       },
     });
 
@@ -32,11 +32,11 @@ export async function PATCH(request) {
       (orderBook.book_status === "booked" ||
         orderBook.book_status === "rescheduled")
     ) {
-      // Update orders_book data
+      // Update order book data
       const newData = await prisma.orders_book.update({
         where: {
-          book_id: body.book_id,
-          book_code: body.book_code,
+          book_id: book_id,
+          book_code: book_code,
         },
         data: {
           updated_at: currentTimeStamp,
@@ -44,17 +44,24 @@ export async function PATCH(request) {
         },
       });
 
-      console.log(currentTimeStamp, "Status: 200, Data updated");
-      return NextResponse.json(newData, { status: 200 });
+      console.log(currentTimeStamp, "Status: 200", "Order book data updated!");
+
+      return NextResponse.json({
+        created_at: currentTimeStamp,
+        route: "/api/order/cancel",
+        status: 200,
+        message: "Order book data updated!",
+        data: newData,
+      });
     } else {
-      console.log(
-        currentTimeStamp,
-        "Status: 400, Order not found or not eligible for update"
-      );
-      return NextResponse.json(
-        { error: "Order not found or not eligible for update" },
-        { status: 400 }
-      );
+      const log = {
+        created_at: currentTimeStamp,
+        route: "/api/order/cancel",
+        status: 400,
+        message: "Order not found or not eligible for update!",
+      };
+      errorLog(log);
+      return NextResponse.json(log);
     }
   } catch (error) {
     // If the system or database server error then return an error log
