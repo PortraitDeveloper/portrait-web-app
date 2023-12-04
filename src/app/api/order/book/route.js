@@ -20,7 +20,6 @@ export async function POST(request) {
     const {
       book_id,
       book_code,
-      created_at,
       booking_date,
       start_at,
       end_at,
@@ -259,7 +258,6 @@ export async function POST(request) {
       route: "/api/order/book",
       status: 201,
       message: "New order book data inserted.",
-      data: newData,
     });
   } catch (error) {
     // If the system or database server error then return an error log
