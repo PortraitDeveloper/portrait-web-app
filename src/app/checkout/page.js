@@ -9,7 +9,7 @@ import getTimeStamp from "@/utils/getTimeStamp";
 const timeDiff = 7;
 
 // Set delay for 4s
-const timeOut = 4000;
+const timeOut = 2000;
 
 // Set redirect URL
 const redirectUrl = "https://msha.ke/bookingstudio";
@@ -132,6 +132,9 @@ export default function Checkout() {
         const response = await fetch(`${host}/api/data/book/${bookid}`);
         const payload = await response.json();
 
+        console.log("Booking Date:", payload.booking_date);
+        console.log("Booking_time", payload.start_at);
+
         if (payload.status === 404) {
           router.push(redirectUrl);
         } else {
@@ -211,7 +214,7 @@ export default function Checkout() {
         console.error(log);
       }
     };
-    
+
     getData(book_id);
   }, [book_id]);
 
