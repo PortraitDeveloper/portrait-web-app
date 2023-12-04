@@ -34,9 +34,8 @@ export default function Checkout() {
     email: "",
     phone_number: "",
     branch_address: "",
-    booking_date: "",
-    start_at: "",
-    end_at: "",
+    booking_start_date: "",
+    booking_start_time: "",
     product_name: "",
     product_price: "",
     additional_person_price: "",
@@ -142,7 +141,7 @@ export default function Checkout() {
             const name = payload.data.customers.cust_name.split(" ");
             const firstName = name[0];
             const lastName = name[1];
-            const dateObj = new Date(orderBook.booking_date);
+            const dateObj = new Date(payload.booking_date);
             const day = dateObj.getDate();
             const monthIndex = dateObj.getMonth();
             const year = dateObj.getFullYear();
@@ -162,7 +161,7 @@ export default function Checkout() {
             ];
             const monthName = monthNames[monthIndex];
             const bookingStartDate = `${day} ${monthName} ${year}`;
-            const bookingStartTime = orderBook.start_at;
+            const bookingStartTime = payload.start_at;
 
             const voucherCode = payload.data.transactions.voucher_code
               ? payload.data.transactions.voucher_code
