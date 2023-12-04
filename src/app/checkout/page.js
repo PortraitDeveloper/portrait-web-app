@@ -209,7 +209,7 @@ export default function Checkout() {
           status: 400,
           message: error,
         };
-        console.error(log);
+        console.error("1...", log);
       }
     };
 
