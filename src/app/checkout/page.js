@@ -212,7 +212,7 @@ export default function Checkout() {
       }
     };
 
-    delay(2000);
+    delay(4000);
     getData(book_id);
   }, [book_id]);
 
