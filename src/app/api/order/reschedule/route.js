@@ -16,7 +16,8 @@ export async function PATCH(request) {
 
   try {
     // Read the body data
-    const { book_id, book_code, start_at, end_at } = await request.json();
+    const { book_id, book_code, booking_date, start_at, end_at } =
+      await request.json();
 
     // Read orders_book data by current book_id and book_code
     const orderBook = await prisma.orders_book.findFirst({
@@ -40,6 +41,7 @@ export async function PATCH(request) {
         },
         data: {
           updated_at: currentTimeStamp,
+          booking_date: booking_date,
           start_at: start_at,
           end_at: end_at,
           book_status: "rescheduled",
