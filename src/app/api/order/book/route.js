@@ -17,59 +17,70 @@ export async function POST(request) {
 
   try {
     // Read the body data
-    const body = await request.json();
+    const {
+      book_id,
+      book_code,
+      created_at,
+      booking_date,
+      start_at,
+      end_at,
+      cust_name,
+      email,
+      phone_number,
+      product_name,
+      number_of_add_person,
+      number_of_add_pet,
+      number_of_add_print5r,
+      is_add_softfile,
+      voucher_code,
+      branch_id,
+    } = await request.json();
 
     // Create orders_book_dev data
     await prisma.raw_data.create({
       data: {
-        book_id: body.book_id,
-        book_code: body.book_code,
-        created_at: currentTimeStamp,
-        booking_start: body.booking_start,
-        booking_end: body.booking_end,
-        cust_name: body.cust_name,
-        email: body.email,
-        phone_number: body.phone_number,
-        product_name: body.product_name,
-        number_of_add_person: body.number_of_add_person,
-        number_of_add_pet: body.number_of_add_pet,
-        number_of_add_print5r: body.number_of_add_print5r,
-        is_add_softfile: body.is_add_softfile,
-        voucher_code: body.voucher_code,
-        branch_id: body.branch_id,
+        book_id,
+        book_code,
+        created_at,
+        booking_date,
+        start_at,
+        end_at,
+        cust_name,
+        email,
+        phone_number,
+        product_name,
+        number_of_add_person,
+        number_of_add_pet,
+        number_of_add_print5r,
+        is_add_softfile,
+        voucher_code,
+        branch_id,
       },
     });
-
-    // Convert booking_start and booking_end datetime ISO 8601 format in WIB or Asia/Jakarta Timezone
-    // const bookingStart = body.booking_start.concat(":00Z");
-    // const bookingEnd = body.booking_end.concat(":00Z");
-    const bookingStart = is8601Format(timeDiff, body.booking_start);
-    const bookingEnd = is8601Format(timeDiff, body.booking_end);
 
     // Read customer data
     let customer = await prisma.customers.findFirst({
       where: {
-        cust_name: body.cust_name,
-        email: body.email,
-        phone_number: body.phone_number,
+        cust_name,
+        email,
+        phone_number,
       },
     });
-    // console.log("customer:", customer);
 
     // Check if customer doesn't exist
     if (!customer) {
       // If customer data doesn't exist then create new customer data
       customer = await prisma.customers.create({
         data: {
-          cust_name: body.cust_name,
-          email: body.email,
-          phone_number: body.phone_number,
+          cust_name,
+          email,
+          phone_number,
         },
       });
     }
 
     // Fix product_name string
-    const productNameArray = body.product_name.toLowerCase().split("  ");
+    const productNameArray = product_name.toLowerCase().split("  ");
     const productName = productNameArray[0];
     // console.log("product_name:", productName);
 
@@ -77,18 +88,18 @@ export async function POST(request) {
     const product = await prisma.products.findFirst({
       where: {
         product_name: productName,
-        branch_id: body.branch_id,
+        branch_id,
       },
     });
     // console.log("product:", product);
 
     // Convert to integer
-    const numberOfAddPerson = parseInt(body.number_of_add_person);
-    const numberOfAddPets = parseInt(body.number_of_add_pet);
-    const numberOfAddPrint5R = parseInt(body.number_of_add_print5r);
+    const numberOfAddPerson = parseInt(number_of_add_person);
+    const numberOfAddPets = parseInt(number_of_add_pet);
+    const numberOfAddPrint5R = parseInt(number_of_add_print5r);
 
     // Convert to boolean
-    let isAddSoftfile = body.is_add_softfile === "yes";
+    let isAddSoftfile = is_add_softfile === "yes";
 
     // Set number of softfile based on boolean value
     const numberOfAddSoftfile =
@@ -100,7 +111,7 @@ export async function POST(request) {
     }
 
     // Check voucher_code, if empty string then null
-    const voucherCode = body.voucher_code === "" ? null : body.voucher_code;
+    const voucherCode = voucher_code === "" ? null : voucher_code;
 
     // Check if voucherCode not null then read voucher data
     let voucher = null;
@@ -179,34 +190,53 @@ export async function POST(request) {
     // console.log("totalPaidByCust:", totalPaidByCust);
 
     // Create transactions data
-    await prisma.transactions.create({
-      data: {
-        book_code: body.book_code,
-        created_at: currentTimeStamp,
-        updated_at: null,
-        product_price: product.product_price,
-        additional_person_price: additionalPersonPrice,
-        additional_pet_price: additionalPetPrice,
-        additional_print5r_price: additionalPrint5r,
-        additional_softfile_price: additionalSoftfile,
-        total_price: totalPrice,
-        voucher_code: voucherCode,
-        is_voucher_applied: isVoucherApplied,
-        total_paid_by_cust: totalPaidByCust,
-        payment_url: null,
-        payment_status: "unpaid",
-      },
-    });
+    // await prisma.transactions.create({
+    //   data: {
+    //     book_code,
+    //     created_at: currentTimeStamp,
+    //     updated_at: null,
+    //     product_price: product.product_price,
+    //     additional_person_price: additionalPersonPrice,
+    //     additional_pet_price: additionalPetPrice,
+    //     additional_print5r_price: additionalPrint5r,
+    //     additional_softfile_price: additionalSoftfile,
+    //     total_price: totalPrice,
+    //     voucher_code: voucherCode,
+    //     is_voucher_applied: isVoucherApplied,
+    //     total_paid_by_cust: totalPaidByCust,
+    //     payment_url: null,
+    //     payment_status: "unpaid",
+    //   },
+    // });
 
     // Create orders_book data
     const newData = await prisma.orders_book.create({
       data: {
-        book_id: body.book_id,
-        book_code: body.book_code,
+        book_id,
+        transactions: {
+          connect: {
+            book_code,
+            created_at: currentTimeStamp,
+            updated_at: null,
+            product_price: product.product_price,
+            additional_person_price: additionalPersonPrice,
+            additional_pet_price: additionalPetPrice,
+            additional_print5r_price: additionalPrint5r,
+            additional_softfile_price: additionalSoftfile,
+            total_price: totalPrice,
+            voucher_code: voucherCode,
+            is_voucher_applied: isVoucherApplied,
+            total_paid_by_cust: totalPaidByCust,
+            payment_url: null,
+            payment_status: "unpaid",
+          },
+        },
+        book_code,
         created_at: currentTimeStamp,
         updated_at: null,
-        booking_start: bookingStart,
-        booking_end: bookingEnd,
+        booking_date,
+        start_at,
+        end_at,
         cust_id: customer.cust_id,
         product_id: product.product_id,
         number_of_add_person: numberOfAddPerson,

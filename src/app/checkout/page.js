@@ -18,16 +18,12 @@ const redirectUrl = "https://msha.ke/bookingstudio";
 const host = process.env.NEXT_PUBLIC_HOST;
 
 export default function Checkout() {
+  // Generate timestamp / current datetime
+  const currentTimeStamp = getTimeStamp(timeDiff);
+
   // Read book ID parameter
   const searchParams = useSearchParams();
   const book_id = searchParams.get("book_id");
-
-  if (!book_id || book_id === "") {
-    router.push(redirectUrl);
-  }
-
-  // Generate timestamp / current datetime
-  const currentTimeStamp = getTimeStamp(timeDiff);
 
   const router = useRouter();
   const [loading, setLoading] = useState(false);

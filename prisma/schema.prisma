@@ -97,8 +97,9 @@ model orders_book {
 
   created_at    DateTime
   updated_at    DateTime?
-  booking_start DateTime
-  booking_end   DateTime
+  booking_date  String
+  start_at      String
+  end_at        String
 
   customers customers @relation(fields: [cust_id], references: [cust_id]) // An order has one customer
   cust_id   Int
@@ -117,8 +118,9 @@ model raw_data {
   book_id               String   @unique
   book_code             String
   created_at            DateTime
-  booking_start         String
-  booking_end           String
+  booking_date          String
+  start_at              String
+  end_at                String
   cust_name             String
   email                 String
   phone_number          String
