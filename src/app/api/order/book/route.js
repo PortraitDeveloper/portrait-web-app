@@ -187,7 +187,7 @@ export async function POST(request) {
           (voucher.nominal_discount === null ? 0 : voucher.nominal_discount);
       }
     }
-    // console.log("totalPaidByCust:", totalPaidByCust);
+    console.log("totalPaidByCust:", totalPaidByCust);
 
     // Create transactions data
     // await prisma.transactions.create({
@@ -210,42 +210,42 @@ export async function POST(request) {
     // });
 
     // Create orders_book data
-    const newData = await prisma.orders_book.create({
-      data: {
-        book_id,
-        transactions: {
-          connect: {
-            book_code,
-            created_at: currentTimeStamp,
-            updated_at: null,
-            product_price: product.product_price,
-            additional_person_price: additionalPersonPrice,
-            additional_pet_price: additionalPetPrice,
-            additional_print5r_price: additionalPrint5r,
-            additional_softfile_price: additionalSoftfile,
-            total_price: totalPrice,
-            voucher_code: voucherCode,
-            is_voucher_applied: isVoucherApplied,
-            total_paid_by_cust: totalPaidByCust,
-            payment_url: null,
-            payment_status: "unpaid",
-          },
-        },
-        book_code,
-        created_at: currentTimeStamp,
-        updated_at: null,
-        booking_date,
-        start_at,
-        end_at,
-        cust_id: customer.cust_id,
-        product_id: product.product_id,
-        number_of_add_person: numberOfAddPerson,
-        number_of_add_pet: numberOfAddPets,
-        number_of_add_print5r: numberOfAddPrint5R,
-        is_add_softfile: isAddSoftfile,
-        book_status: "booked",
-      },
-    });
+    // const newData = await prisma.orders_book.create({
+    //   data: {
+    //     book_id,
+    //     transactions: {
+    //       connect: {
+    //         book_code,
+    //         created_at: currentTimeStamp,
+    //         updated_at: null,
+    //         product_price: product.product_price,
+    //         additional_person_price: additionalPersonPrice,
+    //         additional_pet_price: additionalPetPrice,
+    //         additional_print5r_price: additionalPrint5r,
+    //         additional_softfile_price: additionalSoftfile,
+    //         total_price: totalPrice,
+    //         voucher_code: voucherCode,
+    //         is_voucher_applied: isVoucherApplied,
+    //         total_paid_by_cust: totalPaidByCust,
+    //         payment_url: null,
+    //         payment_status: "unpaid",
+    //       },
+    //     },
+    //     book_code,
+    //     created_at: currentTimeStamp,
+    //     updated_at: null,
+    //     booking_date,
+    //     start_at,
+    //     end_at,
+    //     cust_id: customer.cust_id,
+    //     product_id: product.product_id,
+    //     number_of_add_person: numberOfAddPerson,
+    //     number_of_add_pet: numberOfAddPets,
+    //     number_of_add_print5r: numberOfAddPrint5R,
+    //     is_add_softfile: isAddSoftfile,
+    //     book_status: "booked",
+    //   },
+    // });
 
     console.log(
       currentTimeStamp,
