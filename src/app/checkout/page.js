@@ -132,8 +132,8 @@ export default function Checkout() {
         const response = await fetch(`${host}/api/data/book/${bookid}`);
         const payload = await response.json();
 
-        console.log("Booking Date:", payload.booking_date);
-        console.log("Booking_time", payload.start_at);
+        console.log("Booking Date:", payload.data.booking_date);
+        console.log("Booking_time", payload.data.start_at);
 
         if (payload.status === 404) {
           router.push(redirectUrl);
@@ -144,7 +144,7 @@ export default function Checkout() {
             const name = payload.data.customers.cust_name.split(" ");
             const firstName = name[0];
             const lastName = name[1];
-            const dateObj = new Date(payload.booking_date);
+            const dateObj = new Date(payload.data.booking_date);
             const day = dateObj.getDate();
             const monthIndex = dateObj.getMonth();
             const year = dateObj.getFullYear();
@@ -164,7 +164,7 @@ export default function Checkout() {
             ];
             const monthName = monthNames[monthIndex];
             const bookingStartDate = `${day} ${monthName} ${year}`;
-            const bookingStartTime = payload.start_at;
+            const bookingStartTime = payload.data.start_at;
 
             const voucherCode = payload.data.transactions.voucher_code
               ? payload.data.transactions.voucher_code
