@@ -129,7 +129,7 @@ export default function Checkout() {
     const getData = async (bookid) => {
       try {
         // Delay
-        await new Promise((resolve) => setTimeout(resolve, timeOut));
+        new Promise((resolve) => setTimeout(resolve, timeOut));
 
         if (!bookid) {
           router.push(redirectUrl);
