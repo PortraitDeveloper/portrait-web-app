@@ -9,7 +9,13 @@ const prisma = new PrismaClient();
 // Set Time Zone from UTC to WIB or Asia/Jakarta Timezone where time difference is 7
 const timeDiff = 7;
 
+// Set Timeout 5s
+const timeOut = 5000;
+
 export async function POST(request) {
+  // Delay
+  await new Promise((resolve) => setTimeout(resolve, timeOut));
+
   // Generate timestamp / current datetime
   const currentTimeStamp = getTimeStamp(timeDiff);
 
@@ -192,28 +198,70 @@ export async function POST(request) {
           }
         }
 
-        // // Create transactions data
-        // await prisma.transactions.create({
-        //   data: {
-        //     book_code: rawData.book_code,
-        //     created_at: currentTimeStamp,
-        //     updated_at: null,
-        //     product_price: product.product_price,
-        //     additional_person_price: additionalPersonPrice,
-        //     additional_pet_price: additionalPetPrice,
-        //     additional_print5r_price: additionalPrint5r,
-        //     additional_softfile_price: additionalSoftfile,
-        //     total_price: totalPrice,
-        //     voucher_code: voucherCode,
-        //     is_voucher_applied: isVoucherApplied,
-        //     total_paid_by_cust: totalPaidByCust,
-        //     payment_url: null,
-        //     payment_status: "unpaid",
-        //   },
+        // Create transactions data
+        await prisma.transactions.create({
+          data: {
+            book_code: rawData.book_code,
+            created_at: currentTimeStamp,
+            updated_at: null,
+            product_price: product.product_price,
+            additional_person_price: additionalPersonPrice,
+            additional_pet_price: additionalPetPrice,
+            additional_print5r_price: additionalPrint5r,
+            additional_softfile_price: additionalSoftfile,
+            total_price: totalPrice,
+            voucher_code: voucherCode,
+            is_voucher_applied: isVoucherApplied,
+            total_paid_by_cust: totalPaidByCust,
+            payment_url: null,
+            payment_status: "unpaid",
+          },
+        });
+
+        // Create order book data
+        await prisma.orders_book.create({
+          data: {
+            book_id: rawData.book_id,
+            book_code: rawData.book_code,
+            created_at: currentTimeStamp,
+            updated_at: null,
+            booking_date: rawData.booking_date,
+            start_at: rawData.start_at,
+            end_at: rawData.end_at,
+            cust_id: customer.cust_id,
+            product_id: product.product_id,
+            number_of_add_person: numberOfAddPerson,
+            number_of_add_pet: numberOfAddPets,
+            number_of_add_print5r: numberOfAddPrint5R,
+            is_add_softfile: isAddSoftfile,
+            book_status: "booked",
+          },
+        });
+
+        // await prisma.$transaction(async (tx) => {
+        //   // Create transactions data
+        //   await tx.transactions.create({
+        //     data: {
+        //       book_code: rawData.book_code,
+        //       created_at: currentTimeStamp,
+        //       updated_at: null,
+        //       product_price: product.product_price,
+        //       additional_person_price: additionalPersonPrice,
+        //       additional_pet_price: additionalPetPrice,
+        //       additional_print5r_price: additionalPrint5r,
+        //       additional_softfile_price: additionalSoftfile,
+        //       total_price: totalPrice,
+        //       voucher_code: voucherCode,
+        //       is_voucher_applied: isVoucherApplied,
+        //       total_paid_by_cust: totalPaidByCust,
+        //       payment_url: null,
+        //       payment_status: "unpaid",
+        //     },
+        //   });
         // });
 
         // // Create order book data
-        // await prisma.orders_book.create({
+        // await tx.orders_book.create({
         //   data: {
         //     book_id: rawData.book_id,
         //     book_code: rawData.book_code,
@@ -231,48 +279,6 @@ export async function POST(request) {
         //     book_status: "booked",
         //   },
         // });
-
-        await prisma.$transaction(async (tx) => {
-          // Create order book data
-          await tx.orders_book.create({
-            data: {
-              book_id: rawData.book_id,
-              book_code: rawData.book_code,
-              created_at: currentTimeStamp,
-              updated_at: null,
-              booking_date: rawData.booking_date,
-              start_at: rawData.start_at,
-              end_at: rawData.end_at,
-              cust_id: customer.cust_id,
-              product_id: product.product_id,
-              number_of_add_person: numberOfAddPerson,
-              number_of_add_pet: numberOfAddPets,
-              number_of_add_print5r: numberOfAddPrint5R,
-              is_add_softfile: isAddSoftfile,
-              book_status: "booked",
-            },
-          });
-
-          // Create transactions data
-          await tx.transactions.create({
-            data: {
-              book_code: rawData.book_code,
-              created_at: currentTimeStamp,
-              updated_at: null,
-              product_price: product.product_price,
-              additional_person_price: additionalPersonPrice,
-              additional_pet_price: additionalPetPrice,
-              additional_print5r_price: additionalPrint5r,
-              additional_softfile_price: additionalSoftfile,
-              total_price: totalPrice,
-              voucher_code: voucherCode,
-              is_voucher_applied: isVoucherApplied,
-              total_paid_by_cust: totalPaidByCust,
-              payment_url: null,
-              payment_status: "unpaid",
-            },
-          });
-        });
 
         const returnData = await prisma.orders_book.findUnique({
           where: {

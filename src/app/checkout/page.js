@@ -8,9 +8,6 @@ import getTimeStamp from "@/utils/getTimeStamp";
 // Set Time Zone from UTC to WIB or Asia/Jakarta Timezone where time difference is 7
 const timeDiff = 7;
 
-// Set Timeout 5s
-const timeOut = 5000;
-
 // Set redirect URL
 const redirectUrl = "https://msha.ke/bookingstudio";
 
@@ -128,9 +125,6 @@ export default function Checkout() {
   useEffect(() => {
     const getData = async (bookid) => {
       try {
-        // Delay
-        await new Promise((resolve) => setTimeout(resolve, timeOut));
-
         if (!bookid) {
           router.push(redirectUrl);
         } else {
