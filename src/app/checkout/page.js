@@ -253,7 +253,7 @@ export default function Checkout() {
             <div>
               <div className="animate-spin mb-4">
                 <img
-                  src="/loadingCircle.jpg"
+                  src="/loadingCircle.png"
                   alt="loading circle"
                   width="75px"
                   heigh="50px"
