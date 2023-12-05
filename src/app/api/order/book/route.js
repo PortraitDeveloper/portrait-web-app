@@ -57,17 +57,13 @@ export async function POST(request) {
     });
 
     // Return success log and new data
-    console.log(
-      currentTimeStamp,
-      "Status: 201",
-      "New order book data inserted."
-    );
+    console.log(currentTimeStamp, "Status: 201", "New raw data inserted.");
 
     return NextResponse.json({
       created_at: currentTimeStamp,
       route: "/api/order/book",
       status: 201,
-      message: "New order book data inserted.",
+      message: "New raw data inserted.",
       data: newData,
     });
   } catch (error) {
