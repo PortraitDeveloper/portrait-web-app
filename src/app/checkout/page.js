@@ -131,21 +131,19 @@ export default function Checkout() {
         // Delay
         await new Promise((resolve) => setTimeout(resolve, timeOut));
 
-        // Create order book data and generate total price calculation
-        const response = await fetch(`${host}/api/data/book`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(bookid),
-        });
-        const payload = await response.json();
-
-        console.log("PAYLOAD:", payload);
-
-        if (payload.status === 500) {
+        if (!bookid) {
           router.push(redirectUrl);
         } else {
+          // Create order book data and generate total price calculation
+          const response = await fetch(`${host}/api/data/book`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(bookid),
+          });
+          const payload = await response.json();
+
           if (
             payload.status === 404 &&
             payload.message === "Raw data not found."
