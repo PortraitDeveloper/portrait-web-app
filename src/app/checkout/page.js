@@ -8,8 +8,8 @@ import getTimeStamp from "@/utils/getTimeStamp";
 // Set Time Zone from UTC to WIB or Asia/Jakarta Timezone where time difference is 7
 const timeDiff = 7;
 
-// Set Timeout 2.5s
-const timeOut = 2500;
+// Set Timeout 5s
+const timeOut = 5000;
 
 // Set redirect URL
 const redirectUrl = "https://msha.ke/bookingstudio";
