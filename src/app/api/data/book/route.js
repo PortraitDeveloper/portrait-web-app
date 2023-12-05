@@ -32,7 +32,6 @@ export async function POST(request) {
         },
       },
     });
-    console.log("Existing Data:", existingData);
 
     if (existingData) {
       const log = {
@@ -50,7 +49,6 @@ export async function POST(request) {
           book_id: bookid,
         },
       });
-      console.log("Raw Data:", rawData);
 
       if (!rawData) {
         const log = {
@@ -214,23 +212,18 @@ export async function POST(request) {
           },
         });
 
-        // Create orders_book data
-        const newData = await prisma.orders_book.create({
-          data: {
-            book_id: rawData.book_id,
-            book_code: rawData.book_code,
-            created_at: currentTimeStamp,
-            updated_at: null,
-            booking_date: rawData.booking_date,
-            start_at: rawData.start_at,
-            end_at: rawData.end_at,
-            cust_id: customer.cust_id,
-            product_id: product.product_id,
-            number_of_add_person: numberOfAddPerson,
-            number_of_add_pet: numberOfAddPets,
-            number_of_add_print5r: numberOfAddPrint5R,
-            is_add_softfile: isAddSoftfile,
-            book_status: "booked",
+        const returnData = await prisma.orders_book.findUnique({
+          where: {
+            book_id: bookid,
+          },
+          include: {
+            transactions: true,
+            customers: true,
+            products: {
+              include: {
+                branches: true,
+              },
+            },
           },
         });
 
@@ -245,7 +238,7 @@ export async function POST(request) {
           route: "/api/order/book",
           status: 201,
           message: "New order book data inserted.",
-          data: newData,
+          data: returnData,
         });
       }
     }

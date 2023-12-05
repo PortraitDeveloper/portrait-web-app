@@ -142,9 +142,7 @@ export default function Checkout() {
             },
             body: JSON.stringify({ bookid }),
           });
-          
           const payload = await response.json();
-          console.log("Customer Name:", payload.data.customers.cust_name);
 
           if (
             payload.status === 404 &&
