@@ -10,7 +10,7 @@ const prisma = new PrismaClient();
 const timeDiff = 7;
 
 // Set Timeout 5s
-const timeOut = 5000;
+const timeOut = 10000;
 
 export async function POST(request) {
   // Delay
