@@ -69,6 +69,7 @@ export default function Checkout() {
         };
         console.error(log);
       } else {
+        setLoading(true);
         router.push(paymentUrl);
       }
     } catch (error) {
@@ -82,6 +83,7 @@ export default function Checkout() {
   };
 
   const generateTransaction = async () => {
+    setLoading(false);
     try {
       const body = {
         order_id: orderBook.book_code,
