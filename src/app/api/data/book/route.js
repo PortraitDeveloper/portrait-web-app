@@ -16,7 +16,7 @@ export async function POST(request) {
   try {
     // Read the body data
     const { bookid } = await request.json();
-    console.log("Book ID:", bookid);
+    console.log("Book ID (server):", bookid);
 
     // Read the order book data by book ID
     const existingData = await prisma.orders_book.findUnique({

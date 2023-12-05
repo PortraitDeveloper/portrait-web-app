@@ -136,13 +136,13 @@ export default function Checkout() {
         } else {
           // Create order book data and generate total price calculation
           console.log("Book ID (client):", bookid);
-          
+
           const response = await fetch(`${host}/api/data/book`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify(bookid),
+            body: JSON.stringify({ bookid }),
           });
           const payload = await response.json();
 
