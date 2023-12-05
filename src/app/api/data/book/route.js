@@ -230,7 +230,8 @@ export async function POST(request) {
         console.log(
           currentTimeStamp,
           "Status: 201",
-          "New order book data inserted."
+          "New order book data inserted.",
+          returnData
         );
 
         return NextResponse.json({
