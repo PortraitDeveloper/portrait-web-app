@@ -141,6 +141,8 @@ export default function Checkout() {
         });
         const payload = await response.json();
 
+        console.log("PAYLOAD:", payload);
+
         if (
           payload.status === 404 &&
           payload.message === "Raw data not found."
