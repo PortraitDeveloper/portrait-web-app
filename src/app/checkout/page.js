@@ -69,7 +69,6 @@ export default function Checkout() {
         };
         console.error(log);
       } else {
-        setLoading(true);
         router.push(paymentUrl);
       }
     } catch (error) {
