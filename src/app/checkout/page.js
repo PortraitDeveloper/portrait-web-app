@@ -8,8 +8,8 @@ import getTimeStamp from "@/utils/getTimeStamp";
 // Set Time Zone from UTC to WIB or Asia/Jakarta Timezone where time difference is 7
 const timeDiff = 7;
 
-// Set Timeout 5s
-const timeOut = 4000;
+// Set Timeout 2.5s
+const timeOut = 2500;
 
 // Set redirect URL
 const redirectUrl = "https://msha.ke/bookingstudio";
@@ -128,15 +128,38 @@ export default function Checkout() {
   useEffect(() => {
     const getData = async (bookid) => {
       try {
+        // Delay
         await new Promise((resolve) => setTimeout(resolve, timeOut));
-        const response = await fetch(`${host}/api/data/book/${bookid}`);
+
+        // Create order book data and generate total price calculation
+        const response = await fetch(`${host}/api/data/book`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(bookid),
+        });
         const payload = await response.json();
 
-        if (payload.status === 404) {
+        if (
+          payload.status === 404 &&
+          payload.message === "Raw data not found."
+        ) {
           router.push(redirectUrl);
         } else {
-          if (payload.data.transactions.payment_url) {
-            router.push(payload.data.transactions.payment_url);
+          if (
+            payload.status === 200 &&
+            payload.message === "Order book data already exists."
+          ) {
+            if (
+              payload.data.transactions.payment_url &&
+              (payload.data.transactions.payment_status === "unpaid" ||
+                payload.data.transactions.payment_status === "pending")
+            ) {
+              router.push(payload.data.transactions.payment_url);
+            } else {
+              router.push(redirectUrl);
+            }
           } else {
             const name = payload.data.customers.cust_name.split(" ");
             const firstName = name[0];
@@ -197,7 +220,6 @@ export default function Checkout() {
               is_voucher_applied: isVoucherApplied,
               total_paid_by_cust: payload.data.transactions.total_paid_by_cust,
             });
-
             setLoading(true);
           }
         }
