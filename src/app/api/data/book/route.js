@@ -96,7 +96,6 @@ export async function POST(request) {
             product_name: productName,
             branch_id: rawData.branch_id,
           },
-          branches: true,
         });
 
         // Convert to integer
@@ -238,50 +237,20 @@ export async function POST(request) {
           },
         });
 
-        // const returnData = await prisma.orders_book.findUnique({
-        //   where: {
-        //     book_id: bookid,
-        //   },
-        //   include: {
-        //     transactions: true,
-        //     customers: true,
-        //     products: {
-        //       include: {
-        //         branches: true,
-        //       },
-        //     },
-        //   },
-        // });
-
-        const returnData = {
-          data: {
-            book_code: rawData.book_code,
-            booking_date: rawData.booking_date,
-            start_at: rawData.start_at,
-            transactions: {
-              additional_person_price: additionalPersonPrice,
-              additional_pet_price: additionalPetPrice,
-              additional_print5r_price: additionalPrint5r,
-              additional_softfile_price: additionalSoftfile,
-              total_price: totalPrice,
-              voucher_code: voucherCode,
-              is_voucher_applied: isVoucherApplied,
-              total_paid_by_cust: totalPaidByCust,
-            },
-            customers: {
-              cust_name: customer.cust_name,
-              email: customer.email,
-              phone_number: customer.phone_number,
-            },
+        const returnData = await prisma.orders_book.findUnique({
+          where: {
+            book_id: bookid,
+          },
+          include: {
+            transactions: true,
+            customers: true,
             products: {
-              product_name: product.product_name,
-              product_price: product.product_price,
-              branches: {
-                branch_address: product.branch_address,
+              include: {
+                branches: true,
               },
             },
           },
-        };
+        });
 
         console.log(
           currentTimeStamp,
