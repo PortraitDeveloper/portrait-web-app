@@ -212,7 +212,7 @@ export default function Checkout() {
             payload.message === "Order book data already exists."
           ) {
             if (
-              payload.data.boo_status === "cancelled" ||
+              payload.data.book_status === "cancelled" ||
               payload.data.transactions.payment_status === "cancel" ||
               payload.data.transactions.payment_status === "deny" ||
               payload.data.transactions.payment_status === "expire"
