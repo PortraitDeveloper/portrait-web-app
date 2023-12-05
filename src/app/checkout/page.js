@@ -135,6 +135,8 @@ export default function Checkout() {
           router.push(redirectUrl);
         } else {
           // Create order book data and generate total price calculation
+          console.log("Book ID (client):", bookid);
+          
           const response = await fetch(`${host}/api/data/book`, {
             method: "POST",
             headers: {
