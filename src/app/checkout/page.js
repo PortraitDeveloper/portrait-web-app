@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { useState, useEffect } from "react";
@@ -246,7 +247,23 @@ export default function Checkout() {
 
   return (
     <>
-      {!loading && <p>loading...</p>}
+      {!loading && (
+        <>
+          <div className="flex items-center justify-center h-screen">
+            <div>
+              <div className="animate-spin mb-4">
+                <img
+                  src="/loadingCircle.jpg"
+                  alt="loading circle"
+                  width="75px"
+                  heigh="50px"
+                />
+              </div>
+              <text className="text-center font-bold">Loading...</text>
+            </div>
+          </div>
+        </>
+      )}
       {loading && (
         <div className="h-screen flex justify-center items-center">
           <div className="border border-black rounded-3xl px-6 py-4">
