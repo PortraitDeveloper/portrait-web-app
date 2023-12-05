@@ -266,7 +266,7 @@ export async function POST(request) {
     // If the system or database server error then return an error log
     const log = {
       created_at: currentTimeStamp,
-      route: "/api/data/book/[bookid]",
+      route: "/api/data/book",
       status: 500,
       message: error,
     };
