@@ -123,185 +123,125 @@ export default function Checkout() {
     }
   };
 
-  useEffect(() => {
-    const getData = async (bookid) => {
-      try {
-        if (!bookid) {
+  const getData = (payload) => {
+    const name = payload.data.customers.cust_name.split(" ");
+    const firstName = name[0];
+    const lastName = name[1];
+    const dateObj = new Date(payload.data.booking_date);
+    const day = dateObj.getDate();
+    const monthIndex = dateObj.getMonth();
+    const year = dateObj.getFullYear();
+    const monthNames = [
+      "Januari",
+      "Februari",
+      "Maret",
+      "April",
+      "Mei",
+      "Juni",
+      "Juli",
+      "Agustus",
+      "September",
+      "Oktober",
+      "November",
+      "Desember",
+    ];
+    const monthName = monthNames[monthIndex];
+    const bookingStartDate = `${day} ${monthName} ${year}`;
+    const bookingStartTime = payload.data.start_at;
+
+    const voucherCode = payload.data.transactions.voucher_code
+      ? payload.data.transactions.voucher_code
+      : "-";
+    const isVoucherApplied =
+      voucherCode === "-"
+        ? "Tidak menggunakan voucher"
+        : payload.data.transactions.voucher_code
+        ? "Voucher dapat digunakan"
+        : "Voucher tidak dapat digunakan";
+
+    setOrderBook({
+      book_code: payload.data.book_code,
+      first_name: firstName,
+      last_name: lastName,
+      email: payload.data.customers.email,
+      phone_number: payload.data.customers.phone_number,
+      branch_address: payload.data.products.branches.branch_address,
+      booking_start_date: bookingStartDate,
+      booking_start_time: bookingStartTime,
+      product_name: payload.data.products.product_name,
+      product_price: payload.data.products.product_price,
+      additional_person_price:
+        payload.data.transactions.additional_person_price,
+      additional_pet_price: payload.data.transactions.additional_pet_price,
+      additional_print5r_price:
+        payload.data.transactions.additional_print5r_price,
+      additional_softfile_price:
+        payload.data.transactions.additional_softfile_price,
+      total_price: payload.data.transactions.total_price,
+      voucher_code: voucherCode,
+      is_voucher_applied: isVoucherApplied,
+      total_paid_by_cust: payload.data.transactions.total_paid_by_cust,
+    });
+    setLoading(true);
+  };
+
+  // Create order book data and generate total price calculation
+  const generateData = async (bookid) => {
+    try {
+      if (!bookid) {
+        router.push(redirectUrl);
+      } else {
+        const response = await fetch(`${host}/api/data/book`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ bookid }),
+        });
+        const payload = await response.json();
+
+        if (
+          payload.status === 404 &&
+          payload.message === "Raw data not found."
+        ) {
           router.push(redirectUrl);
         } else {
-          // Create order book data and generate total price calculation
-          const response = await fetch(`${host}/api/data/book`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ bookid }),
-          });
-          const payload = await response.json();
-
           if (
-            payload.status === 404 &&
-            payload.message === "Raw data not found."
+            payload.status === 200 &&
+            payload.message === "Order book data already exists."
           ) {
-            router.push(redirectUrl);
-          } else {
             if (
-              payload.status === 200 &&
-              payload.message === "Order book data already exists."
+              payload.data.boo_status === "cancelled" ||
+              payload.data.transactions.payment_status === "cancel" ||
+              payload.data.transactions.payment_status === "deny" ||
+              payload.data.transactions.payment_status === "expire"
             ) {
-              if (
-                payload.data.boo_status === "cancelled" ||
-                payload.data.transactions.payment_status === "cancel" ||
-                payload.data.transactions.payment_status === "deny" ||
-                payload.data.transactions.payment_status === "expire"
-              ) {
-                router.push(redirectUrl);
-              } else {
-                if (payload.data.transactions.payment_url) {
-                  router.push(payload.data.transactions.payment_url);
-                } else {
-                  const name = payload.data.customers.cust_name.split(" ");
-                  const firstName = name[0];
-                  const lastName = name[1];
-                  const dateObj = new Date(payload.data.booking_date);
-                  const day = dateObj.getDate();
-                  const monthIndex = dateObj.getMonth();
-                  const year = dateObj.getFullYear();
-                  const monthNames = [
-                    "Januari",
-                    "Februari",
-                    "Maret",
-                    "April",
-                    "Mei",
-                    "Juni",
-                    "Juli",
-                    "Agustus",
-                    "September",
-                    "Oktober",
-                    "November",
-                    "Desember",
-                  ];
-                  const monthName = monthNames[monthIndex];
-                  const bookingStartDate = `${day} ${monthName} ${year}`;
-                  const bookingStartTime = payload.data.start_at;
-
-                  const voucherCode = payload.data.transactions.voucher_code
-                    ? payload.data.transactions.voucher_code
-                    : "-";
-                  const isVoucherApplied =
-                    voucherCode === "-"
-                      ? "Tidak menggunakan voucher"
-                      : payload.data.transactions.voucher_code
-                      ? "Voucher dapat digunakan"
-                      : "Voucher tidak dapat digunakan";
-
-                  setOrderBook({
-                    book_code: payload.data.book_code,
-                    first_name: firstName,
-                    last_name: lastName,
-                    email: payload.data.customers.email,
-                    phone_number: payload.data.customers.phone_number,
-                    branch_address:
-                      payload.data.products.branches.branch_address,
-                    booking_start_date: bookingStartDate,
-                    booking_start_time: bookingStartTime,
-                    product_name: payload.data.products.product_name,
-                    product_price: payload.data.products.product_price,
-                    additional_person_price:
-                      payload.data.transactions.additional_person_price,
-                    additional_pet_price:
-                      payload.data.transactions.additional_pet_price,
-                    additional_print5r_price:
-                      payload.data.transactions.additional_print5r_price,
-                    additional_softfile_price:
-                      payload.data.transactions.additional_softfile_price,
-                    total_price: payload.data.transactions.total_price,
-                    voucher_code: voucherCode,
-                    is_voucher_applied: isVoucherApplied,
-                    total_paid_by_cust:
-                      payload.data.transactions.total_paid_by_cust,
-                  });
-                  setLoading(true);
-                }
-              }
+              router.push(redirectUrl);
             } else {
-              // Display order book data
-              const name = payload.data.customers.cust_name.split(" ");
-              const firstName = name[0];
-              const lastName = name[1];
-              const dateObj = new Date(payload.data.booking_date);
-              const day = dateObj.getDate();
-              const monthIndex = dateObj.getMonth();
-              const year = dateObj.getFullYear();
-              const monthNames = [
-                "Januari",
-                "Februari",
-                "Maret",
-                "April",
-                "Mei",
-                "Juni",
-                "Juli",
-                "Agustus",
-                "September",
-                "Oktober",
-                "November",
-                "Desember",
-              ];
-              const monthName = monthNames[monthIndex];
-              const bookingStartDate = `${day} ${monthName} ${year}`;
-              const bookingStartTime = payload.data.start_at;
-
-              const voucherCode = payload.data.transactions.voucher_code
-                ? payload.data.transactions.voucher_code
-                : "-";
-              const isVoucherApplied =
-                voucherCode === "-"
-                  ? "Tidak menggunakan voucher"
-                  : payload.data.transactions.voucher_code
-                  ? "Voucher dapat digunakan"
-                  : "Voucher tidak dapat digunakan";
-
-              setOrderBook({
-                book_code: payload.data.book_code,
-                first_name: firstName,
-                last_name: lastName,
-                email: payload.data.customers.email,
-                phone_number: payload.data.customers.phone_number,
-                branch_address: payload.data.products.branches.branch_address,
-                booking_start_date: bookingStartDate,
-                booking_start_time: bookingStartTime,
-                product_name: payload.data.products.product_name,
-                product_price: payload.data.products.product_price,
-                additional_person_price:
-                  payload.data.transactions.additional_person_price,
-                additional_pet_price:
-                  payload.data.transactions.additional_pet_price,
-                additional_print5r_price:
-                  payload.data.transactions.additional_print5r_price,
-                additional_softfile_price:
-                  payload.data.transactions.additional_softfile_price,
-                total_price: payload.data.transactions.total_price,
-                voucher_code: voucherCode,
-                is_voucher_applied: isVoucherApplied,
-                total_paid_by_cust:
-                  payload.data.transactions.total_paid_by_cust,
-              });
-              setLoading(true);
+              if (payload.data.transactions.payment_url) {
+                router.push(payload.data.transactions.payment_url);
+              } else {
+                getData(payload);
+              }
             }
+          } else {
+            getData(payload);
           }
         }
-      } catch (error) {
-        const log = {
-          created_at: currentTimeStamp,
-          route: "/checkout",
-          status: 400,
-          message: error,
-        };
-        console.error(log);
       }
-    };
+    } catch (error) {
+      const log = {
+        created_at: currentTimeStamp,
+        route: "/checkout",
+        status: 400,
+        message: error,
+      };
+      console.error(log);
+    }
+  };
 
-    getData(book_id);
+  useEffect(() => {
+    generateData(book_id);
   }, [book_id]);
 
   return (
