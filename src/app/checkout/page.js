@@ -9,7 +9,7 @@ import getTimeStamp from "@/utils/getTimeStamp";
 const timeDiff = 7;
 
 // Set Timeout 2.5s
-const timeOut = 2500;
+const timeOut = 5000;
 
 // Set redirect URL
 const redirectUrl = "https://msha.ke/bookingstudio";
