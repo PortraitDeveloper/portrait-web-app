@@ -1,14 +1,17 @@
+/* eslint-disable @next/next/no-img-element */
 "use client";
 import { useEffect, useState } from "react";
 
 export default function DashboardPage() {
   const [view, setView] = useState("orders_book");
+  const [loading, setLoading] = useState(false);
   const [ordersBook, setOrdersBook] = useState([]);
 
   const getOrdersBookData = async () => {
     const response = await fetch(`/api/data/book`);
     const payload = await response.json();
     setOrdersBook(payload.data);
+    setLoading(true);
   };
 
   useEffect(() => {
@@ -111,7 +114,24 @@ export default function DashboardPage() {
         </div>
         <div className="drawer-content">
           {/* Page content here */}
-          {view === "orders_book" && (
+          {!loading && (
+            <>
+              <div className="flex items-center justify-center h-screen">
+                <div>
+                  <div className="animate-spin mb-4">
+                    <img
+                      src="/loadingCircle.png"
+                      alt="loading circle"
+                      width="75px"
+                      heigh="50px"
+                    />
+                  </div>
+                  <text className="text-center font-bold">Loading...</text>
+                </div>
+              </div>
+            </>
+          )}
+          {loading && view === "orders_book" && (
             <div className="text-sm">
               <table className="min-w-full">
                 <thead>
@@ -182,7 +202,7 @@ export default function DashboardPage() {
               </table>
             </div>
           )}
-          {view === "transactions" && (
+          {loading && view === "transactions" && (
             <div className="text-sm">
               <table className="min-w-full">
                 <thead>
@@ -253,7 +273,7 @@ export default function DashboardPage() {
               </table>
             </div>
           )}
-          {view === "payment_status" && (
+          {loading && view === "payment_status" && (
             <div className="text-sm">
               <table className="min-w-full">
                 <thead>
@@ -294,9 +314,9 @@ export default function DashboardPage() {
               </table>
             </div>
           )}
-          {view === "products" && <h1>Data coming soon...</h1>}
-          {view === "additionals" && <h1>Data coming soon...</h1>}
-          {view === "vouchers" && <h1>Data coming soon...</h1>}
+          {loading && view === "products" && <h1>Data coming soon...</h1>}
+          {loading && view === "additionals" && <h1>Data coming soon...</h1>}
+          {loading && view === "vouchers" && <h1>Data coming soon...</h1>}
         </div>
       </div>
     </>
