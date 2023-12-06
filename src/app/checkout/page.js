@@ -54,7 +54,7 @@ export default function Checkout() {
         text: `Hi ${orderBook.first_name},\nPesanan Anda dengan kode booking ${orderBook.book_code}\nBerikut adalah link pembayaran ${paymentUrl}.\nSegera lakukan pembayaran dalam waktu 15 menit kedepan, jika lewat batas waktu maka order booking anda akan dicancel secara otomatis.`,
       };
 
-      const response = await fetch(`${host}/api/email`, {
+      const response = await fetch(`/api/email`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -94,7 +94,7 @@ export default function Checkout() {
         phone: orderBook.phone,
       };
 
-      const response = await fetch(`${host}/api/payment/transaction`, {
+      const response = await fetch(`/api/payment/transaction`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -192,7 +192,7 @@ export default function Checkout() {
       if (!bookid) {
         router.push(redirectUrl);
       } else {
-        const response = await fetch(`${host}/api/data/book`, {
+        const response = await fetch(`/api/order/book`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

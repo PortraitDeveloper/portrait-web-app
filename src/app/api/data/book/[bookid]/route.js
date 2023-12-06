@@ -56,7 +56,7 @@ export async function GET(request, { params: { bookid } }) {
       created_at: currentTimeStamp,
       route: "/api/data/book/[bookid]",
       status: 500,
-      message: error,
+      message: error.message,
     };
     errorLog(log);
     return NextResponse.json(log);
