@@ -15,7 +15,11 @@ export async function GET(request) {
 
   try {
     // Read all product data
-    const products = await prisma.products.findMany();
+    const products = await prisma.products.findMany({
+      include: {
+        branches: true,
+      },
+    });
 
     // Return all product data
     return NextResponse.json({
