@@ -12,6 +12,9 @@ const timeDiff = 7;
 // Set redirect URL
 const redirectUrl = "https://msha.ke/bookingstudio";
 
+// Set host
+const host = process.env.NEXT_PUBLIC_HOST;
+
 export default function Checkout() {
   // Read book ID parameter
   const searchParams = useSearchParams();
@@ -41,20 +44,14 @@ export default function Checkout() {
     voucher_code: "",
     is_voucher_applied: "",
     total_paid_by_cust: "",
-    payment_url: "",
   });
-
-  const paymentHandler = () => {
-    setLoading(false);
-    router.push(orderBook.payment_url);
-  };
 
   const generateEmail = async (paymentUrl) => {
     try {
       const body = {
         email: orderBook.email,
         subject: "Link Pembayaran",
-        text: `Hi ${orderBook.first_name},\nPesanan Anda dengan kode booking ${orderBook.book_code}\nTotal pembayaran Anda sebesar ${orderBook.total_paid_by_cust}\nBerikut adalah link pembayaran ${paymentUrl}.\nSegera lakukan pembayaran dalam waktu 15 menit kedepan, jika lewat batas waktu maka order booking anda akan dicancel secara otomatis.`,
+        text: `Hi ${orderBook.first_name},\nPesanan Anda dengan kode booking ${orderBook.book_code}\nBerikut adalah link pembayaran ${paymentUrl}.\nSegera lakukan pembayaran dalam waktu 15 menit kedepan, jika lewat batas waktu maka order booking anda akan dicancel secara otomatis.`,
       };
 
       const response = await fetch(`/api/email`, {
@@ -73,8 +70,7 @@ export default function Checkout() {
         };
         console.error(log);
       } else {
-        setOrderBook({ payment_url: paymentUrl });
-        setLoading(true);
+        router.push(paymentUrl);
       }
     } catch (error) {
       const log = {
@@ -87,6 +83,7 @@ export default function Checkout() {
   };
 
   const generateTransaction = async () => {
+    setLoading(false);
     try {
       const body = {
         order_id: orderBook.book_code,
@@ -185,8 +182,8 @@ export default function Checkout() {
       voucher_code: voucherCode,
       is_voucher_applied: isVoucherApplied,
       total_paid_by_cust: payload.data.transactions.total_paid_by_cust,
-      payment_url: payload.data.transactions.payment_url,
     });
+    setLoading(true);
   };
 
   // Create order book data and generate total price calculation
@@ -218,16 +215,18 @@ export default function Checkout() {
               payload.data.book_status === "canceled" ||
               payload.data.transactions.payment_status === "cancel" ||
               payload.data.transactions.payment_status === "deny" ||
-              payload.data.transactions.payment_status === "expire" ||
-              payload.data.transactions.payment_status === "refund"
+              payload.data.transactions.payment_status === "expire"
             ) {
               router.push(redirectUrl);
             } else {
-              router.push(payload.data.transactions.payment_url);
+              if (payload.data.transactions.payment_url) {
+                router.push(payload.data.transactions.payment_url);
+              } else {
+                getData(payload);
+              }
             }
           } else {
             getData(payload);
-            generateTransaction();
           }
         }
       }
@@ -328,9 +327,9 @@ export default function Checkout() {
             <div className="flex justify-center items-center mt-4">
               <button
                 className="bg-blue-500 text-white hover:bg-blue-700 rounded-xl w-64 h-8 font-bold"
-                onClick={paymentHandler}
+                onClick={generateTransaction}
               >
-                Pembayaran
+                Pilih Pembayaran
               </button>
             </div>
           </div>
