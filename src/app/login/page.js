@@ -1,32 +1,19 @@
 "use client";
-import Link from "next/link";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import { signIn } from "next-auth/react";
 
 export default function LoginPage() {
-  const router = useRouter();
   const [data, setData] = useState({
     name: "",
     password: "",
   });
-
-  // const loginUser = async (e) => {
-  //   e.preventDefault();
-  //   signIn("credentials", {
-  //     ...data,
-  //     redirect: false,
-  //   });
-
-  //   router.push("/dashboard");
-  // };
 
   const loginUser = async (e) => {
     e.preventDefault();
     await signIn("credentials", {
       name: data.name,
       password: data.password,
-      callbackUrl: "/dashboard",
+      callbackUrl: "https://theportraitplace.my.id/dashboard",
     });
   };
 

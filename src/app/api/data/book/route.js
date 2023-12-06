@@ -15,21 +15,31 @@ export async function GET(request) {
 
   try {
     // Read all product data
-    const ordersBook = await prisma.orders_book.findMany();
+    const ordersBook = await prisma.orders_book.findMany({
+      include: {
+        transactions: true,
+        customers: true,
+        products: {
+          include: {
+            branches: true,
+          },
+        },
+      },
+    });
 
     // Return all product data
     return NextResponse.json({
       created_at: currentTimeStamp,
-      route: "/api/data/product",
+      route: "/api/data/book",
       status: 200,
-      message: "Products data found.",
+      message: "Orders book data found.",
       data: ordersBook,
     });
   } catch (error) {
     // If the system or database server error then return an error log
     const log = {
       created_at: currentTimeStamp,
-      route: "/api/data/product",
+      route: "/api/data/book",
       status: 500,
       message: error.message,
     };
