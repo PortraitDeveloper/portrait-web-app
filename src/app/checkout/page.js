@@ -187,6 +187,7 @@ export default function Checkout() {
       total_paid_by_cust: payload.data.transactions.total_paid_by_cust,
       payment_url: payload.data.transactions.payment_url,
     });
+    generateTransaction();
   };
 
   // Create order book data and generate total price calculation
@@ -227,7 +228,6 @@ export default function Checkout() {
             }
           } else {
             getData(payload);
-            generateTransaction();
           }
         }
       }
