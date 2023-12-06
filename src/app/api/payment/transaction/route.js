@@ -44,6 +44,8 @@ export async function POST(request) {
     const { order_id, gross_amount, first_name, last_name, email, phone } =
       await request.json();
 
+    console.log("CUSTOMER NAME:", first_name);
+
     // Midtrans client config
     const snap = new midtransClient.Snap({
       isProduction: false, // Sandbox
