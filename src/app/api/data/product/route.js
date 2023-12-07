@@ -3,6 +3,9 @@ import { PrismaClient } from "@prisma/client";
 import getTimeStamp from "@/utils/getTimeStamp";
 import errorLog from "@/utils/errorLog";
 
+// Disable Caching
+export const dynamic = "force-dynamic";
+
 // Prisma initial
 const prisma = new PrismaClient();
 

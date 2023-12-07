@@ -8,7 +8,7 @@ export default function DashboardPage() {
   const [ordersBook, setOrdersBook] = useState([]);
 
   const getOrdersBookData = async () => {
-    const response = await fetch(`/api/data/book`);
+    const response = await fetch("/api/data/book", { cache: "no-cache" });
     const payload = await response.json();
     setOrdersBook(payload.data);
     setLoading(true);

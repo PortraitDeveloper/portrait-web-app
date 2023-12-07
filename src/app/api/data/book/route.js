@@ -3,6 +3,9 @@ import { PrismaClient } from "@prisma/client";
 import getTimeStamp from "@/utils/getTimeStamp";
 import errorLog from "@/utils/errorLog";
 
+// Disable Caching
+export const dynamic = "force-dynamic";
+
 // Prisma initial
 const prisma = new PrismaClient();
 
@@ -20,7 +23,7 @@ export async function GET(request) {
         transactions: true,
         customers: true,
         products: {
-          include: {
+          select: {
             branches: true,
           },
         },
@@ -38,6 +41,7 @@ export async function GET(request) {
   } catch (error) {
     // If the system or database server error then return an error log
     const log = {
+      revalidated: true,
       created_at: currentTimeStamp,
       route: "/api/data/book",
       status: 500,
