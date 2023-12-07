@@ -10,6 +10,7 @@ export default function DashboardPage() {
   const getOrdersBookData = async () => {
     const response = await fetch("/api/data/book", { cache: "no-cache" });
     const payload = await response.json();
+    console.log(payload);
     setOrdersBook(payload.data);
     setLoading(true);
   };

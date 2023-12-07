@@ -23,7 +23,7 @@ export async function GET(request) {
         transactions: true,
         customers: true,
         products: {
-          select: {
+          include: {
             branches: true,
           },
         },
