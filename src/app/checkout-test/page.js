@@ -1,12 +1,11 @@
-/* eslint-disable @next/next/no-img-element */
 import Image from "next/image";
 
 export default function Checkout() {
   return (
     <>
-      <div className="flex justify-center items-center py-4">
-        <div className="border-2 border-blue-900 rounded-3xl p-6 w-128">
-          {/* The Portrait Place Logo*/}
+      <div className="flex flex-col items-center py-4">
+        <div className="md:border-2 md:border-blue-900 rounded-3xl p-6 w-full md:w-128">
+          {/* The Portrait Place Logo */}
           <Image
             src="/portraitPlace.png"
             width={100}
@@ -23,13 +22,13 @@ export default function Checkout() {
           {/* Warning-1 */}
           <div
             role="alert"
-            className="alert p-1 mb-4 border border-blue-900 text-blue-900 text-xs font-roboto font-bold bg-blue-50"
+            className="alert bg-blue-50 border border-blue-900 text-blue-900 text-xs font-roboto font-bold p-1 mb-4"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
-              className="stroke-current shrink-0 w-6 h-6"
+              className="stroke-current shrink-0 w-6 h-6 mx-auto"
             >
               <path
                 strokeLinecap="round"
@@ -46,7 +45,7 @@ export default function Checkout() {
           </div>
 
           {/* Booking Detail */}
-          <div className="grid grid-cols-2 grid-rows-2 font-roboto">
+          <div className="grid grid-cols-2 font-roboto">
             <div className="text-md">Kode Booking</div>
             <div className="text-right text-xs font-bold pt-1">
               XRUX-SSVJ-ZSSQ
@@ -57,12 +56,29 @@ export default function Checkout() {
             </div>
           </div>
 
-          <div className="grid grid-cols-2 font-roboto mb-4">
+          <div className="grid grid-cols-2 md:grid-rows-2 font-roboto mb-4">
             <div className="text-md">Tanggal dan Waktu</div>
-            <div className="text-right text-xs">
+            <div className="flex justify-end">
+              <div className="text-xs text-right pt-1">15 November 2023</div>
+              <div className="text-xs pl-2 xs:block hidden">
+                <div className="flex justify-end">
+                  <span className="bg-blue-900 rounded-md text-white text-xs flex justify-center item-center p-1">
+                    <Image
+                      src="/clock.png"
+                      width={20}
+                      height={10}
+                      alt="The Portrait Place Logo"
+                      className="rounded-full"
+                    />
+                    <p className="pl-1">17:30 WIB</p>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div className="xs:hidden"></div>
+            <div className="xs:hidden text-xs">
               <div className="flex justify-end">
-                <p className="pr-2 pt-1">15 November 2023</p>
-                <span className="bg-blue-800 rounded-md text-white text-xs flex justify-center item-center p-1">
+                <span className="bg-blue-900 rounded-md text-white text-xs flex justify-center item-center p-1">
                   <Image
                     src="/clock.png"
                     width={20}
@@ -160,13 +176,13 @@ export default function Checkout() {
           {/* Warning-2 */}
           <div
             role="alert"
-            className="alert p-1 mb-2 border border-red-600 text-xs text-red-600 font-roboto bg-red-50"
+            className="alert bg-red-50 border border-red-600 text-xs text-red-600 font-roboto p-1 mb-4"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
-              className="stroke-current shrink-0 w-6 h-6"
+              className="stroke-current shrink-0 w-6 h-6 mx-auto"
             >
               <path
                 strokeLinecap="round"
@@ -176,16 +192,16 @@ export default function Checkout() {
               ></path>
             </svg>
             <span>
-              <div className="grid grid-cols-2 text-xs font-roboto font-bold">
+              <div className="lg:grid lg:grid-cols-2 text-xs font-roboto font-bold">
                 <div>Segera lakukan pembayaran sebelum</div>
-                <div className="text-right">14 Menit 30 Detik</div>
+                <div className="lg:text-right">14 Menit 30 Detik</div>
               </div>
             </span>
           </div>
 
           {/* Button */}
           <div className="flex justify-center items-center">
-            <button className="bg-blue-900 text-sm font-bold text-white font-poppins hover:bg-blue-700 rounded-xl w-120 h-10">
+            <button className="bg-blue-900 text-sm font-bold text-white font-poppins hover:bg-blue-700 rounded-xl w-full md:w-120 h-10">
               Pilih Pembayaran
             </button>
           </div>
