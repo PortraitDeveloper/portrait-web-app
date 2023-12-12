@@ -175,7 +175,7 @@ export default function Checkout() {
     const secondsCountdown = Math.floor((timeDifference % (1000 * 60)) / 1000);
 
     // If timeout then redirect page
-    if (minutesCountdown <= 0 && secondsCountdown <= 0) {
+    if (minutesCountdown <= 0) {
       router.push(redirectUrl);
     } else {
       const name = payload.data.customers.cust_name.split(" ");
