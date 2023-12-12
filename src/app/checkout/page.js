@@ -128,7 +128,7 @@ export default function Checkout() {
         first_name: orderBook.first_name,
         last_name: orderBook.last_name,
         email: orderBook.email,
-        phone: orderBook.phone_number,
+        phone_number: orderBook.phone_number,
       };
 
       const response = await fetch(`/api/payment/transaction`, {
@@ -162,6 +162,8 @@ export default function Checkout() {
   };
 
   const getData = (payload) => {
+    console.log("PHONE NUMBER:", payload.data.customers.phone_number);
+
     const createdAt = payload.data.created_at;
     const dateObject = new Date(createdAt);
 
