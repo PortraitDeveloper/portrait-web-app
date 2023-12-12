@@ -128,7 +128,7 @@ export default function Checkout() {
         first_name: orderBook.first_name,
         last_name: orderBook.last_name,
         email: orderBook.email,
-        phone: orderBook.phone,
+        phone: orderBook.phone_number,
       };
 
       const response = await fetch(`/api/payment/transaction`, {
@@ -167,7 +167,6 @@ export default function Checkout() {
 
     // Define deadline
     dateObject.setMinutes(dateObject.getMinutes() + timeOut);
-    const deadLine = dateObject.toISOString();
 
     // Calculate and setup minutes and second for countdown
     const timeDifference = dateObject - currentTimeStamp;
