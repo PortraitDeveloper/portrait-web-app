@@ -10,6 +10,9 @@ import getTimeStamp from "@/utils/getTimeStamp";
 // Set Time Zone from UTC to WIB or Asia/Jakarta Timezone where time difference is 7
 const timeDiff = 7;
 
+// Set timeout 1 minute
+const timeOut = 3;
+
 // Set redirect URL
 const redirectUrl = "https://msha.ke/bookingstudio";
 
@@ -56,17 +59,17 @@ export default function Checkout() {
 
   useEffect(() => {
     const intervalId = setInterval(() => {
-      // Mengurangkan waktu setiap detik
+      // Subtracts the time every second
       setCountdown((prevCountdown) => {
         const newSeconds = prevCountdown.seconds - 1;
         const newMinutes =
           newSeconds < 0 ? prevCountdown.minutes - 1 : prevCountdown.minutes;
         const seconds = newSeconds < 0 ? 59 : newSeconds;
 
-        // Jika waktu habis, bisa ditambahkan logika lainnya
+        // If time out, redirect page
         if (newMinutes === 0 && seconds === 0) {
           clearInterval(intervalId);
-          // Tambahkan logika atau tindakan lainnya ketika waktu habis
+          router.push(redirectUrl);
         }
 
         return {
@@ -76,9 +79,9 @@ export default function Checkout() {
       });
     }, 1000);
 
-    // Membersihkan interval ketika komponen tidak lagi digunakan
+    // Clear interval when the component is no longer used
     return () => clearInterval(intervalId);
-  }, []); // Efek hanya dijalankan sekali setelah render pertama
+  }, []);
 
   const generateEmail = async (paymentUrl) => {
     try {
@@ -163,7 +166,7 @@ export default function Checkout() {
     const dateObject = new Date(createdAt);
 
     // Define deadline
-    dateObject.setMinutes(dateObject.getMinutes() + 15);
+    dateObject.setMinutes(dateObject.getMinutes() + timeOut);
     const deadLine = dateObject.toISOString();
 
     // Calculate and setup minutes and second for countdown
