@@ -83,8 +83,9 @@ model transactions {
   voucher_code              String?
   is_voucher_applied        Boolean   @default(false)
   total_paid_by_cust        Int       @default(0)
-  payment_status            String
+  checkout_url              String
   payment_url               String?
+  payment_status            String
 
   orders_book orders_book? // A transaction has one order
 }

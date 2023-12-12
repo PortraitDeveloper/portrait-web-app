@@ -12,6 +12,9 @@ const timeDiff = 7;
 // Set Timeout 5s
 const timeOut = 7000;
 
+// Set default url
+const url = "https://theportraitplace.my.id/checkout?book_id=";
+
 export async function POST(request) {
   // Delay
   await new Promise((resolve) => setTimeout(resolve, timeOut));
@@ -87,7 +90,7 @@ export async function POST(request) {
         }
 
         // Fix product_name string
-        const productNameArray = rawData.product_name.toLowerCase().split("  ");
+        const productNameArray = rawData.product_name.split("  ");
         const productName = productNameArray[0];
 
         // Read product data
@@ -157,7 +160,7 @@ export async function POST(request) {
         const additionals = await prisma.additionals.findMany();
 
         // Determine whether the print5R is color or black&white
-        const foundIndex = productName.indexOf("black&white");
+        const foundIndex = productName.indexOf("Black and White");
         const n = foundIndex !== -1 ? 2 : 3;
 
         // Additionals Price List Calculation
@@ -197,6 +200,9 @@ export async function POST(request) {
           }
         }
 
+        // Generate checkout url
+        const checkoutUrl = url.concat(rawData.book_id);
+
         // Create transactions data
         await prisma.transactions.create({
           data: {
@@ -212,6 +218,7 @@ export async function POST(request) {
             voucher_code: voucherCode,
             is_voucher_applied: isVoucherApplied,
             total_paid_by_cust: totalPaidByCust,
+            checkout_url: checkoutUrl,
             payment_url: null,
             payment_status: "unpaid",
           },

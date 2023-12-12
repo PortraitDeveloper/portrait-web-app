@@ -68,8 +68,9 @@ CREATE TABLE "transactions" (
     "voucher_code" TEXT,
     "is_voucher_applied" BOOLEAN NOT NULL DEFAULT false,
     "total_paid_by_cust" INTEGER NOT NULL DEFAULT 0,
-    "payment_status" TEXT NOT NULL,
-    "payment_url" TEXT
+    "checkout_url" TEXT NOT NULL,
+    "payment_url" TEXT,
+    "payment_status" TEXT NOT NULL
 );
 
 -- CreateTable

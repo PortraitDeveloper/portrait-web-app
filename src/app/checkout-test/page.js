@@ -192,9 +192,11 @@ export default function Checkout() {
               ></path>
             </svg>
             <span>
-              <div className="lg:grid lg:grid-cols-2 text-xs font-roboto font-bold">
-                <div>Segera lakukan pembayaran sebelum</div>
-                <div className="lg:text-right">14 Menit 30 Detik</div>
+              <div className="grid grid-cols-2 text-xs font-roboto font-bold">
+                <div className="text-left">
+                  Segera lakukan pembayaran sebelum
+                </div>
+                <div className="text-right">14 Menit 30 Detik</div>
               </div>
             </span>
           </div>
