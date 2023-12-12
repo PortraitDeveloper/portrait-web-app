@@ -41,7 +41,7 @@ export async function POST(request) {
 
   try {
     // Read the body data
-    const { order_id, gross_amount, first_name, last_name, email, phone } =
+    const { order_id, gross_amount, first_name, last_name, email, phone_number } =
       await request.json();
 
     console.log("CUSTOMER NAME:", first_name);
@@ -64,7 +64,7 @@ export async function POST(request) {
         first_name,
         last_name,
         email,
-        phone,
+        phone_number,
       },
     };
 
