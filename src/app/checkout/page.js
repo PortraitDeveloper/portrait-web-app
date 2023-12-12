@@ -10,8 +10,8 @@ import getTimeStamp from "@/utils/getTimeStamp";
 // Set Time Zone from UTC to WIB or Asia/Jakarta Timezone where time difference is 7
 const timeDiff = 7;
 
-// Set timeout 1 minute
-const timeOut = 3;
+// Set timeout 15 minute
+const timeOut = 15;
 
 // Set redirect URL
 const redirectUrl = "https://msha.ke/bookingstudio";
@@ -174,152 +174,143 @@ export default function Checkout() {
     const minutesCountdown = Math.floor(timeDifference / (1000 * 60));
     const secondsCountdown = Math.floor((timeDifference % (1000 * 60)) / 1000);
 
-    console.log("Timestamp setelah penambahan 15 menit:", deadLine);
-    console.log(
-      "Selisih dengan current timestamp (dalam menit):",
-      minutesCountdown
-    );
-    console.log(
-      "Selisih dengan current timestamp (dalam detik):",
-      secondsCountdown
-    );
+    // If timeout then redirect page
+    if (minutesCountdown <= 0 && secondsCountdown <= 0) {
+      router.push(redirectUrl);
+    } else {
+      const name = payload.data.customers.cust_name.split(" ");
+      const firstName = name[0];
+      const lastName = name[1];
+      const dateObj = new Date(payload.data.booking_date);
+      const day = dateObj.getDate();
+      const monthIndex = dateObj.getMonth();
+      const year = dateObj.getFullYear();
+      const monthNames = [
+        "Januari",
+        "Februari",
+        "Maret",
+        "April",
+        "Mei",
+        "Juni",
+        "Juli",
+        "Agustus",
+        "September",
+        "Oktober",
+        "November",
+        "Desember",
+      ];
+      const monthName = monthNames[monthIndex];
+      const bookingStartDate = `${day} ${monthName} ${year}`;
+      const bookingStartTime = payload.data.start_at;
 
-    // if (minutesCountdown <= 0 && secondsCountdown <= 0) {
-    //   router.push(redirectUrl);
-    // }
+      const productNameArray = payload.data.products.product_name.split("(");
+      const productName = productNameArray[0];
 
-    setCountdown({
-      minutes: minutesCountdown,
-      seconds: secondsCountdown,
-    });
+      const productType =
+        payload.data.products.product_name.indexOf("Black and White") !== -1
+          ? "Black and White"
+          : payload.data.products.product_name.indexOf("Color") !== -1
+          ? "Color"
+          : "";
 
-    const name = payload.data.customers.cust_name.split(" ");
-    const firstName = name[0];
-    const lastName = name[1];
-    const dateObj = new Date(payload.data.booking_date);
-    const day = dateObj.getDate();
-    const monthIndex = dateObj.getMonth();
-    const year = dateObj.getFullYear();
-    const monthNames = [
-      "Januari",
-      "Februari",
-      "Maret",
-      "April",
-      "Mei",
-      "Juni",
-      "Juli",
-      "Agustus",
-      "September",
-      "Oktober",
-      "November",
-      "Desember",
-    ];
-    const monthName = monthNames[monthIndex];
-    const bookingStartDate = `${day} ${monthName} ${year}`;
-    const bookingStartTime = payload.data.start_at;
+      const numberOfAddPerson = payload.data.number_of_add_person
+        .toString()
+        .concat("x");
+      const numberOfAddPet = payload.data.number_of_add_pet
+        .toString()
+        .concat("x");
+      const numberOfAddPrint5r = payload.data.number_of_add_print5r
+        .toString()
+        .concat("x");
+      const numberOfAddSoftfile = payload.data.is_add_softfile ? "1x" : "0x";
 
-    const productNameArray = payload.data.products.product_name.split("(");
-    const productName = productNameArray[0];
+      const voucherCode = payload.data.transactions.voucher_code
+        ? payload.data.transactions.voucher_code
+        : "-";
 
-    const productType =
-      payload.data.products.product_name.indexOf("Black and White") !== -1
-        ? "Black and White"
-        : payload.data.products.product_name.indexOf("Color") !== -1
-        ? "Color"
-        : "";
+      let discount =
+        voucherCode === "-"
+          ? 0
+          : payload.data.transactions.total_paid_by_cust -
+            payload.data.transactions.total_price;
 
-    const numberOfAddPerson = payload.data.number_of_add_person
-      .toString()
-      .concat("x");
-    const numberOfAddPet = payload.data.number_of_add_pet
-      .toString()
-      .concat("x");
-    const numberOfAddPrint5r = payload.data.number_of_add_print5r
-      .toString()
-      .concat("x");
-    const numberOfAddSoftfile = payload.data.is_add_softfile ? "1x" : "0x";
+      discount = discount
+        .toLocaleString("id-ID", {
+          style: "currency",
+          currency: "IDR",
+        })
+        .replace(",00", "");
 
-    const voucherCode = payload.data.transactions.voucher_code
-      ? payload.data.transactions.voucher_code
-      : "-";
-
-    let discount =
-      voucherCode === "-"
-        ? 0
-        : payload.data.transactions.total_paid_by_cust -
-          payload.data.transactions.total_price;
-
-    discount = discount
-      .toLocaleString("id-ID", {
-        style: "currency",
-        currency: "IDR",
-      })
-      .replace(",00", "");
-
-    const productPrice = payload.data.products.product_price
-      .toLocaleString("id-ID", { style: "currency", currency: "IDR" })
-      .replace(",00", "");
-
-    const additionalPersonPrice =
-      payload.data.transactions.additional_person_price
+      const productPrice = payload.data.products.product_price
         .toLocaleString("id-ID", { style: "currency", currency: "IDR" })
         .replace(",00", "");
 
-    const additionalPetPrice = payload.data.transactions.additional_pet_price
-      .toLocaleString("id-ID", {
-        style: "currency",
-        currency: "IDR",
-      })
-      .replace(",00", "");
+      const additionalPersonPrice =
+        payload.data.transactions.additional_person_price
+          .toLocaleString("id-ID", { style: "currency", currency: "IDR" })
+          .replace(",00", "");
 
-    const additionalPrint5rPrice =
-      payload.data.transactions.additional_print5r_price
+      const additionalPetPrice = payload.data.transactions.additional_pet_price
+        .toLocaleString("id-ID", {
+          style: "currency",
+          currency: "IDR",
+        })
+        .replace(",00", "");
+
+      const additionalPrint5rPrice =
+        payload.data.transactions.additional_print5r_price
+          .toLocaleString("id-ID", { style: "currency", currency: "IDR" })
+          .replace(",00", "");
+
+      const additionalSoftfilePrice =
+        payload.data.transactions.additional_softfile_price
+          .toLocaleString("id-ID", { style: "currency", currency: "IDR" })
+          .replace(",00", "");
+
+      const totalPrice = payload.data.transactions.total_price
         .toLocaleString("id-ID", { style: "currency", currency: "IDR" })
         .replace(",00", "");
 
-    const additionalSoftfilePrice =
-      payload.data.transactions.additional_softfile_price
-        .toLocaleString("id-ID", { style: "currency", currency: "IDR" })
+      const totalPaidByCust = payload.data.transactions.total_paid_by_cust
+        .toLocaleString("id-ID", {
+          style: "currency",
+          currency: "IDR",
+        })
         .replace(",00", "");
 
-    const totalPrice = payload.data.transactions.total_price
-      .toLocaleString("id-ID", { style: "currency", currency: "IDR" })
-      .replace(",00", "");
+      setOrderBook({
+        book_code: payload.data.book_code,
+        first_name: firstName,
+        last_name: lastName,
+        email: payload.data.customers.email,
+        phone_number: payload.data.customers.phone_number,
+        branch_address: payload.data.products.branches.branch_address,
+        booking_date: bookingStartDate,
+        start_at: bookingStartTime,
+        product_name: productName,
+        product_type: productType,
+        product_price: productPrice,
+        number_of_add_person: numberOfAddPerson,
+        additional_person_price: additionalPersonPrice,
+        number_of_add_pet: numberOfAddPet,
+        additional_pet_price: additionalPetPrice,
+        number_of_add_print5r: numberOfAddPrint5r,
+        additional_print5r_price: additionalPrint5rPrice,
+        number_of_add_softfile: numberOfAddSoftfile,
+        additional_softfile_price: additionalSoftfilePrice,
+        total_price: totalPrice,
+        voucher_code: voucherCode,
+        discount: discount,
+        total_paid_by_cust: totalPaidByCust,
+      });
 
-    const totalPaidByCust = payload.data.transactions.total_paid_by_cust
-      .toLocaleString("id-ID", {
-        style: "currency",
-        currency: "IDR",
-      })
-      .replace(",00", "");
+      setCountdown({
+        minutes: minutesCountdown,
+        seconds: secondsCountdown,
+      });
 
-    setOrderBook({
-      book_code: payload.data.book_code,
-      first_name: firstName,
-      last_name: lastName,
-      email: payload.data.customers.email,
-      phone_number: payload.data.customers.phone_number,
-      branch_address: payload.data.products.branches.branch_address,
-      booking_date: bookingStartDate,
-      start_at: bookingStartTime,
-      product_name: productName,
-      product_type: productType,
-      product_price: productPrice,
-      number_of_add_person: numberOfAddPerson,
-      additional_person_price: additionalPersonPrice,
-      number_of_add_pet: numberOfAddPet,
-      additional_pet_price: additionalPetPrice,
-      number_of_add_print5r: numberOfAddPrint5r,
-      additional_print5r_price: additionalPrint5rPrice,
-      number_of_add_softfile: numberOfAddSoftfile,
-      additional_softfile_price: additionalSoftfilePrice,
-      total_price: totalPrice,
-      voucher_code: voucherCode,
-      discount: discount,
-      total_paid_by_cust: totalPaidByCust,
-    });
-
-    setLoading(true);
+      setLoading(true);
+    }
   };
 
   // Create order book data and generate total price calculation
@@ -619,7 +610,10 @@ export default function Checkout() {
 
             {/* Button */}
             <div className="flex justify-center items-center">
-              <button className="bg-blue-900 text-sm font-bold text-white font-poppins hover:bg-blue-700 rounded-xl w-full md:w-120 h-10">
+              <button
+                className="bg-blue-900 text-sm font-bold text-white font-poppins hover:bg-blue-700 rounded-xl w-full md:w-120 h-10"
+                onClick={generateTransaction}
+              >
                 Pilih Pembayaran
               </button>
             </div>
