@@ -49,6 +49,37 @@ export default function Checkout() {
     total_paid_by_cust: "",
   });
 
+  const [countdown, setCountdown] = useState({
+    minutes: 0,
+    seconds: 0,
+  });
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      // Mengurangkan waktu setiap detik
+      setCountdown((prevCountdown) => {
+        const newSeconds = prevCountdown.seconds - 1;
+        const newMinutes =
+          newSeconds < 0 ? prevCountdown.minutes - 1 : prevCountdown.minutes;
+        const seconds = newSeconds < 0 ? 59 : newSeconds;
+
+        // Jika waktu habis, bisa ditambahkan logika lainnya
+        if (newMinutes === 0 && seconds === 0) {
+          clearInterval(intervalId);
+          // Tambahkan logika atau tindakan lainnya ketika waktu habis
+        }
+
+        return {
+          minutes: newMinutes,
+          seconds: seconds,
+        };
+      });
+    }, 1000);
+
+    // Membersihkan interval ketika komponen tidak lagi digunakan
+    return () => clearInterval(intervalId);
+  }, []); // Efek hanya dijalankan sekali setelah render pertama
+
   const generateEmail = async (paymentUrl) => {
     try {
       const body = {
@@ -128,6 +159,37 @@ export default function Checkout() {
   };
 
   const getData = (payload) => {
+    const createdAt = payload.data.created_at;
+    const dateObject = new Date(createdAt);
+
+    // Define deadline
+    dateObject.setMinutes(dateObject.getMinutes() + 15);
+    const deadLine = dateObject.toISOString();
+
+    // Calculate and setup minutes and second for countdown
+    const timeDifference = dateObject - currentTimeStamp;
+    const minutesCountdown = Math.floor(timeDifference / (1000 * 60));
+    const secondsCountdown = Math.floor((timeDifference % (1000 * 60)) / 1000);
+
+    console.log("Timestamp setelah penambahan 15 menit:", deadLine);
+    console.log(
+      "Selisih dengan current timestamp (dalam menit):",
+      minutesCountdown
+    );
+    console.log(
+      "Selisih dengan current timestamp (dalam detik):",
+      secondsCountdown
+    );
+
+    // if (minutesCountdown <= 0 && secondsCountdown <= 0) {
+    //   router.push(redirectUrl);
+    // }
+
+    setCountdown({
+      minutes: minutesCountdown,
+      seconds: secondsCountdown,
+    });
+
     const name = payload.data.customers.cust_name.split(" ");
     const firstName = name[0];
     const lastName = name[1];
@@ -153,7 +215,7 @@ export default function Checkout() {
     const bookingStartDate = `${day} ${monthName} ${year}`;
     const bookingStartTime = payload.data.start_at;
 
-    const productNameArray = rawData.product_name.toLowerCase().split("(");
+    const productNameArray = payload.data.products.product_name.split("(");
     const productName = productNameArray[0];
 
     const productType =
@@ -163,7 +225,16 @@ export default function Checkout() {
         ? "Color"
         : "";
 
-    const numberOfAddSoftfile = payload.data.is_add_softfile ? 1 : 0;
+    const numberOfAddPerson = payload.data.number_of_add_person
+      .toString()
+      .concat("x");
+    const numberOfAddPet = payload.data.number_of_add_pet
+      .toString()
+      .concat("x");
+    const numberOfAddPrint5r = payload.data.number_of_add_print5r
+      .toString()
+      .concat("x");
+    const numberOfAddSoftfile = payload.data.is_add_softfile ? "1x" : "0x";
 
     const voucherCode = payload.data.transactions.voucher_code
       ? payload.data.transactions.voucher_code
@@ -175,44 +246,49 @@ export default function Checkout() {
         : payload.data.transactions.total_paid_by_cust -
           payload.data.transactions.total_price;
 
-    discount = discount.toLocaleString("id-ID", {
-      style: "currency",
-      currency: "IDR",
-    });
+    discount = discount
+      .toLocaleString("id-ID", {
+        style: "currency",
+        currency: "IDR",
+      })
+      .replace(",00", "");
 
-    const productPrice = payload.data.products.product_price.toLocaleString(
-      "id-ID",
-      { style: "currency", currency: "IDR" }
-    );
+    const productPrice = payload.data.products.product_price
+      .toLocaleString("id-ID", { style: "currency", currency: "IDR" })
+      .replace(",00", "");
+
     const additionalPersonPrice =
-      payload.data.transactions.additional_person_price.toLocaleString(
-        "id-ID",
-        { style: "currency", currency: "IDR" }
-      );
-    const additionalPetPrice =
-      payload.data.transactions.additional_pet_price.toLocaleString("id-ID", {
+      payload.data.transactions.additional_person_price
+        .toLocaleString("id-ID", { style: "currency", currency: "IDR" })
+        .replace(",00", "");
+
+    const additionalPetPrice = payload.data.transactions.additional_pet_price
+      .toLocaleString("id-ID", {
         style: "currency",
         currency: "IDR",
-      });
+      })
+      .replace(",00", "");
+
     const additionalPrint5rPrice =
-      payload.data.transactions.additional_print5r_price.toLocaleString(
-        "id-ID",
-        { style: "currency", currency: "IDR" }
-      );
+      payload.data.transactions.additional_print5r_price
+        .toLocaleString("id-ID", { style: "currency", currency: "IDR" })
+        .replace(",00", "");
+
     const additionalSoftfilePrice =
-      payload.data.transactions.additional_softfile_price.toLocaleString(
-        "id-ID",
-        { style: "currency", currency: "IDR" }
-      );
-    const totalPrice = payload.data.transactions.total_price.toLocaleString(
-      "id-ID",
-      { style: "currency", currency: "IDR" }
-    );
-    const totalPaidByCust =
-      payload.data.transactions.total_paid_by_cust.toLocaleString("id-ID", {
+      payload.data.transactions.additional_softfile_price
+        .toLocaleString("id-ID", { style: "currency", currency: "IDR" })
+        .replace(",00", "");
+
+    const totalPrice = payload.data.transactions.total_price
+      .toLocaleString("id-ID", { style: "currency", currency: "IDR" })
+      .replace(",00", "");
+
+    const totalPaidByCust = payload.data.transactions.total_paid_by_cust
+      .toLocaleString("id-ID", {
         style: "currency",
         currency: "IDR",
-      });
+      })
+      .replace(",00", "");
 
     setOrderBook({
       book_code: payload.data.book_code,
@@ -226,11 +302,11 @@ export default function Checkout() {
       product_name: productName,
       product_type: productType,
       product_price: productPrice,
-      number_of_add_person: payload.data.number_of_add_person,
+      number_of_add_person: numberOfAddPerson,
       additional_person_price: additionalPersonPrice,
-      number_of_add_pet: payload.data.number_of_add_pet,
+      number_of_add_pet: numberOfAddPet,
       additional_pet_price: additionalPetPrice,
-      number_of_add_print5r: payload.data.number_of_add_print5r,
+      number_of_add_print5r: numberOfAddPrint5r,
       additional_print5r_price: additionalPrint5rPrice,
       number_of_add_softfile: numberOfAddSoftfile,
       additional_softfile_price: additionalSoftfilePrice,
@@ -239,6 +315,7 @@ export default function Checkout() {
       discount: discount,
       total_paid_by_cust: totalPaidByCust,
     });
+
     setLoading(true);
   };
 
@@ -321,7 +398,7 @@ export default function Checkout() {
         </>
       )}
       {loading && (
-        <div className="flex flex-col items-center py-4">
+        <div className="flex flex-col items-center md:py-4">
           <div className="md:border-2 md:border-blue-900 rounded-3xl p-6 w-full md:w-128">
             {/* The Portrait Place Logo */}
             <Image
@@ -382,13 +459,11 @@ export default function Checkout() {
                 </div>
                 <div className="text-xs pl-2 xs:block hidden">
                   <div className="flex justify-end">
-                    <span className="bg-blue-900 rounded-md text-white text-xs flex justify-center item-center p-1">
-                      <Image
+                    <span className="bg-blue-900 rounded-xl text-white text-xs flex justify-center item-center p-1">
+                      <img
                         src="/clock.png"
-                        width={20}
-                        height={10}
-                        alt="The Portrait Place Logo"
-                        className="rounded-full"
+                        alt="Clock Icon"
+                        className="max-w-full h-auto rounded-full"
                       />
                       <p className="pl-1">{orderBook.start_at} WIB</p>
                     </span>
@@ -399,12 +474,10 @@ export default function Checkout() {
               <div className="xs:hidden text-xs">
                 <div className="flex justify-end">
                   <span className="bg-blue-900 rounded-md text-white text-xs flex justify-center item-center p-1">
-                    <Image
+                    <img
                       src="/clock.png"
-                      width={20}
-                      height={10}
-                      alt="The Portrait Place Logo"
-                      className="rounded-full"
+                      alt="Clock Icon"
+                      className="max-w-full h-auto rounded-full"
                     />
                     <p className="pl-1">{orderBook.start_at} WIB</p>
                   </span>
@@ -536,7 +609,7 @@ export default function Checkout() {
                   <div className="text-left">
                     Segera lakukan pembayaran sebelum
                   </div>
-                  <div className="text-right">14 Menit 30 Detik</div>
+                  <div className="text-right">{`${countdown.minutes} Menit ${countdown.seconds} Detik`}</div>
                 </div>
               </span>
             </div>
