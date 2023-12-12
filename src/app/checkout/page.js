@@ -50,6 +50,7 @@ export default function Checkout() {
     voucher_code: "",
     discount: "",
     total_paid_by_cust: "",
+    gross_amount: "",
   });
 
   const [countdown, setCountdown] = useState({
@@ -124,7 +125,7 @@ export default function Checkout() {
     try {
       const body = {
         order_id: orderBook.book_code,
-        gross_amount: orderBook.total_paid_by_cust,
+        gross_amount: orderBook.gross_amount,
         first_name: orderBook.first_name,
         last_name: orderBook.last_name,
         email: orderBook.email,
@@ -303,6 +304,7 @@ export default function Checkout() {
         voucher_code: voucherCode,
         discount: discount,
         total_paid_by_cust: totalPaidByCust,
+        gross_amount: payload.data.transactions.total_paid_by_cust,
       });
 
       setCountdown({
