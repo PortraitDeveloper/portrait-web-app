@@ -41,10 +41,21 @@ export async function POST(request) {
 
   try {
     // Read the body data
-    const { order_id, gross_amount, first_name, last_name, email, phone_number } =
-      await request.json();
+    const {
+      order_id,
+      gross_amount,
+      first_name,
+      last_name,
+      email,
+      phone_number,
+    } = await request.json();
 
-    console.log("CUSTOMER NAME:", first_name);
+    console.log("ORDER_ID:", order_id);
+    console.log("GROSS AMOUNT:", gross_amount);
+    console.log("FIRST NAME:", first_name);
+    console.log("LAST NAME:", last_name);
+    console.log("EMAIL:", email);
+    console.log("PHONE NUMBER:", phone_number);
 
     // Midtrans client config
     const snap = new midtransClient.Snap({
