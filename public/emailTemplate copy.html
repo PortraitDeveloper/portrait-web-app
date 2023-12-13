@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<head>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f8f8f8;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 1rem;
+    }
+
+    .card {
+      border: 2px solid;
+      border-radius: 20px;
+      padding: 1.5rem;
+      width: 100%;
+      max-width: 400px;
+      background-color: #fff;
+      margin-top: 2rem; /* Added margin top for better spacing */
+    }
+
+    .button {
+      background-color: #1e3a8a;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: bold;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 0.75rem;
+      cursor: pointer;
+    }
+
+    .button:hover {
+      background-color: #1d4ed8;
+    }
+
+    h1 {
+      font-size: 1.5rem;
+      font-weight: bold;
+      text-align: center; /* Centered title text */
+      margin-bottom: 2rem;
+    }
+
+    hr {
+      border: 1px solid #e2e8f0;
+      margin: 1rem 0;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+
+    .text-md {
+      font-size: 1rem;
+    }
+
+    .text-center {
+      text-align: center;
+    }
+
+    .text-right {
+      align-items: flex-end;
+    }
+
+    .text-left {
+      text-align: left;
+    }
+
+    .text-xs {
+      font-size: 0.75rem;
+    }
+
+    .font-bold {
+      font-weight: bold;
+    }
+
+    .font-italic {
+      font-style: italic;
+    }
+
+    .bg-blue-900 {
+      background-color: #1e3a8a;
+      color: #fff; /* Added text color for better visibility */
+    }
+
+    .rounded-xl {
+      border-radius: 0.75rem;
+    }
+
+    .w-full {
+      width: 100%;
+    }
+
+    .h-10 {
+      height: 2.5rem;
+    }
+
+    .text-green-500 {
+      color: #48bb78;
+    }
+
+    .row {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .mb-2 {
+      margin-bottom: 0.25rem;
+    }
+
+    .mb-2 {
+      margin-bottom: 0.5rem;
+    }
+
+    .mb-4 {
+      margin-bottom: 1rem;
+    }
+
+    .text-slate-400 {
+      color:#94a3b8;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <!-- Title -->
+      <h1 class="text-2xl font-bold">
+        Konfirmasi Pembayaran {{email}}
+      </h1>
+
+      <h1 class="text-2xl font-bold">
+        Subject {{subject}}
+      </h1>
+
+      <!-- Booking Detail -->
+      <div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 0.5rem;">
+          <!-- Title -->
+          <div class="text-md">Kode Booking</div>
+          <!-- Booking Code -->
+          <div class="text-right text-xs font-bold pt-1">
+            XRUX-SSVJ-ZSSQ
+          </div>
+        </div>
+      
+        <div class="row mb-2">
+          <!-- Title -->
+          <div class="text-md">Lokasi</div>
+          <!-- Branch Address -->
+          <div class="text-right text-xs pt-1">
+            Jl. Braga No. 43 (Stoker House)
+          </div>
+        </div>
+      
+        <div class="row mb-2">
+          <!-- Title -->
+          <div class="text-md">Tanggal</div>
+          <!-- Booking Date -->
+          <div class="text-right text-xs pt-1">
+            13 Desember 2023
+          </div>
+        </div>
+        
+        <div class="row">
+          <!-- Title -->
+          <div class="text-md">Pukul</div>
+          <!-- Start At -->
+          <div class="text-right text-xs pt-1">
+            15:00 WIB
+          </div>
+        </div>
+      </div>
+        
+      <hr></hr>
+
+      <!-- Product -->
+      <div>
+        <div class="row">
+          <!-- Title -->
+          <div class="text-md font-bold mb-2">Paket</div>
+          <!-- Product Name -->
+          <div class="text-md  mb-2">Portrait Shoot</div>
+        </div>
+          
+        <div class="row">
+          <!-- Product Type -->
+          <div class="text-xs text-slate-400 font-italic">
+            Black and White
+          </div>
+          <!-- Product Price -->
+          <div class="text-right text-xs font-bold">Rp.80,000</div>
+        </div>
+      </div>
+      
+      <hr></hr>
+
+      <!-- Additional -->
+      <div class="grid">
+        <!-- Tambahan -->
+        <div class="text-md font-bold">Tambahan</div>
+        <div></div>
+        <!-- Orang Dewasa -->
+        <div class="text-md ">Orang Dewasa</div>
+        <div></div>
+        <div class="text-xs text-slate-400 ">1x</div>
+        <div class="text-right text-xs ">Rp.30,000</div>
+        <!-- Hewan Peliharaan -->
+        <div class="text-md ">Hewan Peliharaan</div>
+        <div></div>
+        <div class="text-xs text-slate-400 ">1x</div>
+        <div class="text-right text-xs ">Rp.15,000</div>
+        <!-- Print5R -->
+        <div class="text-md ">Print 5R</div>
+        <div></div>
+        <div class="text-xs text-slate-400 ">1x</div>
+        <div class="text-right text-xs ">Rp.20,000</div>
+        <!-- Soft-File -->
+        <div class="text-md ">Soft-File</div>
+        <div></div>
+        <div class="text-xs text-slate-400 ">1x</div>
+        <div class="text-right text-xs ">Rp.50,000</div>
+      </div>
+
+      <hr></hr>
+
+      <!-- Sub-Total -->
+      <div class="grid">
+        <!-- Subtotal -->
+        <div class="text-md font-bold">Subtotal</div>
+        <div class="text-right text-xs  font-bold pt-1">
+          Rp.195,000
+        </div>
+        <!-- Kode Voucher -->
+        <div class="text-md">Kode Voucher</div>
+        <div class="text-right text-xs text-blue-900 font-bold pt-1">
+          XYZ7772
+        </div>
+        <div></div>
+        <div class="text-right text-xs text-green-500 pt-1">
+          -Rp.15,000
+        </div>
+      </div>
+
+      <hr></hr>
+
+      <!-- Total -->
+      <div class="grid">
+        <div class="text-md  font-bold">Total</div>
+        <div class="text-right text-xs font-bold pt-1">
+          Rp.180,000
+        </div>
+      </div>
+
+      <!-- Button -->
+      <div class="flex justify-center items-center">
+          <a href="https://www.youtube.com">
+            <button class="button w-full md:w-120 h-10">
+              Link Pembayaran
+            </button>
+          </a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

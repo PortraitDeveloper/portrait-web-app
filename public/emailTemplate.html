@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<head>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f8f8f8;
+    }
+
+    .card {
+      border: 2px solid;
+      border-radius: 20px;
+      padding: 1.5rem;
+      width: 100%;
+      max-width: 300px;
+      background-color: #fff;
+      margin-top: 2rem; /* Added margin top for better spacing */
+    }
+
+    .col {
+      width: 150px;
+    }
+
+    .row {
+      display: flex;
+    }
+
+    .text-right {
+      text-align: right;
+    }
+
+    .text-xs {
+      font-size: 0.75rem;
+    }
+
+    .text-xs {
+      font-size: 0.875rem;
+    }
+
+    .text-md {
+      font-size: 1rem;
+    }
+
+    .text-lg {
+      font-size: 1.125rem;
+    }
+
+    .text-xl {
+      font-size: 1.25rem;
+    }
+
+    .text-2xl {
+      font-size: 1.5rem;
+    }
+
+    .text-slate-400 {
+      color:#94a3b8;
+    }
+
+    .text-green-500 {
+      color: #48bb78;
+    }
+
+    .font-bold {
+      font-weight: bold;
+    }
+
+    .font-italic {
+      font-style: italic;
+    }
+
+    .pt-1 {
+      padding-top: 0.25rem;
+    }
+
+    .mb-1 {
+      margin-bottom: 0.25rem;;
+    }
+
+    .mb-2 {
+      margin-bottom: 0.5rem;;
+    }
+
+    .mb-4 {
+      margin-bottom: 1rem;
+    }
+
+    .button {
+      background-color: #1e3a8a;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: bold;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 0.75rem;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    .button:hover {
+      background-color: #1d4ed8;
+    }
+  </style>
+</head>
+<body>
+    <div class="card">
+      <!-- TPP Logo -->
+      <img
+        src="https://i.ibb.co/7V2BYcv/portrait-Place.png"
+        alt="The Portrait Place Logo"
+      />
+
+      <!-- Main Title -->
+      <h1 class="text-xl font-bold mb-4">
+        Konfirmasi Pembayaran
+      </h1>
+
+      <div class="row mb-2">
+        <!-- Title -->
+        <div class="col text-md">Kode Booking</div>
+        <!-- Booking Code -->
+        <div class="col text-right text-md">
+          XRUX-SSVJ-ZSSQ
+        </div>
+      </div>
+
+      <div class="row mb-2">
+        <!-- Title -->
+        <div class="col text-md">Lokasi</div>
+        <!-- Branch Address -->
+        <div class="col text-right text-md">
+          Jl. Braga No. 43 (Stoker House)
+        </div>
+      </div>
+
+      <div class="row mb-2">
+        <!-- Title -->
+        <div class="col text-md">Tanggal</div>
+        <!-- Booking Date -->
+        <div class="col text-right text-md">
+          13 Desember 2023
+        </div>
+      </div>
+
+      <div class="row">
+        <!-- Title -->
+        <div class="col text-md">Pukul</div>
+        <!-- Start At -->
+        <div class="col text-right text-md">
+          15:00 WIB
+        </div>
+      </div>
+
+      <hr></hr>
+
+      <div class="row mb-2">
+        <!-- Title -->
+        <div class="col text-md font-bold">Paket</div>
+        <!-- Product Name -->
+        <div class="col text-right text-md">Portrait Shoot</div>
+      </div>
+        
+      <div class="row">
+        <!-- Product Type -->
+        <div class="col text-xs text-slate-400 font-italic">
+          Black and White
+        </div>
+        <!-- Product Price -->
+        <div class="col text-right text-xs font-bold">Rp.80,000</div>
+      </div>
+
+      <hr></hr>
+
+      <div class="text-md font-bold mb-2">Tambahan</div>
+
+      <!-- Additional Person -->
+      <div class="text-md">Orang Dewasa</div>
+      <div class="row mb-2">
+        <!-- Number of Additional Person -->
+        <div class="col text-xs text-slate-400 ">1x</div>
+        <!-- Additional Person Price -->
+        <div class="col text-right text-xs font-bold">Rp.30,000</div>
+      </div>
+
+     <!-- Additional Pet -->
+     <div class="text-md">Hewan Peliharaan</div>
+     <div class="row mb-2">
+       <!-- Number of Additional Pet -->
+       <div class="col text-xs text-slate-400 ">1x</div>
+       <!-- Additional Pet Price -->
+       <div class="col text-right text-xs font-bold">Rp.30,000</div>
+     </div>
+
+     <!-- Additional Print5R -->
+     <div class="text-md">Print 5R</div>
+     <div class="row mb-2">
+       <!-- Number of Additional Print5R -->
+       <div class="col text-xs text-slate-400 ">1x</div>
+       <!-- Additional Print5R Price -->
+       <div class="col text-right text-xs font-bold">Rp.30,000</div>
+     </div>
+
+     <!-- Additional Soft-File -->
+     <div class="text-md">Soft File</div>
+     <div class="row mb-2">
+       <!-- Number of Additional Soft-File -->
+       <div class="col text-xs text-slate-400 ">1x</div>
+       <!-- Additional Soft-File Price -->
+       <div class="col text-right text-xs font-bold">Rp.30,000</div>
+     </div>
+
+     <hr></hr>
+
+     <!-- Subtotal -->
+     <div class="row mb-1">
+       <div class="col text-md font-bold">Subtotal</div>
+       <div class="col text-right text-xs font-bold">
+         Rp.195,000
+       </div>
+     </div>
+    
+     <!-- Kode Voucher -->
+     <div class="row mb-1">
+       <div class="col text-md">Kode Voucher</div>
+       <div class="col text-right text-xs font-bold">
+         XYZ7772
+       </div>
+     </div>
+     
+     <div class="text-right text-xs text-green-500 font-bold mb-1">
+       -Rp.15,000
+     </div>
+
+     <!-- Total -->
+     <div class="row mb-4">
+       <div class="col text-md font-bold">Total</div>
+       <div class="col text-right text-xs font-bold">
+         Rp.180,000
+       </div>
+     </div>
+
+    <!-- Button -->
+    <a href="https://www.youtube.com">
+      <button class="button">
+        Link Pembayaran
+      </button>
+    </a>
+</body>
+</html>
