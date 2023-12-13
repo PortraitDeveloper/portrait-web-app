@@ -18,7 +18,33 @@ export async function POST(request) {
 
   try {
     // Read the body data
-    const { email, subject } = await request.json();
+    const {
+      email,
+      subject,
+      book_code,
+      branch_address,
+      booking_date,
+      start_at,
+      product_name,
+      product_type,
+      product_price,
+      number_of_add_person,
+      additional_person_price,
+      number_of_add_pet,
+      additional_pet_price,
+      number_of_add_print5r,
+      additional_print5r_price,
+      number_of_add_softfile,
+      additional_softfile_price,
+      total_price,
+      voucher_code,
+      discount,
+      total_paid_by_cust,
+      payment_url,
+    } = await request.json();
+
+    console.log("PAYMENT URL:", payment_url);
+
     const user = process.env.EMAIL_HOST;
     const pass = process.env.EMAIL_APP_PASS;
 
@@ -27,6 +53,26 @@ export async function POST(request) {
     const replacements = {
       subject: subject,
       email: email,
+      book_code: book_code,
+      branch_address: branch_address,
+      booking_date: booking_date,
+      start_at: start_at,
+      product_name: product_name,
+      product_type: product_type,
+      product_price: product_price,
+      number_of_add_person: number_of_add_person,
+      additional_person_price: additional_person_price,
+      number_of_add_pet: number_of_add_pet,
+      additional_pet_price: additional_pet_price,
+      number_of_add_print5r: number_of_add_print5r,
+      additional_print5r_price: additional_print5r_price,
+      number_of_add_softfile: number_of_add_softfile,
+      additional_softfile_price: additional_softfile_price,
+      total_price: total_price,
+      voucher_code: voucher_code,
+      discount: discount,
+      total_paid_by_cust: total_paid_by_cust,
+      payment_url: payment_url,
     };
     const html = template(replacements);
 
@@ -64,7 +110,7 @@ export async function POST(request) {
       created_at: currentTimeStamp,
       route: "/api/email",
       status: 500,
-      message: error,
+      message: error.message,
     };
     errorLog(log);
     return NextResponse.json(log);

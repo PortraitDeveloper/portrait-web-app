@@ -122,7 +122,7 @@
         <div class="col text-md">Kode Booking</div>
         <!-- Booking Code -->
         <div class="col text-right text-md">
-          XRUX-SSVJ-ZSSQ
+          {{book_code}}
         </div>
       </div>
 
@@ -131,7 +131,7 @@
         <div class="col text-md">Lokasi</div>
         <!-- Branch Address -->
         <div class="col text-right text-md">
-          Jl. Braga No. 43 (Stoker House)
+          {{branch_address}}
         </div>
       </div>
 
@@ -140,7 +140,7 @@
         <div class="col text-md">Tanggal</div>
         <!-- Booking Date -->
         <div class="col text-right text-md">
-          13 Desember 2023
+          {{booking_date}}
         </div>
       </div>
 
@@ -149,7 +149,7 @@
         <div class="col text-md">Pukul</div>
         <!-- Start At -->
         <div class="col text-right text-md">
-          15:00 WIB
+          {{start_at}} WIB
         </div>
       </div>
 
@@ -159,16 +159,18 @@
         <!-- Title -->
         <div class="col text-md font-bold">Paket</div>
         <!-- Product Name -->
-        <div class="col text-right text-md">Portrait Shoot</div>
+        <div class="col text-right text-md">{{product_name}}</div>
       </div>
         
       <div class="row">
         <!-- Product Type -->
         <div class="col text-xs text-slate-400 font-italic">
-          Black and White
+          {{product_type}}
         </div>
         <!-- Product Price -->
-        <div class="col text-right text-xs font-bold">Rp.80,000</div>
+        <div class="col text-right text-xs font-bold">
+          {{product_price}}
+        </div>
       </div>
 
       <hr></hr>
@@ -179,36 +181,52 @@
       <div class="text-md">Orang Dewasa</div>
       <div class="row mb-2">
         <!-- Number of Additional Person -->
-        <div class="col text-xs text-slate-400 ">1x</div>
+        <div class="col text-xs text-slate-400 ">
+          {{number_of_add_person}}
+        </div>
         <!-- Additional Person Price -->
-        <div class="col text-right text-xs font-bold">Rp.30,000</div>
+        <div class="col text-right text-xs font-bold">
+          {{additional_person_price}}
+        </div>
       </div>
 
      <!-- Additional Pet -->
      <div class="text-md">Hewan Peliharaan</div>
      <div class="row mb-2">
        <!-- Number of Additional Pet -->
-       <div class="col text-xs text-slate-400 ">1x</div>
+       <div class="col text-xs text-slate-400 ">
+         {{number_of_add_pet}}
+       </div>
        <!-- Additional Pet Price -->
-       <div class="col text-right text-xs font-bold">Rp.30,000</div>
+       <div class="col text-right text-xs font-bold">
+         {{additional_pet_price}}
+       </div>
      </div>
 
      <!-- Additional Print5R -->
      <div class="text-md">Print 5R</div>
      <div class="row mb-2">
        <!-- Number of Additional Print5R -->
-       <div class="col text-xs text-slate-400 ">1x</div>
+       <div class="col text-xs text-slate-400 ">
+         {{number_of_add_print5r}}
+       </div>
        <!-- Additional Print5R Price -->
-       <div class="col text-right text-xs font-bold">Rp.30,000</div>
+       <div class="col text-right text-xs font-bold">
+         {{additional_print5r_price}}
+       </div>
      </div>
 
      <!-- Additional Soft-File -->
      <div class="text-md">Soft File</div>
      <div class="row mb-2">
        <!-- Number of Additional Soft-File -->
-       <div class="col text-xs text-slate-400 ">1x</div>
+       <div class="col text-xs text-slate-400 ">
+         {{number_of_add_softfile}}
+       </div>
        <!-- Additional Soft-File Price -->
-       <div class="col text-right text-xs font-bold">Rp.30,000</div>
+       <div class="col text-right text-xs font-bold">
+         {{additional_softfile_price}}
+       </div>
      </div>
 
      <hr></hr>
@@ -217,32 +235,33 @@
      <div class="row mb-1">
        <div class="col text-md font-bold">Subtotal</div>
        <div class="col text-right text-xs font-bold">
-         Rp.195,000
+         {{total_price}}
        </div>
      </div>
     
-     <!-- Kode Voucher -->
+     <!-- Voucher Code -->
      <div class="row mb-1">
        <div class="col text-md">Kode Voucher</div>
        <div class="col text-right text-xs font-bold">
-         XYZ7772
+         {{voucher_code}}
        </div>
      </div>
      
+     <!-- Discount -->
      <div class="text-right text-xs text-green-500 font-bold mb-1">
-       -Rp.15,000
+       {{discount}}
      </div>
 
      <!-- Total -->
      <div class="row mb-4">
        <div class="col text-md font-bold">Total</div>
        <div class="col text-right text-xs font-bold">
-         Rp.180,000
+         {{total_paid_by_cust}}
        </div>
      </div>
 
     <!-- Button -->
-    <a href="https://www.youtube.com">
+    <a href={{payment_url}}>
       <button class="button">
         Link Pembayaran
       </button>

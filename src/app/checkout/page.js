@@ -88,8 +88,27 @@ export default function Checkout() {
     try {
       const body = {
         email: orderBook.email,
-        subject: "Link Pembayaran",
-        text: `Hi ${orderBook.first_name},\nPesanan Anda dengan kode booking ${orderBook.book_code}\nBerikut adalah link pembayaran ${paymentUrl}.\nSegera lakukan pembayaran dalam waktu 15 menit kedepan, jika lewat batas waktu maka order booking anda akan dicancel secara otomatis.`,
+        subject: "Konfirmasi Pembayaran",
+        book_code: orderBook.book_code,
+        branch_address: orderBook.branch_address,
+        booking_date: orderBook.booking_date,
+        start_at: orderBook.start_at,
+        product_name: orderBook.product_name,
+        product_type: orderBook.product_type,
+        product_price: orderBook.product_price,
+        number_of_add_person: orderBook.number_of_add_person,
+        additional_person_price: orderBook.additional_person_price,
+        number_of_add_pet: orderBook.number_of_add_pet,
+        additional_pet_price: orderBook.additional_pet_price,
+        number_of_add_print5r: orderBook.number_of_add_print5r,
+        additional_print5r_price: orderBook.additional_print5r_price,
+        number_of_add_softfile: orderBook.number_of_add_softfile,
+        additional_softfile_price: orderBook.additional_softfile_price,
+        total_price: orderBook.total_price,
+        voucher_code: orderBook.voucher_code,
+        discount: orderBook.discount,
+        total_paid_by_cust: orderBook.total_paid_by_cust,
+        payment_url: paymentUrl,
       };
 
       const response = await fetch(`/api/email`, {
@@ -163,8 +182,6 @@ export default function Checkout() {
   };
 
   const getData = (payload) => {
-    console.log("PHONE NUMBER:", payload.data.customers.phone_number);
-
     const createdAt = payload.data.created_at;
     const dateObject = new Date(createdAt);
 
@@ -397,7 +414,7 @@ export default function Checkout() {
       {loading && (
         <div className="flex flex-col items-center md:py-4">
           <div className="md:border-2 md:border-blue-900 rounded-3xl p-6 w-full md:w-128">
-            {/* The Portrait Place Logo */}
+            {/* TPP Logo */}
             <Image
               src="/portraitPlace.png"
               width={100}
@@ -406,7 +423,7 @@ export default function Checkout() {
               className="mb-3"
             />
 
-            {/* Title */}
+            {/* Main Title */}
             <h1 className="text-xl font-sora font-bold mb-4">
               Ringkasan Pesanan
             </h1>
@@ -439,18 +456,20 @@ export default function Checkout() {
             {/* Booking Detail */}
             <div className="grid grid-cols-2 font-roboto">
               <div className="text-md">Kode Booking</div>
+              {/* Book Code */}
               <div className="text-right text-xs font-bold pt-1">
                 {orderBook.book_code}
               </div>
               <div className="text-md">Lokasi</div>
+              {/* Branch Address */}
               <div className="text-right text-xs pt-1">
                 {orderBook.branch_address}
               </div>
             </div>
-
             <div className="grid grid-cols-2 md:grid-rows-2 font-roboto mb-4">
               <div className="text-md">Tanggal dan Waktu</div>
               <div className="flex justify-end">
+                {/* Booking Date */}
                 <div className="text-xs text-right pt-1">
                   {orderBook.booking_date}
                 </div>
@@ -462,6 +481,7 @@ export default function Checkout() {
                         alt="Clock Icon"
                         className="max-w-full h-auto rounded-full"
                       />
+                      {/* Start At */}
                       <p className="pl-1">{orderBook.start_at} WIB</p>
                     </span>
                   </div>
@@ -476,6 +496,7 @@ export default function Checkout() {
                       alt="Clock Icon"
                       className="max-w-full h-auto rounded-full"
                     />
+                    {/* Start At */}
                     <p className="pl-1">{orderBook.start_at} WIB</p>
                   </span>
                 </div>
@@ -486,17 +507,17 @@ export default function Checkout() {
 
             {/* Product */}
             <div className="grid grid-cols-2 grid-rows-3 mb-4">
-              {/* Title */}
               <div className="text-md font-sora font-bold">Paket</div>
               <div></div>
-
-              {/* Product Name and Price */}
+              {/* Product Name */}
               <div className="text-md font-roboto">
                 {orderBook.product_name}
               </div>
-              <div className="text-right text-xs font-roboto">
+              {/* Product Price */}
+              <div className="text-right text-xs font-roboto font-bold">
                 {orderBook.product_price}
               </div>
+              {/* Product Type */}
               <div className="text-xs text-slate-400 font-roboto italic">
                 {orderBook.product_type}
               </div>
@@ -507,77 +528,84 @@ export default function Checkout() {
 
             {/* Additional */}
             <div className="grid grid-cols-2 grid-rows-9 mb-4">
-              {/* Title */}
               <div className="text-md font-sora font-bold">Tambahan</div>
               <div></div>
 
-              {/* Adult */}
+              {/* Person */}
               <div className="text-md font-roboto">Orang Dewasa</div>
               <div></div>
+              {/* Number of Add Person */}
               <div className="text-xs text-slate-400 font-roboto">
                 {orderBook.number_of_add_person}
               </div>
-              <div className="text-right text-xs font-roboto">
+              {/* Additional Person Price */}
+              <div className="text-right text-xs font-roboto font-bold">
                 {orderBook.additional_person_price}
               </div>
 
               {/* Pet */}
               <div className="text-md font-roboto">Hewan Peliharaan</div>
               <div></div>
+              {/* Number of Add Pet */}
               <div className="text-xs text-slate-400 font-roboto">
                 {orderBook.number_of_add_pet}
               </div>
-              <div className="text-right text-xs font-roboto">
+              {/* Additional Pet Price */}
+              <div className="text-right text-xs font-roboto font-bold">
                 {orderBook.additional_pet_price}
               </div>
 
               {/* Print5R */}
               <div className="text-md font-roboto">Print 5R</div>
               <div></div>
+              {/* Number of Add Print5R */}
               <div className="text-xs text-slate-400 font-roboto">
                 {orderBook.number_of_add_print5r}
               </div>
-              <div className="text-right text-xs font-roboto">
+              {/* Additional Print5R Price */}
+              <div className="text-right text-xs font-roboto font-bold">
                 {orderBook.additional_print5r_price}
               </div>
 
               {/* Soft-File */}
               <div className="text-md font-roboto">Soft-File</div>
               <div></div>
+              {/* Number of Add Softfile */}
               <div className="text-xs text-slate-400 font-roboto">
                 {orderBook.number_of_add_softfile}
               </div>
-              <div className="text-right text-xs font-roboto">
+              {/* Additional Softfile Price */}
+              <div className="text-right text-xs font-roboto font-bold">
                 {orderBook.additional_softfile_price}
               </div>
             </div>
 
             <hr className="border mb-4"></hr>
 
-            {/* Sub-Total */}
             <div className="grid grid-cols-2 grid-rows-3 mb-4">
-              {/* Title */}
               <div className="text-md font-sora font-bold">Subtotal</div>
+              {/* Total Price */}
               <div className="text-right text-xs font-roboto font-bold pt-1">
                 {orderBook.total_price}
               </div>
 
-              {/* Voucher */}
               <div className="text-md font-roboto ">Kode Voucher</div>
+              {/* Voucher Code */}
               <div className="text-right text-xs text-blue-900 font-roboto font-bold pt-1">
                 {orderBook.voucher_code}
               </div>
               <div></div>
-              <div className="text-right text-xs text-green-500 font-roboto pt-1">
+              {/* Discount */}
+              <div className="text-right text-xs text-green-500 font-roboto font-bold pt-1">
                 {orderBook.discount}
               </div>
             </div>
 
             <hr className="border mb-4"></hr>
 
-            {/* Total */}
             <div className="grid grid-cols-2 mb-4">
               <div className="text-md font-sora font-bold">Total</div>
+              {/* Total */}
               <div className="text-right text-xs font-roboto font-bold pt-1">
                 {orderBook.total_paid_by_cust}
               </div>
