@@ -50,7 +50,7 @@ export async function GET(request, { params: { itemid } }) {
       created_at: currentTimeStamp,
       route: "/api/data/additional/[itemid]",
       status: 500,
-      message: error,
+      message: error.message,
     };
     errorLog(log);
     return NextResponse.json(log);

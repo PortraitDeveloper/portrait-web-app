@@ -69,7 +69,7 @@ export async function PATCH(request) {
       created_at: currentTimeStamp,
       route: "/api/order/cancel",
       status: 500,
-      message: error,
+      message: error.message,
     };
     errorLog(log);
     return NextResponse.json(log);

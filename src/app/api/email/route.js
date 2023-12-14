@@ -13,6 +13,7 @@ export async function POST(request) {
   // Generate timestamp / current datetime
   const currentTimeStamp = getTimeStamp(timeDiff);
 
+  // Define email template file location
   const fileName = "emailTemplate.html";
   const filePath = path.join(process.cwd(), "public", fileName);
 
@@ -43,12 +44,14 @@ export async function POST(request) {
       payment_url,
     } = await request.json();
 
-    console.log("PAYMENT URL:", payment_url);
-
+    // Define host's email and password from environment variable
     const user = process.env.EMAIL_HOST;
     const pass = process.env.EMAIL_APP_PASS;
 
+    // Read html file 
     const source = (await fs.readFile(filePath, "utf8")).toString();
+
+    // Replace and insert orderBook parameter to html file
     const template = Handlebars.compile(source);
     const replacements = {
       subject: subject,
@@ -74,6 +77,8 @@ export async function POST(request) {
       total_paid_by_cust: total_paid_by_cust,
       payment_url: payment_url,
     };
+
+    // Get final html file
     const html = template(replacements);
 
     // Transporter config

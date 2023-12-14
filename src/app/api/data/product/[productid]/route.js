@@ -15,7 +15,7 @@ const timeDiff = 7;
 export async function GET(request, { params: { productid } }) {
   // Generate timestamp / current datetime
   const currentTimeStamp = getTimeStamp(timeDiff);
-  
+
   try {
     // Read a the product data by product ID
     const product = await prisma.products.findUnique({
@@ -50,7 +50,7 @@ export async function GET(request, { params: { productid } }) {
       created_at: currentTimeStamp,
       route: "/api/data/product/[productid]",
       status: 500,
-      message: error,
+      message: error.message,
     };
     errorLog(log);
     return NextResponse.json(log);

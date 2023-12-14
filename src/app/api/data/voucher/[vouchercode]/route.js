@@ -50,7 +50,7 @@ export async function GET(request, { params: { vouchercode } }) {
       created_at: currentTimeStamp,
       route: "/api/data/voucher/[vouchercode]",
       status: 500,
-      message: error,
+      message: error.message,
     };
     errorLog(log);
     return NextResponse.json(log);

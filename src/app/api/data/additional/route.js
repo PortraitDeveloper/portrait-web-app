@@ -34,7 +34,7 @@ export async function GET(request) {
       created_at: currentTimeStamp,
       route: "/api/data/additional",
       status: 500,
-      message: error,
+      message: error.message.message,
     };
     errorLog(log);
     return NextResponse.json(log);
@@ -98,7 +98,7 @@ export async function POST(request) {
       created_at: currentTimeStamp,
       route: "/api/data/additional",
       status: 500,
-      message: error,
+      message: error.message.message,
     };
     errorLog(log);
     return NextResponse.json(log);
@@ -135,7 +135,7 @@ export async function PATCH(request) {
       created_at: currentTimeStamp,
       route: "/api/data/additional",
       status: 500,
-      message: error,
+      message: error.message,
     };
     errorLog(log);
     return NextResponse.json(log);
@@ -170,7 +170,7 @@ export async function DELETE(request) {
       created_at: currentTimeStamp,
       route: "/api/data/additional",
       status: 500,
-      message: error,
+      message: error.message,
     };
     errorLog(log);
     return NextResponse.json(log);
