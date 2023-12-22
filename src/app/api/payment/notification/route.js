@@ -1,11 +1,8 @@
 import { NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
+import crypto from "crypto";
+import prisma from "@/utils/prisma";
 import getTimeStamp from "@/utils/getTimeStamp";
 import errorLog from "@/utils/errorLog";
-import crypto from "crypto";
-
-// Prisma initial
-const prisma = new PrismaClient();
 
 // Set Time Zone from UTC to WIB or Asia/Jakarta Timezone where time difference is 7
 const timeDiff = 7;
@@ -38,6 +35,8 @@ export async function POST(request) {
       };
       errorLog(log);
       return NextResponse.json(log);
+    } finally {
+      await prisma.$disconnect();
     }
   };
 

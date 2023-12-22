@@ -1,10 +1,7 @@
 import { NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/utils/prisma";
 import getTimeStamp from "@/utils/getTimeStamp";
 import errorLog from "@/utils/errorLog";
-
-// Prisma initial
-const prisma = new PrismaClient();
 
 // Set Time Zone from UTC to WIB or Asia/Jakarta Timezone where time difference is 7
 const timeDiff = 7;
