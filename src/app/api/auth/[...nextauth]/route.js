@@ -11,6 +11,7 @@ const authHandler = NextAuth({
       },
       async authorize(credentials) {
         try {
+          console.log("CREDENTIALS API/AUTH:", credentials);
           // const response = await fetch(
           //   `${process.env.NEXTAUTH_URL}/api/login`,
           //   {
@@ -49,12 +50,12 @@ const authHandler = NextAuth({
       },
     }),
   ],
-  // pages: {
-  //   signIn: "/login",
-  // },
   pages: {
-    signIn: "https://theportraitplace.my.id/login",
+    signIn: "/login",
   },
+  // pages: {
+  //   signIn: "https://theportraitplace.my.id/login",
+  // },
   callbacks: {
     async jwt({ token, user }) {
       return { ...token, ...user };
