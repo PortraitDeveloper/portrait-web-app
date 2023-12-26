@@ -13,7 +13,7 @@ export async function POST(request) {
     });
   }
 
-  const exist = await prisma.credentials.findUnique({
+  const exist = await prisma.User.findUnique({
     where: {
       username,
     },
@@ -27,7 +27,7 @@ export async function POST(request) {
 
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  const credential = await prisma.credentials.create({
+  const credential = await prisma.User.create({
     data: {
       username,
       password: hashedPassword,
