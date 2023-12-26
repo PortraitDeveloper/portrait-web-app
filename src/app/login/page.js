@@ -1,17 +1,51 @@
 "use client";
 import Image from "next/image";
 import { useState } from "react";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function LoginPageTest() {
+  const router = useRouter();
+
   const [showPassword, setShowPassword] = useState(false);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
 
+  const handleUsernameChange = (e) => setUsername(e.target.value);
+  const handlePasswordChange = (e) => setPassword(e.target.value);
+
+  const clearInputs = () => {
+    setUsername("");
+    setPassword("");
+    setError("");
+  };
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    signIn("credentials", {
+      username,
+      password,
+      redirect: false,
+    })
+      .then((res) => {
+        if (res.error) {
+          setError(JSON.parse(res.error).message);
+        } else {
+          clearInputs();
+          router.push("/dashboard/transaction");
+        }
+      })
+      .catch((e) => console.error(e));
+  };
+
   return (
     <div className="flex justify-center items-center">
-      <div>
+      <form onSubmit={handleLogin}>
         <div className="flex justify-center items-center">
           <Image
             src="/portraitPlacePortal.png"
@@ -31,8 +65,8 @@ export default function LoginPageTest() {
             placeholder="Masukan Username"
             outline="none"
             className="bg-gray-100 outline-none rounded-2xl pl-4 h-11 w-80"
+            onChange={handleUsernameChange}
             required
-            // onChange={changeHandler}
           />
         </div>
 
@@ -44,9 +78,9 @@ export default function LoginPageTest() {
               id="password"
               name="password"
               placeholder="Masukkan Password"
-              required
               className="bg-gray-100 outline-none"
-              // onChange={changeHandler}
+              onChange={handlePasswordChange}
+              required
             />
             <Image
               src="/mdiEye.png"
@@ -60,15 +94,17 @@ export default function LoginPageTest() {
         </div>
 
         {/* Submit Button */}
-        <div>
+        <div className="mb-2">
           <button
             className="bg-blue-900 text-sm text-white font-sora hover:bg-blue-700 rounded-xl h-11 w-80"
-            // onClick={getHandleTransaction}
+            type="submit"
           >
             Masuk
           </button>
         </div>
-      </div>
+
+        {error && <p className="text-red-500 font-bold text-center">{error}</p>}
+      </form>
     </div>
   );
 }

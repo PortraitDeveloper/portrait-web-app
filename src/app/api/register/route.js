@@ -4,18 +4,18 @@ import prisma from "@/utils/prisma";
 
 export async function POST(request) {
   const body = await request.json();
-  const { name, password } = body.data;
-  console.log(body.data);
+  const { username, password, role } = body;
+  console.log(body);
 
-  if (!name || !password) {
+  if (!username || !password || !role) {
     return new NextResponse("Missing name, email, or password", {
       status: 400,
     });
   }
 
-  const exist = await prisma.user.findUnique({
+  const exist = await prisma.credentials.findUnique({
     where: {
-      name,
+      username,
     },
   });
 
@@ -27,12 +27,13 @@ export async function POST(request) {
 
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  const user = await prisma.user.create({
+  const credential = await prisma.credentials.create({
     data: {
-      name,
-      hashedPassword,
+      username,
+      password: hashedPassword,
+      role,
     },
   });
 
-  return NextResponse.json(user);
+  return NextResponse.json(credential);
 }

@@ -1,14 +1,25 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import { useEffect, useState } from "react";
+import { useSession } from "next-auth/react";
 
 export default function DashboardPage() {
+  const { data: session } = useSession();
   const [view, setView] = useState("orders_book");
   const [loading, setLoading] = useState(false);
   const [ordersBook, setOrdersBook] = useState([]);
 
   const getOrdersBookData = async () => {
-    const response = await fetch("/api/data/book", { cache: "no-cache" });
+    // const response = await fetch("/api/data/book", { cache: "no-cache" });
+    const response = await fetch("/api/data/book", {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: session?.user.accessToken,
+      },
+    });
     const payload = await response.json();
     console.log(payload);
     setOrdersBook(payload.data);

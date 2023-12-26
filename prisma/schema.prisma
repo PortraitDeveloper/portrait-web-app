@@ -96,11 +96,11 @@ model orders_book {
   transactions transactions @relation(fields: [book_code], references: [book_code]) // An Order has one transaction
   book_code    String       @unique
 
-  created_at    DateTime
-  updated_at    DateTime?
-  booking_date  String
-  start_at      String
-  end_at        String
+  created_at   DateTime
+  updated_at   DateTime?
+  booking_date String
+  start_at     String
+  end_at       String
 
   customers customers @relation(fields: [cust_id], references: [cust_id]) // An order has one customer
   cust_id   Int
@@ -134,37 +134,9 @@ model raw_data {
   branch_id             String
 }
 
-model Account {
-  id                String  @id @default(cuid())
-  userId            String
-  type              String
-  provider          String
-  providerAccountId String
-  refresh_token     String? @db.Text
-  access_token      String? @db.Text
-  expires_at        Int?
-  token_type        String?
-  scope             String?
-  id_token          String? @db.Text
-  session_state     String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@unique([provider, providerAccountId])
-}
-
-model Session {
-  id           String   @id @default(cuid())
-  sessionToken String   @unique
-  userId       String
-  expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
-
-model User {
-  id             String    @id @default(cuid())
-  name           String?   @unique
-  hashedPassword String?
-  accounts       Account[]
-  sessions       Session[]
+model credentials {
+  id       Int    @id @default(autoincrement())
+  username String @unique
+  password String
+  role     String
 }

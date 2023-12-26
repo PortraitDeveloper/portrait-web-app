@@ -4,24 +4,39 @@ import { useRouter } from "next/navigation";
 
 export default function RegisterPage() {
   const router = useRouter();
-  const [data, setData] = useState({
-    name: "",
-    password: "",
-    confirm_password: "",
-  });
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [role, setRole] = useState("");
+
+  const handleUsernameChange = (e) => setUsername(e.target.value);
+  const handlePasswordChange = (e) => setPassword(e.target.value);
+  const handleRoleChange = (e) => setRole(e.target.value);
+
+  const clearInputs = () => {
+    setUsername("");
+    setPassword("");
+    setRole("");
+  };
 
   const registerUser = async (e) => {
     e.preventDefault();
+    const body = {
+      username: username,
+      password: password,
+      role: role,
+    };
+
     const response = await fetch("/api/register", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ data }),
+      body: JSON.stringify(body),
     });
 
     const userInfo = await response.json();
     console.log(userInfo);
+    clearInputs();
     router.push("/login");
   };
 
@@ -38,21 +53,19 @@ export default function RegisterPage() {
           <form className="space-y-6" onSubmit={registerUser}>
             <div>
               <label
-                htmlFor="name"
+                htmlFor="username"
                 className="block text-sm font-medium leading-6 text-gray-900"
               >
                 Username
               </label>
               <div className="mt-2">
                 <input
-                  id="name"
-                  name="name"
+                  id="username"
+                  name="username"
                   type="text"
                   required
-                  value={data.name}
-                  onChange={(e) => {
-                    setData({ ...data, name: e.target.value });
-                  }}
+                  value={username}
+                  onChange={handleUsernameChange}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>
@@ -74,10 +87,8 @@ export default function RegisterPage() {
                   type="password"
                   autoComplete="current-password"
                   required
-                  value={data.password}
-                  onChange={(e) => {
-                    setData({ ...data, password: e.target.value });
-                  }}
+                  value={password}
+                  onChange={handlePasswordChange}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>
@@ -86,23 +97,20 @@ export default function RegisterPage() {
             <div>
               <div className="flex items-center justify-between">
                 <label
-                  htmlFor="confirm_password"
+                  htmlFor="role"
                   className="block text-sm font-medium leading-6 text-gray-900"
                 >
-                  Confirm Password
+                  Role
                 </label>
               </div>
               <div className="mt-2">
                 <input
-                  id="confirm_password"
-                  name="confirm_password"
-                  type="password"
-                  autoComplete="current-password"
+                  id="role"
+                  name="role"
+                  type="text"
                   required
-                  value={data.confirm_password}
-                  onChange={(e) => {
-                    setData({ ...data, confirm_password: e.target.value });
-                  }}
+                  value={role}
+                  onChange={handleRoleChange}
                   className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 />
               </div>

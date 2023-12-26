@@ -14,6 +14,21 @@ export async function GET(request) {
   const currentTimeStamp = getTimeStamp(timeDiff);
 
   try {
+    // Read Json Web Token for authorization
+    const accessToken = request.headers.get("Authorization");
+
+    // If token not found then user not authorized to get data
+    if (!accessToken) {
+      const log = {
+        created_at: currentTimeStamp,
+        route: "/api/data/book",
+        status: 401,
+        message: "Suspicious request! Not authorized to get data",
+      };
+      errorLog(log);
+      return NextResponse.json({ message: "Not authorized" }, { status: 401 });
+    }
+
     // Read all product data
     const ordersBook = await prisma.orders_book.findMany({
       include: {
@@ -38,7 +53,6 @@ export async function GET(request) {
   } catch (error) {
     // If the system or database server error then return an error log
     const log = {
-      revalidated: true,
       created_at: currentTimeStamp,
       route: "/api/data/book",
       status: 500,
