@@ -57,13 +57,17 @@
 
 // export { authHandler as GET, authHandler as POST };
 
+///////////////////////////////////////////////////////////////////////////////////////////
+
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
 import * as bcrypt from "bcrypt";
 import prisma from "@/utils/prisma";
 import { signJwtAccessToken } from "@/utils/jwt";
-import getTimeStamp from "@/utils/getTimeStamp";
-import errorLog from "@/utils/errorLog";
+import Cors from "cors";
+
+// Cors Middleware Init
+const cors = Cors();
 
 const authHandler = NextAuth({
   providers: [
@@ -134,3 +138,12 @@ const authHandler = NextAuth({
 });
 
 export { authHandler as GET, authHandler as POST };
+
+export default async function handler(req, res) {
+  cors(req, res);
+
+  // Kirim permintaan ke NextAuth handler
+  return authHandler(req, res);
+}
+
+
