@@ -80,7 +80,7 @@ const timeDiff = 7;
 // Initialize the cors middleware
 const cors = initMiddleware(
   Cors({
-    origin: 'https://your-allowed-origin.com', // Replace with your allowed origin
+    origin: '*', // Replace with your allowed origin
     methods: ['POST'],
   })
 );
