@@ -49,8 +49,11 @@ const authHandler = NextAuth({
       },
     }),
   ],
+  // pages: {
+  //   signIn: "/login",
+  // },
   pages: {
-    signIn: "/login",
+    signIn: "https://theportraitplace.my.id/login",
   },
   callbacks: {
     async jwt({ token, user }) {
