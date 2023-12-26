@@ -65,9 +65,8 @@
 //   }
 // }
 
-import Cors from 'cors';
-import initMiddleware from '../../lib/init-middleware';
 import { NextResponse } from 'next/server';
+import Cors from 'cors';
 import * as bcrypt from 'bcrypt';
 import prisma from '@/utils/prisma';
 import { signJwtAccessToken } from '@/utils/jwt';

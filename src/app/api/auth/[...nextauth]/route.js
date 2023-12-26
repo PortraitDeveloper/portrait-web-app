@@ -60,7 +60,6 @@
 import NextAuth from 'next-auth/next';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import Cors from 'cors';
-import initMiddleware from '../../../lib/init-middleware';
 
 // Initialize the cors middleware
 const cors = initMiddleware(
