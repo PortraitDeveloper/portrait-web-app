@@ -23,7 +23,7 @@ export async function GET(request) {
         created_at: currentTimeStamp,
         route: "/api/data/book",
         status: 401,
-        message: "Suspicious request! Not authorized to get data",
+        message: "Suspicious request or not authorized to get data!",
       };
       errorLog(log);
       return NextResponse.json({ message: "Not authorized" }, { status: 401 });
