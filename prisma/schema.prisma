@@ -134,9 +134,10 @@ model raw_data {
   branch_id             String
 }
 
-model credentials {
+model User {
   id       Int    @id @default(autoincrement())
   username String @unique
   password String
   role     String
 }
+
