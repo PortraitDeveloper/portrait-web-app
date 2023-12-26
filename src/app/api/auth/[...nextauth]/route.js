@@ -38,6 +38,7 @@ const authHandler = NextAuth({
           });
 
           const json = await response.json();
+          console.log("CREDENTIALS API/AUTH FROM RES JSON:", json);
 
           if (response.status === 200) {
             return json.result;
