@@ -65,24 +65,22 @@
 //   }
 // }
 
-import { NextResponse } from 'next/server';
-import Cors from 'cors';
-import * as bcrypt from 'bcrypt';
-import prisma from '@/utils/prisma';
-import { signJwtAccessToken } from '@/utils/jwt';
-import getTimeStamp from '@/utils/getTimeStamp';
-import errorLog from '@/utils/errorLog';
+import { NextResponse } from "next/server";
+import Cors from "cors";
+import * as bcrypt from "bcrypt";
+import prisma from "@/utils/prisma";
+import { signJwtAccessToken } from "@/utils/jwt";
+import getTimeStamp from "@/utils/getTimeStamp";
+import errorLog from "@/utils/errorLog";
 
 // Set Time Zone from UTC to WIB or Asia/Jakarta Timezone where time difference is 7
 const timeDiff = 7;
 
 // Initialize the cors middleware
-const cors = initMiddleware(
-  Cors({
-    origin: '*', // Replace with your allowed origin
-    methods: ['POST'],
-  })
-);
+const cors = Cors({
+  origin: "*", // Allow all origins
+  methods: ["POST"],
+});
 
 export async function POST(request) {
   // Run cors middleware
@@ -94,14 +92,14 @@ export async function POST(request) {
   try {
     // Read username and password from body
     const { username, password } = await request.json();
-    console.log('GET USERNAME AT API/LOGIN:', username);
+    console.log("GET USERNAME AT API/LOGIN:", username);
 
     // Looking to see if the username exists
     const credentials = await prisma.credentials.findUnique({
       where: { username: username },
     });
 
-    console.log('GET CREDENTIALS AT API/LOGIN:', credentials);
+    console.log("GET CREDENTIALS AT API/LOGIN:", credentials);
 
     // If the username is not found, the error message "Username doesn't exist" will appear.
     if (!credentials) {
@@ -125,7 +123,7 @@ export async function POST(request) {
     } else {
       // If not identified successfully, the error message "Invalid password" will appear.
       return NextResponse.json(
-        { message: 'Invalid password' },
+        { message: "Invalid password" },
         { status: 400 }
       );
     }
@@ -133,7 +131,7 @@ export async function POST(request) {
     // If the system or database server error then return an error log
     const log = {
       created_at: currentTimeStamp,
-      route: '/api/login',
+      route: "/api/login",
       status: 500,
       message: error.message,
     };

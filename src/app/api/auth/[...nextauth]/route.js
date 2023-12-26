@@ -62,12 +62,10 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import Cors from 'cors';
 
 // Initialize the cors middleware
-const cors = initMiddleware(
-  Cors({
-    origin: '*', // Replace with your allowed origin
-    methods: ['POST'],
-  })
-);
+const cors = Cors({
+  origin: '*', // Allow all origins
+  methods: ['POST'],
+});
 
 const authHandler = NextAuth({
   providers: [
