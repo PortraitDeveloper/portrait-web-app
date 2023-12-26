@@ -11,7 +11,7 @@ const authHandler = NextAuth({
       },
       async authorize(credentials) {
         try {
-          console.log("CREDENTIALS API/AUTH:", credentials);
+          console.log("GET CREDENTIALS API/AUTH:", credentials);
           const response = await fetch(
             `${process.env.NEXTAUTH_URL}/api/login`,
             {
@@ -38,7 +38,7 @@ const authHandler = NextAuth({
           // });
 
           const json = await response.json();
-          console.log("CREDENTIALS API/AUTH FROM RES JSON:", json);
+          console.log("GET RES JSON API/AUTH:", json);
 
           if (response.status === 200) {
             return json.result;

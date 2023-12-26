@@ -15,12 +15,14 @@ export async function POST(request) {
   try {
     // Read username and password from body
     const { username, password } = await request.json();
-    console.log("USERNAME AT API/LOGIN:", username);
+    console.log("GET USERNAME AT API/LOGIN:", username);
 
     // Looking to see if the username exists
     const credentials = await prisma.credentials.findUnique({
       where: { username: username },
     });
+
+    console.log("GET CREDENTIALS AT API/LOGIN:", credentials);
 
     // If the username is not found, the error message "Username doesn't exist" will appear.
     if (!credentials) {
