@@ -81,7 +81,7 @@ const authHandler = NextAuth({
           console.log("GET INPUT CREDENTIAL:", credentials);
 
           // Looking to see if the username exists
-          const userCredential = await prisma.user.findUnique({
+          const userCredential = await prisma.credentials.findUnique({
             where: { username: username },
           });
 
@@ -134,5 +134,3 @@ const authHandler = NextAuth({
 });
 
 export { authHandler as GET, authHandler as POST };
-
-
