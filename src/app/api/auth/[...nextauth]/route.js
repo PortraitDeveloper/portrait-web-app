@@ -12,30 +12,30 @@ const authHandler = NextAuth({
       async authorize(credentials) {
         try {
           console.log("CREDENTIALS API/AUTH:", credentials);
-          // const response = await fetch(
-          //   `${process.env.NEXTAUTH_URL}/api/login`,
-          //   {
-          //     method: "POST",
-          //     headers: {
-          //       "Content-Type": "application/json",
-          //     },
-          //     body: JSON.stringify({
-          //       username: credentials?.username,
-          //       password: credentials?.password,
-          //     }),
-          //   }
-          // );
+          const response = await fetch(
+            `${process.env.NEXTAUTH_URL}/api/login`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                username: credentials?.username,
+                password: credentials?.password,
+              }),
+            }
+          );
 
-          const response = await fetch("/api/login", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              username: credentials?.username,
-              password: credentials?.password,
-            }),
-          });
+          // const response = await fetch("/api/login", {
+          //   method: "POST",
+          //   headers: {
+          //     "Content-Type": "application/json",
+          //   },
+          //   body: JSON.stringify({
+          //     username: credentials?.username,
+          //     password: credentials?.password,
+          //   }),
+          // });
 
           const json = await response.json();
           console.log("CREDENTIALS API/AUTH FROM RES JSON:", json);
