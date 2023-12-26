@@ -18,7 +18,7 @@ export async function POST(request) {
     console.log("GET USERNAME AT API/LOGIN:", username);
 
     // Looking to see if the username exists
-    const credentials = await prisma.credentials.findUnique({
+    const credentials = await prisma.user.findUnique({
       where: { username: username },
     });
 
