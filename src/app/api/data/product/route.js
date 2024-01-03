@@ -14,14 +14,14 @@ export async function GET(request) {
   const currentTimeStamp = getTimeStamp(timeDiff);
 
   try {
-    // Read all product data
+    // Read all products data
     const products = await prisma.products.findMany({
       include: {
         branches: true,
       },
     });
 
-    // Return all product data
+    // Return all products data
     return NextResponse.json({
       created_at: currentTimeStamp,
       route: "/api/data/product",
