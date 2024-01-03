@@ -9,30 +9,30 @@ export const dynamic = "force-dynamic";
 // Set Time Zone from UTC to WIB or Asia/Jakarta Timezone where time difference is 7
 const timeDiff = 7;
 
-export async function GET(request, { params: { branchid, search } }) {
+export async function GET(request, { params: { branchid, keyword } }) {
   // Generate timestamp / current datetime
   const currentTimeStamp = getTimeStamp(timeDiff);
 
   try {
     // Read parameters
-    const branch_id = branchid;
-    const searchBy = search === "nothing" ? "%%" : "%" + search + "%";
+    const keyWord = keyword === "null" ? "%%" : "%" + keyword + "%";
 
     // Search products data
     const products =
-      await prisma.$queryRaw`SELECT * FROM products WHERE branch_id = ${branch_id} AND product_name LIKE ${searchBy}`;
-    console.log("PRODUCT:", products);
+      branchid === "all"
+        ? await prisma.$queryRaw`SELECT * FROM products WHERE product_name LIKE ${keyWord}`
+        : await prisma.$queryRaw`SELECT * FROM products WHERE branch_id = ${branchid} AND product_name LIKE ${keyWord}`;
+
     // Check whether products data exists or not
     if (!products || products.length === 0) {
       // If products data not found then return error message
-      const log = {
+
+      return NextResponse.json({
         created_at: currentTimeStamp,
         route: "/api/data/product/search/[branchid]/[search]",
         status: 404,
         message: "Products data not found.",
-      };
-      errorLog(log);
-      return NextResponse.json(log);
+      });
     } else {
       // If products data found then return products data
       return NextResponse.json({

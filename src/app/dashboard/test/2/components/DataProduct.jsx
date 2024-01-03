@@ -1,15 +1,16 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @next/next/no-img-element */
 "use client";
 import { useEffect, useState } from "react";
 
-const ProductData = ({ branchid, search }) => {
+const DataProduct = ({ branchid, keyword }) => {
   const [loading, setLoading] = useState(false);
   const [dataAvailable, setDataAvailable] = useState(false);
   const [productData, setProductData] = useState([]);
 
   const getData = async () => {
     let response = await fetch(
-      `/api/data/product/search/${branchid}/${search}`,
+      `/api/data/product/search/${branchid}/${keyword}`,
       {
         method: "GET",
         headers: {
@@ -20,10 +21,10 @@ const ProductData = ({ branchid, search }) => {
     );
 
     response = await response.json();
-    console.log(response.data);
 
     if (response.status === 404) {
       setLoading(true);
+      setDataAvailable(false);
       return;
     } else {
       setProductData(response.data);
@@ -33,7 +34,7 @@ const ProductData = ({ branchid, search }) => {
   };
   useEffect(() => {
     getData();
-  }, []);
+  }, [branchid, keyword]);
 
   return (
     <>
@@ -93,4 +94,4 @@ const ProductData = ({ branchid, search }) => {
   );
 };
 
-export default ProductData;
+export default DataProduct;
