@@ -1,12 +1,15 @@
 "use client";
 import { useState, useEffect } from "react";
-import SidebarContent from "./components/SidebarContent";
-import Searchbar from "./components/Searchbar";
-import AccountOption from "./components/AccountOption";
-import PageTitle from "./components/PageTitle";
-import Filter from "./components/Filter";
-import AddButton from "./components/AddButton";
-import DataProduct from "./components/DataProduct";
+import SidebarContent from "./Components/SidebarContent";
+import Searchbar from "./Components/SearchBar";
+import AccountOption from "./Components/AccountOption";
+import PageTitle from "./Components/PageTitle";
+import Filter from "./Components/FilterBranch";
+import AddButton from "./Components/AddButton";
+import DataProduct from "./Components/DataProduct";
+import ModalAccount from "./Components/ModalAccount";
+import ModalProduct from "./Components/ModalProduct";
+import Message from "./Components/Message";
 
 export default function BackofficePage() {
   const pageTitle = "Product";
@@ -14,21 +17,20 @@ export default function BackofficePage() {
   const [keyword, setKeyword] = useState("null");
   const [accountModalVisible, setAccountModalVisible] = useState(false);
   const [productModalVisible, setProductModalVisible] = useState(false);
+  const [message, setMessage] = useState("");
+  const [color, setColor] = useState("");
 
-  const showAccountModalHandler = () => {
-    setAccountModalVisible(true);
-  };
-
-  const hideAccountModalHandler = () => {
+  const closeAccountModalHandler = () => {
     setAccountModalVisible(false);
   };
 
-  const showProductModalHandler = () => {
-    setAccountModalVisible(true);
+  const closeProductModalHandler = () => {
+    setProductModalVisible(false);
   };
 
-  const hideProductModalHandler = () => {
-    setAccountModalVisible(false);
+  const hideMessageHandler = () => {
+    setMessage("");
+    setColor("blue");
   };
 
   return (
@@ -47,12 +49,17 @@ export default function BackofficePage() {
               setKeyword(e);
             }}
           />
-          <AccountOption />
+          <AccountOption openModal={() => setAccountModalVisible(true)} />
         </div>
 
         <div className="mb-6">
           <div className="flex justify-between items-center">
             <PageTitle title="Product" />
+            <Message
+              message={message}
+              color={color}
+              onHide={hideMessageHandler}
+            />
 
             <div>
               <Filter
@@ -63,7 +70,7 @@ export default function BackofficePage() {
 
               <AddButton
                 title={pageTitle}
-                getClickHandler={showProductModalHandler}
+                openModal={() => setProductModalVisible(true)}
               />
             </div>
           </div>
@@ -72,6 +79,23 @@ export default function BackofficePage() {
         <div className="border border-black rounded-3xl flex justify-center overflow-auto p-4 h-114">
           <DataProduct branchid={branchId} keyword={keyword} />
         </div>
+
+        <ModalAccount
+          isVisible={accountModalVisible}
+          closeModal={(message, color) => {
+            console.log("Message:", message);
+            console.log("color:", color);
+
+            setMessage(message);
+            setColor(color);
+            closeAccountModalHandler();
+          }}
+        />
+
+        <ModalProduct
+          isVisible={productModalVisible}
+          closeModal={closeProductModalHandler}
+        />
       </div>
     </div>
   );

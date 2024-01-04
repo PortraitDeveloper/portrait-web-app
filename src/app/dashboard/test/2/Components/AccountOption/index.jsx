@@ -5,8 +5,12 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
 
-const AccountOption = () => {
+const AccountOption = ({ openModal }) => {
   const [isOpen, setIsOpen] = useState(false);
+
+  const clickHandler = () => {
+    openModal();
+  };
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -43,8 +47,8 @@ const AccountOption = () => {
       {isOpen && (
         <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-xl shadow-xl bg-white ring-1 ring-black ring-opacity-5">
           <div className="py-1">
-            <a
-              href="#"
+            <button
+              onClick={clickHandler}
               className="block px-4 py-2 text-sm text-gray-700 hover:font-bold"
             >
               <div className="flex justify-start items-center">
@@ -55,9 +59,9 @@ const AccountOption = () => {
                   height={24}
                   className="mr-2"
                 />
-                Account Setting
+                <p>Account Setting</p>
               </div>
-            </a>
+            </button>
             <a
               href="#"
               className="block px-4 py-2 text-sm text-gray-700 hover:font-bold"

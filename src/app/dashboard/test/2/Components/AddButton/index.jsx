@@ -1,8 +1,8 @@
 import React from "react";
 
-const AddButton = ({ title, getClickHandler }) => {
+const AddButton = ({ title, openModal }) => {
   const clickHandler = () => {
-    getClickHandler();
+    openModal();
   };
 
   return (

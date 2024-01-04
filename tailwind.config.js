@@ -18,6 +18,9 @@ module.exports = {
         30: "7.5rem",
         47: "11.75rem",
         59: "14.75rem",
+        60: "15rem",
+        68: "17rem",
+        70: "17.5rem",
         114: "28.5rem",
         120: "30rem",
         122: "30.5rem",
@@ -36,11 +39,11 @@ module.exports = {
       poppins: ["Poppins", "sans-serif"],
     },
     fontSize: {
-      "xs": "0.75rem", // 12px
-      "sm": "0.875rem", // 14px
-      "md": "1rem", //16px
-      "lg": "1.125rem", // 18px
-      "xl": "1.25rem", // 20px
+      xs: "0.75rem", // 12px
+      sm: "0.875rem", // 14px
+      md: "1rem", //16px
+      lg: "1.125rem", // 18px
+      xl: "1.25rem", // 20px
       "2xl": "1.5rem", //24px
     },
     screens: {
