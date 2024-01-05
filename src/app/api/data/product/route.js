@@ -53,6 +53,17 @@ export async function POST(request) {
     const { product_name, product_price, product_desc, branch_id } =
       await request.json();
 
+    console.log("BODY:", product_name, product_price, branch_id)
+
+    if (!product_name || !product_price || branch_id === "null") {
+      return NextResponse.json({
+        created_at: currentTimeStamp,
+        route: "/api/data/product",
+        status: 400,
+        message: "The product name, price, and branch ID must be filled in",
+      });
+    }
+
     // Check whether the product data already exists
     const product = await prisma.products.findFirst({
       where: {
@@ -63,43 +74,42 @@ export async function POST(request) {
 
     // If product data already exists then return an error log
     if (product) {
-      const log = {
+      return NextResponse.json({
         created_at: currentTimeStamp,
         route: "/api/data/product",
         status: 400,
         message: "Product data already exists.",
-      };
-      return NextResponse.json(log);
-    } else {
-      // Generate a product ID
-      const rowCount = await prisma.products.count();
-      const rowNumber = rowCount + 1;
-      const product_id = `pr-${rowNumber}`;
-
-      // Create a new product data
-      const newData = await prisma.products.create({
-        data: {
-          product_id,
-          product_name,
-          product_price,
-          product_desc,
-          branches: {
-            connect: {
-              branch_id,
-            },
-          },
-        },
-      });
-
-      // Return a success log
-      return NextResponse.json({
-        created_at: currentTimeStamp,
-        route: "/api/data/product",
-        status: 201,
-        message: "Product data inserted.",
-        data: newData,
       });
     }
+
+    // Generate a product ID
+    const rowCount = await prisma.products.count();
+    const rowNumber = rowCount + 1;
+    const product_id = `pr-${rowNumber}`;
+
+    // Create a new product data
+    const newData = await prisma.products.create({
+      data: {
+        product_id,
+        product_name,
+        product_price: parseInt(product_price),
+        product_desc,
+        branches: {
+          connect: {
+            branch_id,
+          },
+        },
+      },
+    });
+
+    // Return a success log
+    return NextResponse.json({
+      created_at: currentTimeStamp,
+      route: "/api/data/product",
+      status: 201,
+      message: "Product data inserted.",
+      data: newData,
+    });
   } catch (error) {
     // If the system or database server error then return an error log
     const log = {

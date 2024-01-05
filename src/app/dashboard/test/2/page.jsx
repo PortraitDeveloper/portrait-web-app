@@ -34,14 +34,14 @@ export default function BackofficePage() {
   };
 
   return (
-    <div className="flex justify-center items-center">
-      <div className="shadow-xl shadow-gray-400 h-screen">
+    <div className="flex justify-center h-screen">
+      <div className="shadow-xl shadow-gray-400">
         <div className="p-6">
           <SidebarContent />
         </div>
       </div>
 
-      <div className="w-full h-screen px-6 pt-4">
+      <div className="w-full px-6 py-4">
         <div className="flex justify-center items-center mb-6">
           <Searchbar
             placeholder="Find Product by Name"
@@ -76,16 +76,17 @@ export default function BackofficePage() {
           </div>
         </div>
 
-        <div className="border border-black rounded-3xl flex justify-center overflow-auto p-4 h-114">
-          <DataProduct branchid={branchId} keyword={keyword} />
+        <div className="border border-black rounded-3xl flex justify-center overflow-auto p-4 h-3/4">
+          <DataProduct
+            branchid={branchId}
+            keyword={keyword}
+            refresh={productModalVisible}
+          />
         </div>
 
         <ModalAccount
           isVisible={accountModalVisible}
           closeModal={(message, color) => {
-            console.log("Message:", message);
-            console.log("color:", color);
-
             setMessage(message);
             setColor(color);
             closeAccountModalHandler();
@@ -94,7 +95,11 @@ export default function BackofficePage() {
 
         <ModalProduct
           isVisible={productModalVisible}
-          closeModal={closeProductModalHandler}
+          closeModal={(message, color) => {
+            setMessage(message);
+            setColor(color);
+            closeProductModalHandler();
+          }}
         />
       </div>
     </div>

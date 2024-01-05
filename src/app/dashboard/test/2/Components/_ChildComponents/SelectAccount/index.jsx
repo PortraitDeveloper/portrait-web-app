@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-const SelectAccount = ({getUserId}) => {
+const SelectAccount = ({ getUserId }) => {
   const [credentialsData, setCredentialsData] = useState([]);
 
   useEffect(() => {
@@ -22,12 +22,12 @@ const SelectAccount = ({getUserId}) => {
 
   const changeHandler = (e) => {
     const userId = e.target.value;
-    getUserId(userId)
+    getUserId(userId);
   };
 
   return (
     <select
-      className="border border-black rounded-xl px-3 py-2.5 w-72"
+      className="border border-black rounded-3xl font-roboto px-3 py-2.5 w-72"
       name="selectAccount"
       id="selectAccount"
       required

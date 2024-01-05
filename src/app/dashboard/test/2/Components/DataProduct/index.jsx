@@ -3,7 +3,7 @@
 "use client";
 import { useEffect, useState } from "react";
 
-const DataProduct = ({ branchid, keyword }) => {
+const DataProduct = ({ branchid, keyword, refresh }) => {
   const [loading, setLoading] = useState(false);
   const [dataAvailable, setDataAvailable] = useState(false);
   const [productData, setProductData] = useState([]);
@@ -34,7 +34,7 @@ const DataProduct = ({ branchid, keyword }) => {
   };
   useEffect(() => {
     getData();
-  }, [branchid, keyword]);
+  }, [branchid, keyword, refresh]);
 
   return (
     <>
@@ -52,12 +52,12 @@ const DataProduct = ({ branchid, keyword }) => {
             <thead>
               <tr>
                 <th className="py-3 border-b border-slate-300">ID</th>
-                <th className="py-3 border-b border-slate-300">Product Name</th>
+                <th className="py-3 border-b border-slate-300">PRODUCT NAME</th>
                 <th className="hidden sm:table-cell py-3 border-b border-slate-300">
-                  Price
+                  PRICE
                 </th>
                 <th className="hidden sm:table-cell py-3 border-b border-slate-300">
-                  Description
+                  DESCRIPTION
                 </th>
                 <th className="hidden sm:table-cell py-3 border-b border-slate-300"></th>
               </tr>
