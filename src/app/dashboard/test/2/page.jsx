@@ -1,36 +1,125 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { useState, useEffect } from "react";
 import SidebarContent from "./Components/SidebarContent";
 import Searchbar from "./Components/SearchBar";
 import AccountOption from "./Components/AccountOption";
 import PageTitle from "./Components/PageTitle";
-import Filter from "./Components/FilterBranch";
+import FilterBranch from "./Components/FilterBranch";
 import AddButton from "./Components/AddButton";
 import DataProduct from "./Components/DataProduct";
 import ModalAccount from "./Components/ModalAccount";
-import ModalProduct from "./Components/ModalProduct";
+import ModalProductAdd from "./Components/ModalProductAdd";
+import ModalProductEdit from "./Components/ModalProductEdit";
+import ModalProductDelete from "./Components/ModalProductDelete";
 import Message from "./Components/Message";
 
 export default function BackofficePage() {
   const pageTitle = "Product";
+  const [productsData, setProductsData] = useState([]);
+  const [branchesData, setBranchesData] = useState([]);
+  const [credentialsData, setCredentialsData] = useState([]);
   const [branchId, setBranchId] = useState("all");
   const [keyword, setKeyword] = useState("null");
+  const [productId, setProductId] = useState("");
+  const [productName, setProductName] = useState("");
   const [accountModalVisible, setAccountModalVisible] = useState(false);
-  const [productModalVisible, setProductModalVisible] = useState(false);
-  const [message, setMessage] = useState("");
+  const [productModalAddVisible, setproductModalAddVisible] = useState(false);
+  const [productModalEditVisible, setProductModalEditVisible] = useState(false);
+  const [productModalDeleteVisible, setProductModalDeleteVisible] =
+    useState(false);
+  const [message, setMessage] = useState(null);
   const [color, setColor] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [dataAvailable, setDataAvailable] = useState(false);
+
+  const getBranchesData = async () => {
+    let response = await fetch(`/api/data/branch`, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    });
+
+    response = await response.json();
+    setBranchesData(response.data);
+  };
+
+  const getProductsData = async () => {
+    let response = await fetch(
+      `/api/data/product/search/${branchId}/${keyword}`,
+      {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    response = await response.json();
+
+    if (response.status === 404) {
+      setDataAvailable(false);
+      setLoading(true);
+    } else {
+      setProductsData(response.data);
+      setDataAvailable(true);
+      setLoading(true);
+    }
+  };
+
+  const getCredentialsData = async () => {
+    let response = await fetch("/api/credential", {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    });
+
+    response = await response.json();
+    setCredentialsData(response.data);
+  };
+
+  useEffect(() => {
+    getBranchesData();
+  }, []);
+
+  useEffect(() => {
+    getProductsData();
+  }, [
+    branchId,
+    keyword,
+    productModalAddVisible,
+    productModalEditVisible,
+    productModalDeleteVisible,
+  ]);
+
+  useEffect(() => {
+    getCredentialsData();
+  }, []);
 
   const closeAccountModalHandler = () => {
     setAccountModalVisible(false);
   };
 
   const closeProductModalHandler = () => {
-    setProductModalVisible(false);
+    setproductModalAddVisible(false);
+  };
+
+  const closeProductModalEditHandler = () => {
+    setProductModalEditVisible(false);
+  };
+
+  const closeProductModalDeleteHandler = () => {
+    setProductModalDeleteVisible(false);
   };
 
   const hideMessageHandler = () => {
-    setMessage("");
-    setColor("blue");
+    setMessage(null);
+    setColor("");
   };
 
   return (
@@ -49,7 +138,10 @@ export default function BackofficePage() {
               setKeyword(e);
             }}
           />
-          <AccountOption openModal={() => setAccountModalVisible(true)} />
+          <AccountOption
+            credentialsData={credentialsData}
+            openModal={() => setAccountModalVisible(true)}
+          />
         </div>
 
         <div className="mb-6">
@@ -62,7 +154,8 @@ export default function BackofficePage() {
             />
 
             <div>
-              <Filter
+              <FilterBranch
+                branchesData={branchesData}
                 getBranchId={(e) => {
                   setBranchId(e);
                 }}
@@ -70,7 +163,7 @@ export default function BackofficePage() {
 
               <AddButton
                 title={pageTitle}
-                openModal={() => setProductModalVisible(true)}
+                openModal={() => setproductModalAddVisible(true)}
               />
             </div>
           </div>
@@ -78,27 +171,70 @@ export default function BackofficePage() {
 
         <div className="border border-black rounded-3xl flex justify-center overflow-auto p-4 h-3/4">
           <DataProduct
-            branchid={branchId}
-            keyword={keyword}
-            refresh={productModalVisible}
+            productsData={productsData}
+            loading={loading}
+            dataAvailable={dataAvailable}
+            getEdit={(id, name) => {
+              setProductId(id);
+              setProductName(name);
+              setProductModalEditVisible(true);
+            }}
+            getDelete={(id, name) => {
+              setProductId(id);
+              setProductName(name);
+              setProductModalDeleteVisible(true);
+            }}
           />
         </div>
 
         <ModalAccount
           isVisible={accountModalVisible}
-          closeModal={(message, color) => {
+          credentialsData={credentialsData}
+          closeModal={() => {
+            closeAccountModalHandler();
+          }}
+          finishModal={(message, color) => {
             setMessage(message);
             setColor(color);
             closeAccountModalHandler();
           }}
         />
 
-        <ModalProduct
-          isVisible={productModalVisible}
-          closeModal={(message, color) => {
+        <ModalProductAdd
+          isVisible={productModalAddVisible}
+          branchesData={branchesData}
+          closeModal={() => {
+            closeProductModalHandler();
+          }}
+          finishModal={(message, color) => {
             setMessage(message);
             setColor(color);
             closeProductModalHandler();
+          }}
+        />
+
+        <ModalProductEdit
+          isVisible={productModalEditVisible}
+          productId={productId}
+          productName={productName}
+          closeModal={(message, color) => {
+            setMessage(message);
+            setColor(color);
+            closeProductModalEditHandler();
+          }}
+        />
+
+        <ModalProductDelete
+          isVisible={productModalDeleteVisible}
+          productId={productId}
+          productName={productName}
+          closeModal={() => {
+            closeProductModalDeleteHandler();
+          }}
+          finishModal={(message, color) => {
+            setMessage(message);
+            setColor(color);
+            closeProductModalDeleteHandler();
           }}
         />
       </div>

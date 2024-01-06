@@ -53,8 +53,6 @@ export async function POST(request) {
     const { product_name, product_price, product_desc, branch_id } =
       await request.json();
 
-    console.log("BODY:", product_name, product_price, branch_id)
-
     if (!product_name || !product_price || branch_id === "null") {
       return NextResponse.json({
         created_at: currentTimeStamp,

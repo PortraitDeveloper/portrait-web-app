@@ -1,25 +1,4 @@
-import { useEffect, useState } from "react";
-
-const SelectAccount = ({ getUserId }) => {
-  const [credentialsData, setCredentialsData] = useState([]);
-
-  useEffect(() => {
-    getCredentialsData();
-  }, []);
-
-  const getCredentialsData = async () => {
-    let response = await fetch("/api/credential", {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-    });
-
-    response = await response.json();
-    setCredentialsData(response.data);
-  };
-
+const SelectAccount = ({ credentialsData, getUserId }) => {
   const changeHandler = (e) => {
     const userId = e.target.value;
     getUserId(userId);

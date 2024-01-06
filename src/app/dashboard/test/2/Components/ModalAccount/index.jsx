@@ -7,7 +7,14 @@ import InputPassword from "../_ChildComponents/InputPassword";
 import ErrorMessage from "../_ChildComponents/ErrorMessage";
 import SubmitButton from "../_ChildComponents/SubmitButton";
 
-const ModalAccount = ({ isVisible, closeModal }) => {
+const ModalAccount = ({
+  isVisible,
+  credentialsData,
+  closeModal,
+  finishModal,
+}) => {
+  let message = null;
+  let color = "green";
   const [userId, setUserId] = useState(1);
   const [oldPassword, setOldPassword] = useState(null);
   const [newPassword, setNewPassword] = useState(null);
@@ -44,10 +51,9 @@ const ModalAccount = ({ isVisible, closeModal }) => {
     if (response.status === 401) {
       setErrorMessage(response.message);
     } else {
-      const message = "Password berhasil diubah";
-      const color = "green";
+      message = "Password berhasil diubah";
       clearStates();
-      closeModal(message, color);
+      finishModal(message, color);
     }
   };
 
@@ -71,7 +77,7 @@ const ModalAccount = ({ isVisible, closeModal }) => {
           <div className="flex justify-between items-center mb-5">
             <Title title={"Account Setting"} />
             <CloseIcon
-              onClose={(e) => {
+              onClose={() => {
                 clearStates();
                 closeModal();
               }}
@@ -80,6 +86,7 @@ const ModalAccount = ({ isVisible, closeModal }) => {
 
           <div className="mb-3">
             <SelectAccount
+              credentialsData={credentialsData}
               getUserId={(e) => {
                 setUserId(e);
               }}

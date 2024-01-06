@@ -16,7 +16,15 @@ import Intruction from "../_ChildComponents/Intruction";
 
 import thousandConversion from "@/utils/thousandConversion";
 
-const ModalAccount = ({ isVisible, closeModal }) => {
+const ModalProductAdd = ({
+  isVisible,
+  branchesData,
+  closeModal,
+  finishModal,
+}) => {
+  let message = null;
+  let color = "";
+  const [productId, setProductId] = useState("");
   const [productName, setProductName] = useState("");
   const [productType, setProductType] = useState("(Black and White)");
   const [branchId, setBranchId] = useState("null");
@@ -55,12 +63,14 @@ const ModalAccount = ({ isVisible, closeModal }) => {
     });
 
     response = await response.json();
+    console.log(response);
 
     if (response.status === 400) {
       setErrorMessage(response.message);
     } else {
       _productName = _productName + "  " + thousandConversion(productPrice);
       setProductName(_productName);
+      setProductId(response.data.product_id);
       setView(false);
     }
   };
@@ -87,7 +97,7 @@ const ModalAccount = ({ isVisible, closeModal }) => {
               <div className="flex justify-between items-center mb-5">
                 <Title title={"Add Product"} />
                 <CloseIcon
-                  onClose={(e) => {
+                  onClose={() => {
                     clearStates();
                     closeModal();
                   }}
@@ -96,6 +106,7 @@ const ModalAccount = ({ isVisible, closeModal }) => {
 
               <div className="mb-3">
                 <SelectBranch
+                  branchesData={branchesData}
                   getBranchId={(e) => {
                     setBranchId(e);
                   }}
@@ -159,10 +170,10 @@ const ModalAccount = ({ isVisible, closeModal }) => {
               <Title title={"Copy Product Name"} />
               <CloseIcon
                 onClose={() => {
-                  const message = "Produk baru telah ditambahkan";
-                  const color = "blue";
+                  message = `Produk dengan ID ${productId} telah ditambahkan`;
+                  color = "blue";
                   clearStates();
-                  closeModal(message, color);
+                  finishModal(message, color);
                 }}
               />
             </div>
@@ -185,4 +196,4 @@ const ModalAccount = ({ isVisible, closeModal }) => {
   );
 };
 
-export default ModalAccount;
+export default ModalProductAdd;
