@@ -21,8 +21,7 @@ export default function BackofficePage() {
   const [credentialsData, setCredentialsData] = useState([]);
   const [branchId, setBranchId] = useState("all");
   const [keyword, setKeyword] = useState("null");
-  const [productId, setProductId] = useState("");
-  const [productName, setProductName] = useState("");
+  const [productData, setProductData] = useState({});
   const [accountModalVisible, setAccountModalVisible] = useState(false);
   const [productModalAddVisible, setproductModalAddVisible] = useState(false);
   const [productModalEditVisible, setProductModalEditVisible] = useState(false);
@@ -174,14 +173,12 @@ export default function BackofficePage() {
             productsData={productsData}
             loading={loading}
             dataAvailable={dataAvailable}
-            getEdit={(id, name) => {
-              setProductId(id);
-              setProductName(name);
+            getEdit={(productData) => {
+              setProductData(productData);
               setProductModalEditVisible(true);
             }}
-            getDelete={(id, name) => {
-              setProductId(id);
-              setProductName(name);
+            getDelete={(productData) => {
+              setProductData(productData);
               setProductModalDeleteVisible(true);
             }}
           />
@@ -215,9 +212,11 @@ export default function BackofficePage() {
 
         <ModalProductEdit
           isVisible={productModalEditVisible}
-          productId={productId}
-          productName={productName}
-          closeModal={(message, color) => {
+          productData={productData}
+          closeModal={() => {
+            closeProductModalEditHandler();
+          }}
+          finishModal={(message, color) => {
             setMessage(message);
             setColor(color);
             closeProductModalEditHandler();
@@ -226,8 +225,7 @@ export default function BackofficePage() {
 
         <ModalProductDelete
           isVisible={productModalDeleteVisible}
-          productId={productId}
-          productName={productName}
+          productData={productData}
           closeModal={() => {
             closeProductModalDeleteHandler();
           }}

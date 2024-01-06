@@ -3,13 +3,19 @@
 "use client";
 import EditOption from "../_ChildComponents/EditOption";
 
-const DataProduct = ({ productsData, loading, dataAvailable, getEdit, getDelete }) => {
-  const onEdit = (id, name) => {
-    getEdit(id, name);
+const DataProduct = ({
+  productsData,
+  loading,
+  dataAvailable,
+  getEdit,
+  getDelete,
+}) => {
+  const onEdit = (productData) => {
+    getEdit(productData);
   };
 
-  const onDelete = (id, name) => {
-    getDelete(id, name);
+  const onDelete = (productData) => {
+    getDelete(productData);
   };
 
   return (
@@ -58,13 +64,17 @@ const DataProduct = ({ productsData, loading, dataAvailable, getEdit, getDelete 
                   <td className="py-3 border-b border-gray-400">
                     <div className="flex justify-center">
                       <EditOption
-                        productId={data.product_id}
-                        productName={data.product_name}
-                        getEdit={(id, name) => {
-                          onEdit(id, name);
+                        productData={{
+                          productId: data.product_id,
+                          productName: data.product_name,
+                          productPrice: data.product_price,
+                          productDesc: data.product_desc,
                         }}
-                        getDelete={(id, name) => {
-                          onDelete(id, name);
+                        getEdit={(productData) => {
+                          onEdit(productData);
+                        }}
+                        getDelete={(productData) => {
+                          onDelete(productData);
                         }}
                       />
                     </div>
