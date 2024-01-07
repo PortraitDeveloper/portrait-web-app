@@ -10,7 +10,7 @@ const Intruction = ({ message }) => {
           width={16}
           height={16}
         />
-        <text className="text-blue-900 ml-2">{message}</text>
+        <p className="text-blue-900 ml-2">{message}</p>
       </div>
     </div>
   );

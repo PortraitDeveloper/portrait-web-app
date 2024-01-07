@@ -69,6 +69,7 @@ const DataProduct = ({
                           productName: data.product_name,
                           productPrice: data.product_price,
                           productDesc: data.product_desc,
+                          branchId: data.branchId
                         }}
                         getEdit={(productData) => {
                           onEdit(productData);

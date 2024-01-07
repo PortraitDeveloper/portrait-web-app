@@ -132,10 +132,39 @@ export async function PATCH(request) {
     const { product_id, product_name, product_price, product_desc, branch_id } =
       await request.json();
 
+    if (parseInt(product_price) === 0) {
+      // Return a success log
+      return NextResponse.json({
+        created_at: currentTimeStamp,
+        route: "/api/data/product",
+        status: 400,
+        message: "The product price cannot be zero",
+      });
+    }
+
+    const existingData = await prisma.products.findFirst({
+      where: {
+        OR: [
+          { product_id, product_name, product_price, product_desc, branch_id },
+          { product_name, branch_id },
+        ],
+      },
+    });
+
+    if (existingData) {
+      // Return a success log
+      return NextResponse.json({
+        created_at: currentTimeStamp,
+        route: "/api/data/product",
+        status: 400,
+        message: "Product data already exist",
+      });
+    }
+
     // Update the product data
     const newData = await prisma.products.update({
       where: { product_id },
-      data: { product_name, product_price, product_desc, branch_id },
+      data: { product_name, product_price, product_desc },
     });
 
     // Return a success log

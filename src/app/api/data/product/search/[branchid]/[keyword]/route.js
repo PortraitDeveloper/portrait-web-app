@@ -20,8 +20,8 @@ export async function GET(request, { params: { branchid, keyword } }) {
     // Search products data
     const products =
       branchid === "all"
-        ? await prisma.$queryRaw`SELECT * FROM products WHERE product_name LIKE ${keyWord}`
-        : await prisma.$queryRaw`SELECT * FROM products WHERE branch_id = ${branchid} AND product_name LIKE ${keyWord}`;
+        ? await prisma.$queryRaw`SELECT * FROM products WHERE product_name LIKE ${keyWord} ORDER BY CAST(SUBSTRING(product_id, 4) AS INTEGER) ASC`
+        : await prisma.$queryRaw`SELECT * FROM products WHERE branch_id = ${branchid} AND product_name LIKE ${keyWord} ORDER BY CAST(SUBSTRING(product_id, 4) AS INTEGER) ASC`;
 
     // Check whether products data exists or not
     if (!products || products.length === 0) {

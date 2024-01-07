@@ -1,22 +1,22 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react";
 
-const ReplaceString = ({ inputName, placeHolder, value, getString }) => {
+const ReplaceNumber = ({ inputName, placeHolder, value, getNumber }) => {
   const [replaceValue, setReplaceValue] = useState(value);
 
   useEffect(() => {
-    getString(value);
+    getNumber(value);
   }, []);
 
   const changeHandler = (e) => {
     const newValue = e.target.value;
     setReplaceValue(newValue);
-    getString(newValue);
+    getNumber(newValue);
   };
 
   return (
     <input
-      type="text"
+      type="number"
       id={inputName}
       name={inputName}
       placeholder={placeHolder}
@@ -28,4 +28,4 @@ const ReplaceString = ({ inputName, placeHolder, value, getString }) => {
   );
 };
 
-export default ReplaceString;
+export default ReplaceNumber;

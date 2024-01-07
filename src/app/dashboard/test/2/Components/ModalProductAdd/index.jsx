@@ -9,6 +9,7 @@ import InputNumber from "../_ChildComponents/InputNumber";
 import InputText from "../_ChildComponents/InputText";
 import ErrorMessage from "../_ChildComponents/ErrorMessage";
 import SubmitButton from "../_ChildComponents/SubmitButton";
+import ProcessSubmit from "../_ChildComponents/ProcessSubmit";
 
 import ClipboardCopy from "../_ChildComponents/ClipboardCopy";
 import YCBMLink from "../_ChildComponents/YCBMLink";
@@ -22,21 +23,20 @@ const ModalProductAdd = ({
   closeModal,
   finishModal,
 }) => {
-  let message = null;
-  let color = "";
+  const [branchId, setBranchId] = useState("null");
   const [productId, setProductId] = useState("");
   const [productName, setProductName] = useState("");
   const [productType, setProductType] = useState("(Black and White)");
-  const [branchId, setBranchId] = useState("null");
   const [productPrice, setProductPrice] = useState(0);
   const [productDesc, setProductDesc] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [view, setView] = useState(true);
+  const [loading, setLoading] = useState(true);
 
   const clearStates = () => {
+    setBranchId("null");
     setProductName("");
     setProductType("(Black and White)");
-    setBranchId("null");
     setProductPrice(0);
     setProductDesc("");
     setErrorMessage("");
@@ -44,8 +44,8 @@ const ModalProductAdd = ({
   };
 
   const submitHandler = async () => {
+    setLoading(false);
     let _productName = productName + " " + productType;
-
     const body = {
       product_name: _productName,
       branch_id: branchId,
@@ -63,7 +63,7 @@ const ModalProductAdd = ({
     });
 
     response = await response.json();
-    console.log(response);
+    setLoading(true);
 
     if (response.status === 400) {
       setErrorMessage(response.message);
@@ -83,6 +83,8 @@ const ModalProductAdd = ({
   };
 
   if (!isVisible) return null;
+  let message = null;
+  let color = "blue";
 
   return (
     <>
@@ -156,9 +158,17 @@ const ModalProductAdd = ({
               </div>
             </div>
 
-            <div>
-              <SubmitButton label={"Add Product"} getSubmit={submitHandler} />
-            </div>
+            {loading && (
+              <div>
+                <SubmitButton label={"Add Product"} getSubmit={submitHandler} />
+              </div>
+            )}
+
+            {!loading && (
+              <div>
+                <ProcessSubmit label={"Process..."} />
+              </div>
+            )}
           </div>
         </div>
       )}
@@ -171,7 +181,6 @@ const ModalProductAdd = ({
               <CloseIcon
                 onClose={() => {
                   message = `Produk dengan ID ${productId} telah ditambahkan`;
-                  color = "blue";
                   clearStates();
                   finishModal(message, color);
                 }}

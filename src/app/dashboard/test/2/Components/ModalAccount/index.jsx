@@ -6,6 +6,7 @@ import SelectAccount from "../_ChildComponents/SelectAccount";
 import InputPassword from "../_ChildComponents/InputPassword";
 import ErrorMessage from "../_ChildComponents/ErrorMessage";
 import SubmitButton from "../_ChildComponents/SubmitButton";
+import ProcessSubmit from "../_ChildComponents/ProcessSubmit";
 
 const ModalAccount = ({
   isVisible,
@@ -20,6 +21,7 @@ const ModalAccount = ({
   const [newPassword, setNewPassword] = useState(null);
   const [confirmPassword, setConfirmPassword] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
+  const [loading, setLoading] = useState(true);
 
   const clearStates = () => {
     setUserId(1);
@@ -30,6 +32,7 @@ const ModalAccount = ({
   };
 
   const submitHandler = async () => {
+    setLoading(false);
     const body = {
       user_id: userId,
       old_password: oldPassword,
@@ -47,6 +50,7 @@ const ModalAccount = ({
     });
 
     response = await response.json();
+    setLoading(true);
 
     if (response.status === 401) {
       setErrorMessage(response.message);
@@ -125,9 +129,17 @@ const ModalAccount = ({
           </div>
         </div>
 
-        <div>
-          <SubmitButton label={"Save"} getSubmit={submitHandler} />
-        </div>
+        {loading && (
+          <div>
+            <SubmitButton label={"Save"} getSubmit={submitHandler} />
+          </div>
+        )}
+
+        {!loading && (
+          <div>
+            <ProcessSubmit label={"Process..."} />
+          </div>
+        )}
       </div>
     </div>
   );

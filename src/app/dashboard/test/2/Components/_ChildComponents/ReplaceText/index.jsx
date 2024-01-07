@@ -1,31 +1,31 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react";
 
-const ReplaceString = ({ inputName, placeHolder, value, getString }) => {
+const ReplaceText = ({ inputName, placeHolder, value, getText }) => {
   const [replaceValue, setReplaceValue] = useState(value);
 
   useEffect(() => {
-    getString(value);
+    getText(value);
   }, []);
 
   const changeHandler = (e) => {
     const newValue = e.target.value;
     setReplaceValue(newValue);
-    getString(newValue);
+    getText(newValue);
   };
 
   return (
-    <input
-      type="text"
+    <textarea
       id={inputName}
       name={inputName}
       placeholder={placeHolder}
       value={replaceValue}
-      outline="none"
       className="border border-black rounded-3xl px-3 py-2.5 w-72"
       onChange={changeHandler}
+      rows={4}
+      style={{ resize: "vertical" }}
     />
   );
 };
 
-export default ReplaceString;
+export default ReplaceText;
