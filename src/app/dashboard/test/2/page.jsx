@@ -69,6 +69,8 @@ export default function BackofficePage() {
       setDataAvailable(false);
       setLoading(true);
     } else {
+      const _totalPage = Math.ceil(response.data.length / perPage);
+      setTotalPage(_totalPage);
       setProductsData(response.data);
       setDataAvailable(true);
       setLoading(true);
@@ -175,9 +177,9 @@ export default function BackofficePage() {
         </div>
 
         <div className="flex flex-col justify-between border border-black rounded-3xl overflow-auto pb-4 h-3/4">
-          <div className="mb-6">
-            <div className="flex justify-center p-4">
-              {/* <DataProduct
+          <div>
+            <div className="flex justify-center px-4 py-2">
+              <DataProduct
                 productsData={productsSorted}
                 loading={loading}
                 dataAvailable={dataAvailable}
@@ -189,26 +191,30 @@ export default function BackofficePage() {
                   setProductData(productData);
                   setProductModalDeleteVisible(true);
                 }}
-              /> */}
+              />
             </div>
           </div>
 
           <PagePagination
             perPage={perPage}
             pageNumber={pageNumber}
+            totalPage={totalPage}
+            productsData={productsData}
             getPerPage={(e) => {
               setPerPage(e);
-              console.log("Per Page:", e);
+              // console.log("Per Page:", e);
             }}
             getPageNumber={(e) => {
               setPageNumber(e);
-              console.log("Page Number:", e);
+              // console.log("Page Number:", e);
             }}
-            totalPage={totalPage}
-            productsData={productsData}
+            getTotalPage={(e) => {
+              setTotalPage(e);
+              // console.log("Total Page:", e);
+            }}
             getProductsSorted={(e) => {
               setproductsSorted(e);
-              console.log("Products Sorted:", e)
+              // console.log("Products Sorted:", e);
             }}
           />
         </div>
