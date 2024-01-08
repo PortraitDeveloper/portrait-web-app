@@ -13,6 +13,7 @@ import ModalProductAdd from "./Components/ModalProductAdd";
 import ModalProductEdit from "./Components/ModalProductEdit";
 import ModalProductDelete from "./Components/ModalProductDelete";
 import Message from "./Components/Message";
+import PagePagination from "./Components/PagePagination";
 
 export default function BackofficePage() {
   const pageTitle = "Product";
@@ -31,6 +32,11 @@ export default function BackofficePage() {
   const [color, setColor] = useState("");
   const [loading, setLoading] = useState(false);
   const [dataAvailable, setDataAvailable] = useState(false);
+
+  const [productsSorted, setproductsSorted] = useState({});
+  const [perPage, setPerPage] = useState(5);
+  const [pageNumber, setPageNumber] = useState(1);
+  const [totalPage, setTotalPage] = useState(1);
 
   const getBranchesData = async () => {
     let response = await fetch(`/api/data/branch`, {
@@ -168,18 +174,41 @@ export default function BackofficePage() {
           </div>
         </div>
 
-        <div className="border border-black rounded-3xl flex justify-center overflow-auto p-4 h-3/4">
-          <DataProduct
-            productsData={productsData}
-            loading={loading}
-            dataAvailable={dataAvailable}
-            getEdit={(productData) => {
-              setProductData(productData);
-              setProductModalEditVisible(true);
+        <div className="flex flex-col justify-between border border-black rounded-3xl overflow-auto pb-4 h-3/4">
+          <div className="mb-6">
+            <div className="flex justify-center p-4">
+              {/* <DataProduct
+                productsData={productsSorted}
+                loading={loading}
+                dataAvailable={dataAvailable}
+                getEdit={(productData) => {
+                  setProductData(productData);
+                  setProductModalEditVisible(true);
+                }}
+                getDelete={(productData) => {
+                  setProductData(productData);
+                  setProductModalDeleteVisible(true);
+                }}
+              /> */}
+            </div>
+          </div>
+
+          <PagePagination
+            perPage={perPage}
+            pageNumber={pageNumber}
+            getPerPage={(e) => {
+              setPerPage(e);
+              console.log("Per Page:", e);
             }}
-            getDelete={(productData) => {
-              setProductData(productData);
-              setProductModalDeleteVisible(true);
+            getPageNumber={(e) => {
+              setPageNumber(e);
+              console.log("Page Number:", e);
+            }}
+            totalPage={totalPage}
+            productsData={productsData}
+            getProductsSorted={(e) => {
+              setproductsSorted(e);
+              console.log("Products Sorted:", e)
             }}
           />
         </div>
