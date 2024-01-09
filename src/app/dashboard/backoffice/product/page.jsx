@@ -141,6 +141,7 @@ export default function ProductPage() {
     <div className="flex justify-center h-screen">
       {!loading && <ModalLoading />}
 
+      {/* HIDE SIDEBAR AT BREAKPOINT-MD: @media (min-width: 768px) */}
       <div className="hidden md:block shadow-xl shadow-gray-400">
         <div className="p-6">
           <SidebarContent pageTitle={pageTitle} />
@@ -148,7 +149,7 @@ export default function ProductPage() {
       </div>
 
       <div className="w-full p-3 md:p-4 lg:p-6">
-        {/* HIDDEN LOGO AND TITLE */}
+        {/* SHOW UP TPP-LOGO AND TITLE AT BREAKPOINT-SM: @media (min-width: 640px) */}
         <div className="block sm:hidden mb-2">
           <div className="flex justify-between items-center">
             <PageTitle pageTitle={pageTitle} />
@@ -162,6 +163,7 @@ export default function ProductPage() {
         </div>
 
         <div className="flex justify-center items-center gap-3 mb-3 md:mb-4 lg:mb-6">
+          {/* SHOW UP OPTION-NAVBAR / DROPDOWN AT BREAKPOINT-MD: @media (min-width: 768px) */}
           <div className="block md:hidden">
             <OptionNavbar
               credentialsData={credentialsData}
@@ -181,6 +183,7 @@ export default function ProductPage() {
           />
         </div>
 
+        {/* SHOW UP FILTER-BRANCH AND ADD-BUTTON AT BREAKPOINT-SM: @media (min-width: 640px) */}
         <div className="block sm:hidden mb-3 md:mb-4 lg:mb-6">
           <div className="flex justify-between items-center">
             <FilterBranch
@@ -197,10 +200,12 @@ export default function ProductPage() {
           </div>
         </div>
 
+        {/* HIDE PAGE-TITLE, FILTER-BRANCH, AND ADD-BUTTON AT BREAKPOINT-SM: @media (min-width: 640px) */}
         <div className="hidden sm:block mb-6">
           <div className="flex justify-between items-center">
             <PageTitle pageTitle={pageTitle} />
 
+            {/* HIDE MESSAGE AT BREAKPOINT-LG: @media (min-width: 1024px) */}
             <div className="hidden lg:block">
               <Message
                 message={message}
@@ -229,6 +234,7 @@ export default function ProductPage() {
           </div>
         </div>
 
+        {/* SHOW UP MESSAGE AT BREAKPOINT-LG: @media (min-width: 1024px) */}
         <div className="block lg:hidden h-10 mb-3 md:mb-4 lg:mb-6">
           <Message
             message={message}
