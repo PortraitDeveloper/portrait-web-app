@@ -1,42 +1,77 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { useState, useEffect } from "react";
-import SidebarContent from "./Components/SidebarContent";
-import Searchbar from "./Components/SearchBar";
-import AccountOption from "./Components/AccountOption";
-import PageTitle from "./Components/PageTitle";
-import FilterBranch from "./Components/FilterBranch";
-import AddButton from "./Components/AddButton";
-import DataProduct from "./Components/DataProduct";
-import ModalAccount from "./Components/ModalAccount";
-import ModalProductAdd from "./Components/ModalProductAdd";
-import ModalProductEdit from "./Components/ModalProductEdit";
-import ModalProductDelete from "./Components/ModalProductDelete";
-import Message from "./Components/Message";
-import PagePagination from "./Components/PagePagination";
+import SidebarContent from "../../_Components/SidebarContent";
+import Searchbar from "../../_Components/SearchBar";
+import AccountOption from "../../_Components/AccountOption";
+import PageTitle from "../../_Components/PageTitle";
+import Message from "../../_Components/Message";
+import FilterBranch from "../../_Components/FilterBranch";
+import AddButton from "../../_Components/AddButton";
+import DataProduct from "../../_Components/DataProduct";
+import PagePagination from "../../_Components/PagePagination";
+import ModalAccount from "../../_Components/ModalAccount";
+import ModalProductAdd from "../../_Components/ModalProductAdd";
+import ModalProductEdit from "../../_Components/ModalProductEdit";
+import ModalProductDelete from "../../_Components/ModalProductDelete";
+import ModalLoading from "../../_Components/ModalLoading";
+const pageTitle = "Product";
 
 export default function BackofficePage() {
-  const pageTitle = "Product";
-  const [productsData, setProductsData] = useState([]);
-  const [branchesData, setBranchesData] = useState([]);
   const [credentialsData, setCredentialsData] = useState([]);
+  const [branchesData, setBranchesData] = useState([]);
+
+  const [productsData, setProductsData] = useState([]);
+  const [productsSorted, setproductsSorted] = useState({});
+  const [productData, setProductData] = useState({});
+
   const [branchId, setBranchId] = useState("all");
   const [keyword, setKeyword] = useState("null");
-  const [productData, setProductData] = useState({});
-  const [accountModalVisible, setAccountModalVisible] = useState(false);
-  const [productModalAddVisible, setproductModalAddVisible] = useState(false);
-  const [productModalEditVisible, setProductModalEditVisible] = useState(false);
-  const [productModalDeleteVisible, setProductModalDeleteVisible] =
-    useState(false);
-  const [message, setMessage] = useState(null);
-  const [color, setColor] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [dataAvailable, setDataAvailable] = useState(false);
 
-  const [productsSorted, setproductsSorted] = useState({});
   const [perPage, setPerPage] = useState(5);
   const [pageNumber, setPageNumber] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
+
+  const [loading, setLoading] = useState(false);
+  const [dataAvailable, setDataAvailable] = useState(false);
+  const [message, setMessage] = useState(null);
+  const [color, setColor] = useState("");
+
+  const [AccountVisible, setAccountVisible] = useState(false);
+  const [productAddVisible, setproductAddVisible] = useState(false);
+  const [productEditVisible, setproductEditVisible] = useState(false);
+  const [productDeleteVisible, setproductDeleteVisible] = useState(false);
+
+  useEffect(() => {
+    getCredentialsData();
+  }, []);
+
+  useEffect(() => {
+    getBranchesData();
+  }, []);
+
+  useEffect(() => {
+    getProductsData();
+  }, [
+    branchId,
+    keyword,
+    productAddVisible,
+    productEditVisible,
+    productDeleteVisible,
+  ]);
+
+  const getCredentialsData = async () => {
+    let response = await fetch("/api/credential", {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    });
+
+    response = await response.json();
+    setCredentialsData(response.data);
+  };
 
   const getBranchesData = async () => {
     let response = await fetch(`/api/data/branch`, {
@@ -68,60 +103,33 @@ export default function BackofficePage() {
     if (response.status === 404) {
       setDataAvailable(false);
       setLoading(true);
+      setColor("red");
+      setMessage("Data tidak ditemukan");
     } else {
       const _totalPage = Math.ceil(response.data.length / perPage);
       setTotalPage(_totalPage);
       setProductsData(response.data);
       setDataAvailable(true);
       setLoading(true);
+      setColor("");
+      setMessage(null);
     }
   };
 
-  const getCredentialsData = async () => {
-    let response = await fetch("/api/credential", {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-    });
-
-    response = await response.json();
-    setCredentialsData(response.data);
+  const closeAccountHandler = () => {
+    setAccountVisible(false);
   };
 
-  useEffect(() => {
-    getBranchesData();
-  }, []);
-
-  useEffect(() => {
-    getProductsData();
-  }, [
-    branchId,
-    keyword,
-    productModalAddVisible,
-    productModalEditVisible,
-    productModalDeleteVisible,
-  ]);
-
-  useEffect(() => {
-    getCredentialsData();
-  }, []);
-
-  const closeAccountModalHandler = () => {
-    setAccountModalVisible(false);
+  const closeproductHandler = () => {
+    setproductAddVisible(false);
   };
 
-  const closeProductModalHandler = () => {
-    setproductModalAddVisible(false);
+  const closeproductEditHandler = () => {
+    setproductEditVisible(false);
   };
 
-  const closeProductModalEditHandler = () => {
-    setProductModalEditVisible(false);
-  };
-
-  const closeProductModalDeleteHandler = () => {
-    setProductModalDeleteVisible(false);
+  const closeproductDeleteHandler = () => {
+    setproductDeleteVisible(false);
   };
 
   const hideMessageHandler = () => {
@@ -131,6 +139,8 @@ export default function BackofficePage() {
 
   return (
     <div className="flex justify-center h-screen">
+      {!loading && <ModalLoading />}
+
       <div className="shadow-xl shadow-gray-400">
         <div className="p-6">
           <SidebarContent />
@@ -147,7 +157,7 @@ export default function BackofficePage() {
           />
           <AccountOption
             credentialsData={credentialsData}
-            openModal={() => setAccountModalVisible(true)}
+            openModal={() => setAccountVisible(true)}
           />
         </div>
 
@@ -157,7 +167,11 @@ export default function BackofficePage() {
             <Message
               message={message}
               color={color}
-              onHide={hideMessageHandler}
+              onHide={() => {
+                setColor("");
+                setMessage(null);
+                hideMessageHandler();
+              }}
             />
 
             <div>
@@ -170,7 +184,7 @@ export default function BackofficePage() {
 
               <AddButton
                 title={pageTitle}
-                openModal={() => setproductModalAddVisible(true)}
+                openModal={() => setproductAddVisible(true)}
               />
             </div>
           </div>
@@ -185,89 +199,87 @@ export default function BackofficePage() {
                 dataAvailable={dataAvailable}
                 getEdit={(productData) => {
                   setProductData(productData);
-                  setProductModalEditVisible(true);
+                  setproductEditVisible(true);
                 }}
                 getDelete={(productData) => {
                   setProductData(productData);
-                  setProductModalDeleteVisible(true);
+                  setproductDeleteVisible(true);
                 }}
               />
             </div>
           </div>
 
           <PagePagination
+            loading={loading}
+            dataAvailable={dataAvailable}
             perPage={perPage}
             pageNumber={pageNumber}
             totalPage={totalPage}
             productsData={productsData}
             getPerPage={(e) => {
               setPerPage(e);
-              // console.log("Per Page:", e);
             }}
             getPageNumber={(e) => {
               setPageNumber(e);
-              // console.log("Page Number:", e);
             }}
             getTotalPage={(e) => {
               setTotalPage(e);
-              // console.log("Total Page:", e);
             }}
             getProductsSorted={(e) => {
               setproductsSorted(e);
-              // console.log("Products Sorted:", e);
             }}
           />
         </div>
 
         <ModalAccount
-          isVisible={accountModalVisible}
+          isVisible={AccountVisible}
           credentialsData={credentialsData}
           closeModal={() => {
-            closeAccountModalHandler();
+            closeAccountHandler();
           }}
           finishModal={(message, color) => {
             setMessage(message);
             setColor(color);
-            closeAccountModalHandler();
+            closeAccountHandler();
           }}
         />
 
         <ModalProductAdd
-          isVisible={productModalAddVisible}
+          isVisible={productAddVisible}
           branchesData={branchesData}
           closeModal={() => {
-            closeProductModalHandler();
+            closeproductHandler();
           }}
           finishModal={(message, color) => {
             setMessage(message);
             setColor(color);
-            closeProductModalHandler();
+            closeproductHandler();
           }}
         />
 
         <ModalProductEdit
-          isVisible={productModalEditVisible}
+          isVisible={productEditVisible}
           productData={productData}
           closeModal={() => {
-            closeProductModalEditHandler();
+            closeproductEditHandler();
           }}
           finishModal={(message, color) => {
             setMessage(message);
             setColor(color);
-            closeProductModalEditHandler();
+            closeproductEditHandler();
           }}
         />
 
         <ModalProductDelete
-          isVisible={productModalDeleteVisible}
+          isVisible={productDeleteVisible}
           productData={productData}
           closeModal={() => {
-            closeProductModalDeleteHandler();
+            closeproductDeleteHandler();
           }}
           finishModal={(message, color) => {
             setMessage(message);
             setColor(color);
-            closeProductModalDeleteHandler();
+            closeproductDeleteHandler();
           }}
         />
       </div>

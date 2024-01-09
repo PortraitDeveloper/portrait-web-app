@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @next/next/no-img-element */
-"use client";
 import EditOption from "../_ChildComponents/EditOption";
 
 const DataProduct = ({
@@ -20,16 +19,6 @@ const DataProduct = ({
 
   return (
     <>
-      {!loading && (
-        <div className="flex items-center justify-center">Loading...</div>
-      )}
-
-      {loading && !dataAvailable && (
-        <div className="flex items-center justify-center text-red-500">
-          Data tidak ditemukan
-        </div>
-      )}
-
       {loading && dataAvailable && (
         <div className="text-sm w-full">
           <table className="min-w-full">

@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import paginate from "@/utils/paginate";
 
 const PagePagination = ({
+  loading,
+  dataAvailable,
   perPage,
   pageNumber,
   totalPage,
@@ -52,36 +54,40 @@ const PagePagination = ({
   };
 
   return (
-    <div className="flex justify-between px-6">
-      <div className="flex justify-start gap-3 ">
-        <input
-          id="perPage"
-          name="perPage"
-          value={perPage_}
-          className="rounded-lg border border-black w-10 text-center"
-          onChange={changeHandler}
-        />
-        <p className="text-sm text-sora">per page</p>
-      </div>
+    <>
+      {loading && dataAvailable && (
+        <div className="flex justify-between px-6">
+          <div className="flex justify-start gap-3 ">
+            <input
+              id="perPage"
+              name="perPage"
+              value={perPage_}
+              className="rounded-lg border border-black w-10 text-center"
+              onChange={changeHandler}
+            />
+            <p className="text-sm text-sora">per page</p>
+          </div>
 
-      <div className="flex text-sm text-center text-blue-900 gap-3">
-        <button
-          className="border border-blue-900 rounded-lg px-1 hover:bg-blue-900 hover:text-white"
-          onClick={prevHandler}
-        >
-          Prev
-        </button>
-        <p>
-          {pageNumber_} / {totalPage_}
-        </p>
-        <button
-          className="border border-blue-900 rounded-lg px-1 hover:bg-blue-900 hover:text-white"
-          onClick={nextHandler}
-        >
-          Next
-        </button>
-      </div>
-    </div>
+          <div className="flex text-sm text-center text-blue-900 gap-3">
+            <button
+              className="border border-blue-900 rounded-lg px-1 hover:bg-blue-900 hover:text-white"
+              onClick={prevHandler}
+            >
+              Prev
+            </button>
+            <p>
+              {pageNumber_} / {totalPage_}
+            </p>
+            <button
+              className="border border-blue-900 rounded-lg px-1 hover:bg-blue-900 hover:text-white"
+              onClick={nextHandler}
+            >
+              Next
+            </button>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 
