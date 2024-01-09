@@ -7,7 +7,7 @@ import ErrorMessage from "../_ChildComponents/ErrorMessage";
 import SubmitButton from "../_ChildComponents/SubmitButton";
 import ProcessSubmit from "../_ChildComponents/ProcessSubmit";
 
-const ModalAccount = ({
+const ModalAccountSM = ({
   isVisible,
   credentialsData,
   closeModal,
@@ -73,9 +73,9 @@ const ModalAccount = ({
     <div
       id="container"
       onClick={closeHandler}
-      className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center md:justify-end"
+      className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex md:justify-center md:items-center"
     >
-      <div className="bg-white p-6 md:rounded-l-2xl flex flex-col justify-between">
+      <div className="bg-white p-6 rounded-2xl flex flex-col justify-between">
         <div>
           <div className="flex justify-between items-center mb-5">
             <Title title={"Account Setting"} />
@@ -144,4 +144,4 @@ const ModalAccount = ({
   );
 };
 
-export default ModalAccount;
+export default ModalAccountSM;

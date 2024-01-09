@@ -2,7 +2,7 @@ const AddButton = ({ title, openModal }) => {
   return (
     <>
       <button
-        className="px-3 py-2.5 border border-black rounded-xl text-sm font-sora hover:bg-blue-900 hover:text-white"
+        className="px-3 py-2.5 bg-blue-900 rounded-xl text-sm text-white font-sora hover:bg-blue-700"
         onClick={openModal}
       >
         Add {title} +

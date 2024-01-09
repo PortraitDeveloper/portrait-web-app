@@ -89,9 +89,9 @@ const ModalProductAdd = ({
         <div
           id="container"
           onClick={closeHandler}
-          className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-end"
+          className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center md:justify-end"
         >
-          <div className="bg-white p-6 rounded-l-2xl flex flex-col justify-between">
+          <div className="bg-white p-6 md:rounded-l-2xl flex flex-col justify-between">
             <div>
               <div className="flex justify-between items-center mb-5">
                 <Title title={"Add Product"} />
@@ -184,11 +184,11 @@ const ModalProductAdd = ({
               />
             </div>
 
-            <div className="mb-5">
+            <div className="mb-5 w-72">
               <ClipboardCopy copytext={productName} />
             </div>
 
-            <div className="mb-5">
+            <div className="mb-5 w-72">
               <Intruction
                 message={"Copy-Paste nama produk ke halaman formulir YCBM"}
               />

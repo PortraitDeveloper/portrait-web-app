@@ -24,15 +24,19 @@ const DataProduct = ({
           <table className="min-w-full">
             <thead>
               <tr>
-                <th className="py-3 border-b border-gray-400">ID</th>
-                <th className="py-3 border-b border-gray-400">PRODUCT NAME</th>
-                <th className="hidden sm:table-cell py-3 border-b border-gray-400">
+                <th className="py-3 border-b border-gray-400 text-sm md:text-md">
+                  ID
+                </th>
+                <th className="py-3 border-b border-gray-400 text-sm md:text-md w-32 md:w-1/4">
+                  PRODUCT_NAME
+                </th>
+                <th className="py-3 border-b border-gray-400 text-sm md:text-md">
                   PRICE
                 </th>
-                <th className="hidden sm:table-cell py-3 border-b border-gray-400">
+                <th className="hidden md:table-cell py-3 border-b border-gray-400 text-md w-1/3 lg:w-1/2">
                   DESCRIPTION
                 </th>
-                <th className="hidden sm:table-cell py-3 border-b border-gray-400"></th>
+                <th className="py-3 border-b border-gray-400"></th>
               </tr>
             </thead>
             <tbody>
@@ -41,13 +45,13 @@ const DataProduct = ({
                   <td className="text-center py-3 border-b border-gray-400">
                     {data.product_id}
                   </td>
-                  <td className="text-center py-3 border-b border-gray-400 w-1/4">
+                  <td className="text-center py-3 border-b border-gray-400 w-32 md:w-1/4">
                     {data.product_name}
                   </td>
-                  <td className="text-center hidden sm:table-cell py-3 border-b border-gray-400">
+                  <td className="text-center py-3 border-b border-gray-400">
                     {data.product_price}
                   </td>
-                  <td className="text-center hidden sm:table-cell py-3 border-b border-gray-400 w-1/2">
+                  <td className="text-center hidden md:table-cell py-3 border-b border-gray-400 w-1/3 lg:w-1/2">
                     {data.product_desc}
                   </td>
                   <td className="py-3 border-b border-gray-400">

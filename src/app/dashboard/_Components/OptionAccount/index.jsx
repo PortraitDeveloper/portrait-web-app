@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
 
-const AccountOption = ({ openModal }) => {
+const OptionAccount = ({ openModal }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const clickHandler = () => {
@@ -82,4 +82,4 @@ const AccountOption = ({ openModal }) => {
   );
 };
 
-export default AccountOption;
+export default OptionAccount;
