@@ -93,7 +93,7 @@ const ModalProductEdit = ({
         <div
           id="container"
           onClick={closeHandler}
-          className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center md:justify-end"
+          className="fixed inset-0 bg-white md:bg-black md:bg-opacity-30 backdrop-blur-sm flex justify-center md:justify-end"
         >
           <div className="bg-white p-6 md:rounded-l-2xl flex flex-col justify-between">
             <div>
