@@ -59,10 +59,9 @@ const PagePagination = ({
         <div className="flex justify-between px-6">
           <div className="flex justify-start gap-3 ">
             <input
-              id="perPage"
-              name="perPage"
+              type="number"
               value={perPage_}
-              className="rounded-lg border border-black w-10 text-center"
+              className="rounded-lg border border-black w-12 text-center"
               onChange={changeHandler}
             />
             <p className="text-sm text-sora">per page</p>
