@@ -15,9 +15,9 @@ import ModalProductAdd from "../../_Components/ModalProductAdd";
 import ModalProductEdit from "../../_Components/ModalProductEdit";
 import ModalProductDelete from "../../_Components/ModalProductDelete";
 import ModalLoading from "../../_Components/ModalLoading";
-const pageTitle = "Product";
+const pageTitle = "Additional";
 
-export default function BackofficePage() {
+export default function ProductPage() {
   const [credentialsData, setCredentialsData] = useState([]);
   const [branchesData, setBranchesData] = useState([]);
 
@@ -143,7 +143,7 @@ export default function BackofficePage() {
 
       <div className="shadow-xl shadow-gray-400">
         <div className="p-6">
-          <SidebarContent />
+          <SidebarContent pageTitle={pageTitle} />
         </div>
       </div>
 
@@ -163,7 +163,7 @@ export default function BackofficePage() {
 
         <div className="mb-6">
           <div className="flex justify-between items-center">
-            <PageTitle title="Product" />
+            <PageTitle pageTitle={pageTitle} />
             <Message
               message={message}
               color={color}

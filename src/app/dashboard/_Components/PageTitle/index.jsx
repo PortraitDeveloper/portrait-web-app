@@ -1,7 +1,9 @@
-import React from "react";
-
-const PageTitle = ({ title }) => {
-  return <h1 className="text-xl font-sora font-semibold">{title}</h1>;
+const PageTitle = ({ pageTitle }) => {
+  return (
+    <>
+      <h1 className="text-xl font-sora font-semibold">{pageTitle}</h1>;
+    </>
+  );
 };
 
 export default PageTitle;
