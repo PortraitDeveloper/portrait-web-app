@@ -1,9 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import SidebarContent from "../../_Components/SidebarContent";
+import OptionNavbar from "../../_Components/OptionNavbar";
 import Searchbar from "../../_Components/SearchBar";
-import AccountOption from "../../_Components/OptionAccount";
+import OptionAccount from "../../_Components/OptionAccount";
 import PageTitle from "../../_Components/PageTitle";
 import Message from "../../_Components/Message";
 import FilterBranch from "../../_Components/FilterBranch";
@@ -17,7 +19,7 @@ import ModalProductDelete from "../../_Components/ModalProductDelete";
 import ModalLoading from "../../_Components/ModalLoading";
 const pageTitle = "Voucher";
 
-export default function ProductPage() {
+export default function VoucherPage() {
   const [credentialsData, setCredentialsData] = useState([]);
   const [branchesData, setBranchesData] = useState([]);
 
@@ -28,7 +30,7 @@ export default function ProductPage() {
   const [branchId, setBranchId] = useState("all");
   const [keyword, setKeyword] = useState("null");
 
-  const [perPage, setPerPage] = useState(5);
+  const [perPage, setPerPage] = useState(4);
   const [pageNumber, setPageNumber] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
 
@@ -111,8 +113,6 @@ export default function ProductPage() {
       setProductsData(response.data);
       setDataAvailable(true);
       setLoading(true);
-      setColor("");
-      setMessage(null);
     }
   };
 
@@ -141,38 +141,82 @@ export default function ProductPage() {
     <div className="flex justify-center h-screen">
       {!loading && <ModalLoading />}
 
-      <div className="shadow-xl shadow-gray-400">
+      {/* HIDE SIDEBAR AT BREAKPOINT-MD: @media (min-width: 768px) */}
+      <div className="hidden md:block shadow-xl shadow-gray-400">
         <div className="p-6">
           <SidebarContent pageTitle={pageTitle} />
         </div>
       </div>
 
-      <div className="w-full px-6 py-4">
-        <div className="flex justify-center items-center mb-6">
+      <div className="w-full p-3 md:p-4 lg:p-6">
+        {/* SHOW UP TPP-LOGO AND TITLE AT BREAKPOINT-SM: @media (min-width: 640px) */}
+        <div className="block sm:hidden mb-2">
+          <div className="flex justify-between items-center">
+            <PageTitle pageTitle={pageTitle} />
+            <Image
+              src="/portraitPlace.png"
+              alt="TPP Logo"
+              width={90}
+              height={90}
+            />
+          </div>
+        </div>
+
+        <div className="flex justify-center items-center gap-3 mb-3 md:mb-4 lg:mb-6">
+          {/* SHOW UP OPTION-NAVBAR / DROPDOWN AT BREAKPOINT-MD: @media (min-width: 768px) */}
+          <div className="block md:hidden">
+            <OptionNavbar
+              credentialsData={credentialsData}
+              openModal={() => setAccountVisible(true)}
+            />
+          </div>
+
           <Searchbar
             placeholder="Find Product by Name"
             getKeyword={(e) => {
               setKeyword(e);
             }}
           />
-          <AccountOption
+          <OptionAccount
             credentialsData={credentialsData}
             openModal={() => setAccountVisible(true)}
           />
         </div>
 
-        <div className="mb-6">
+        {/* SHOW UP FILTER-BRANCH AND ADD-BUTTON AT BREAKPOINT-SM: @media (min-width: 640px) */}
+        <div className="block sm:hidden mb-3 md:mb-4 lg:mb-6">
           <div className="flex justify-between items-center">
-            <PageTitle pageTitle={pageTitle} />
-            <Message
-              message={message}
-              color={color}
-              onHide={() => {
-                setColor("");
-                setMessage(null);
-                hideMessageHandler();
+            <FilterBranch
+              branchesData={branchesData}
+              getBranchId={(e) => {
+                setBranchId(e);
               }}
             />
+
+            <AddButton
+              title={pageTitle}
+              openModal={() => setproductAddVisible(true)}
+            />
+          </div>
+        </div>
+
+        {/* HIDE PAGE-TITLE, FILTER-BRANCH, AND ADD-BUTTON AT BREAKPOINT-SM: @media (min-width: 640px) */}
+        <div className="hidden sm:block mb-6">
+          <div className="flex justify-between items-center">
+            <PageTitle pageTitle={pageTitle} />
+
+            {/* HIDE MESSAGE AT BREAKPOINT-LG: @media (min-width: 1024px) */}
+            <div className="hidden lg:block">
+              <Message
+                message={message}
+                color={color}
+                onHide={() => {
+                  setColor("");
+                  setMessage(null);
+                  hideMessageHandler();
+                }}
+              />
+            </div>
 
             <div>
               <FilterBranch
@@ -190,7 +234,20 @@ export default function ProductPage() {
           </div>
         </div>
 
-        <div className="flex flex-col justify-between border border-black rounded-3xl overflow-auto pb-4 h-3/4">
+        {/* SHOW UP MESSAGE AT BREAKPOINT-LG: @media (min-width: 1024px) */}
+        <div className="block lg:hidden h-10 mb-3 md:mb-4 lg:mb-6">
+          <Message
+            message={message}
+            color={color}
+            onHide={() => {
+              setColor("");
+              setMessage(null);
+              hideMessageHandler();
+            }}
+          />
+        </div>
+
+        <div className="flex flex-col justify-between border border-black rounded-3xl overflow-auto pb-4 h-2/3 md:h-4/5 lg:h-3/4">
           <div>
             <div className="flex justify-center px-4 py-2">
               <DataProduct
