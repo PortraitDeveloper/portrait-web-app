@@ -24,7 +24,7 @@ export default function ProductPage() {
   const [branchesData, setBranchesData] = useState([]);
 
   const [productsData, setProductsData] = useState([]);
-  const [productsSorted, setproductsSorted] = useState({});
+  const [productsSorted, setProductsSorted] = useState({});
   const [productData, setProductData] = useState({});
 
   const [branchId, setBranchId] = useState("all");
@@ -251,15 +251,16 @@ export default function ProductPage() {
           <div>
             <div className="flex justify-center px-4 py-2">
               <DataProduct
+                title={pageTitle}
                 productsData={productsSorted}
                 loading={loading}
                 dataAvailable={dataAvailable}
-                getEdit={(productData) => {
-                  setProductData(productData);
+                getEdit={(e) => {
+                  setProductData(e);
                   setproductEditVisible(true);
                 }}
-                getDelete={(productData) => {
-                  setProductData(productData);
+                getDelete={(e) => {
+                  setProductData(e);
                   setproductDeleteVisible(true);
                 }}
               />
@@ -272,7 +273,7 @@ export default function ProductPage() {
             perPage={perPage}
             pageNumber={pageNumber}
             totalPage={totalPage}
-            productsData={productsData}
+            data={productsData}
             getPerPage={(e) => {
               setPerPage(e);
             }}
@@ -282,8 +283,8 @@ export default function ProductPage() {
             getTotalPage={(e) => {
               setTotalPage(e);
             }}
-            getProductsSorted={(e) => {
-              setproductsSorted(e);
+            getDataSorted={(e) => {
+              setProductsSorted(e);
             }}
           />
         </div>

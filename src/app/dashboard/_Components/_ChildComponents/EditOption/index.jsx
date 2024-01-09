@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react";
 
-const EditOption = ({ productData, getEdit, getDelete }) => {
+const EditOption = ({ title, productData, getEdit, getDelete }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const onEdit = () => {
@@ -46,19 +46,19 @@ const EditOption = ({ productData, getEdit, getDelete }) => {
       </div>
 
       {isOpen && (
-        <div className="z-10 origin-top-right absolute right-0 mt-2 w-36 rounded-xl shadow-xl bg-white ring-1 ring-black ring-opacity-5">
+        <div className="z-10 origin-top-right absolute right-0 mt-2 w-40 rounded-xl shadow-xl bg-white ring-1 ring-black ring-opacity-5">
           <div className="py-1">
             <button
               onClick={onEdit}
               className="block px-4 py-2 text-sm hover:font-bold"
             >
-              <p>Edit Product</p>
+              <p>Edit {title}</p>
             </button>
             <button
               onClick={onDelete}
               className="block px-4 py-2 text-sm text-red-500 hover:font-bold"
             >
-              <p>Delete Product</p>
+              <p>Delete {title}</p>
             </button>
           </div>
         </div>

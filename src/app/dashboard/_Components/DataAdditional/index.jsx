@@ -1,21 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @next/next/no-img-element */
-import EditOption from "../_ChildComponents/EditOption";
+import ButtonEdit from "../_ChildComponents/ButtonEdit/page";
 
-const DataProduct = ({
-  title,
-  productsData,
+const DataAdditional = ({
+  additionalsData,
   loading,
   dataAvailable,
   getEdit,
-  getDelete,
 }) => {
-  const onEdit = (productData) => {
-    getEdit(productData);
-  };
-
-  const onDelete = (productData) => {
-    getDelete(productData);
+  const onEdit = (additionalData) => {
+    getEdit(additionalData);
   };
 
   return (
@@ -29,7 +23,7 @@ const DataProduct = ({
                   ID
                 </th>
                 <th className="py-3 border-b border-gray-400 text-sm md:text-md w-32 md:w-1/4">
-                  PRODUCT_NAME
+                  ITEM_NAME
                 </th>
                 <th className="py-3 border-b border-gray-400 text-sm md:text-md">
                   PRICE
@@ -41,39 +35,32 @@ const DataProduct = ({
               </tr>
             </thead>
             <tbody>
-              {productsData.map((data, index) => (
+              {additionalsData.map((data, index) => (
                 <tr key={index}>
                   <td className="text-center py-3 border-b border-gray-400">
-                    {data.product_id}
+                    {data.item_id}
                   </td>
                   <td className="text-center py-3 border-b border-gray-400 w-32 md:w-1/4">
-                    {data.product_name}
+                    {data.item_name}
                   </td>
                   <td className="text-center py-3 border-b border-gray-400">
-                    {data.product_price}
+                    {data.item_price}
                   </td>
                   <td className="text-center hidden md:table-cell py-3 border-b border-gray-400 w-1/3 lg:w-1/2">
-                    {data.product_desc}
+                    {data.item_desc}
                   </td>
                   <td className="py-3 border-b border-gray-400">
-                    <div className="flex justify-center">
-                      <EditOption
-                        title={title}
-                        productData={{
-                          productId: data.product_id,
-                          productName: data.product_name,
-                          productPrice: data.product_price,
-                          productDesc: data.product_desc,
-                          branchId: data.branchId,
-                        }}
-                        getEdit={(productData) => {
-                          onEdit(productData);
-                        }}
-                        getDelete={(productData) => {
-                          onDelete(productData);
-                        }}
-                      />
-                    </div>
+                    <ButtonEdit
+                      data={{
+                        itemId: data.item_id,
+                        itemName: data.item_name,
+                        itemPrice: data.item_price,
+                        itemDesc: data.item_desc,
+                      }}
+                      getEdit={(additionalsData) => {
+                        onEdit(additionalsData);
+                      }}
+                    />
                   </td>
                 </tr>
               ))}
@@ -85,4 +72,4 @@ const DataProduct = ({
   );
 };
 
-export default DataProduct;
+export default DataAdditional;

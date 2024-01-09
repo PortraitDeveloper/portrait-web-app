@@ -8,29 +8,23 @@ import Searchbar from "../../_Components/SearchBar";
 import OptionAccount from "../../_Components/OptionAccount";
 import PageTitle from "../../_Components/PageTitle";
 import Message from "../../_Components/Message";
-import FilterBranch from "../../_Components/FilterBranch";
-import AddButton from "../../_Components/AddButton";
-import DataProduct from "../../_Components/DataProduct";
+import DataAdditional from "../../_Components/DataAdditional";
 import PagePagination from "../../_Components/PagePagination";
 import ModalAccount from "../../_Components/ModalAccount";
-import ModalProductAdd from "../../_Components/ModalProductAdd";
-import ModalProductEdit from "../../_Components/ModalProductEdit";
-import ModalProductDelete from "../../_Components/ModalProductDelete";
+import ModalAdditionalEdit from "../../_Components/ModalAdditionalEdit";
 import ModalLoading from "../../_Components/ModalLoading";
 const pageTitle = "Additional";
 
 export default function AdditionalPage() {
   const [credentialsData, setCredentialsData] = useState([]);
-  const [branchesData, setBranchesData] = useState([]);
 
-  const [productsData, setProductsData] = useState([]);
-  const [productsSorted, setproductsSorted] = useState({});
-  const [productData, setProductData] = useState({});
+  const [additionalsData, setAdditionalsData] = useState([]);
+  const [additionalsSorted, setAdditionalsSorted] = useState({});
+  const [additionalData, setAdditionalData] = useState({});
 
-  const [branchId, setBranchId] = useState("all");
   const [keyword, setKeyword] = useState("null");
 
-  const [perPage, setPerPage] = useState(4);
+  const [perPage, setPerPage] = useState(5);
   const [pageNumber, setPageNumber] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
 
@@ -40,26 +34,17 @@ export default function AdditionalPage() {
   const [color, setColor] = useState("");
 
   const [AccountVisible, setAccountVisible] = useState(false);
-  const [productAddVisible, setproductAddVisible] = useState(false);
-  const [productEditVisible, setproductEditVisible] = useState(false);
-  const [productDeleteVisible, setproductDeleteVisible] = useState(false);
+  const [additionalEditVisible, setAdditionalEditVisible] = useState(false);
 
   useEffect(() => {
     getCredentialsData();
   }, []);
 
   useEffect(() => {
-    getBranchesData();
-  }, []);
-
-  useEffect(() => {
-    getProductsData();
+    getAdditionalsData();
   }, [
-    branchId,
     keyword,
-    productAddVisible,
-    productEditVisible,
-    productDeleteVisible,
+    additionalEditVisible,
   ]);
 
   const getCredentialsData = async () => {
@@ -75,30 +60,14 @@ export default function AdditionalPage() {
     setCredentialsData(response.data);
   };
 
-  const getBranchesData = async () => {
-    let response = await fetch(`/api/data/branch`, {
+  const getAdditionalsData = async () => {
+    let response = await fetch(`/api/data/additional/search/${keyword}`, {
       method: "GET",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
     });
-
-    response = await response.json();
-    setBranchesData(response.data);
-  };
-
-  const getProductsData = async () => {
-    let response = await fetch(
-      `/api/data/product/search/${branchId}/${keyword}`,
-      {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      }
-    );
 
     response = await response.json();
 
@@ -110,7 +79,7 @@ export default function AdditionalPage() {
     } else {
       const _totalPage = Math.ceil(response.data.length / perPage);
       setTotalPage(_totalPage);
-      setProductsData(response.data);
+      setAdditionalsData(response.data);
       setDataAvailable(true);
       setLoading(true);
     }
@@ -120,16 +89,8 @@ export default function AdditionalPage() {
     setAccountVisible(false);
   };
 
-  const closeproductHandler = () => {
-    setproductAddVisible(false);
-  };
-
-  const closeproductEditHandler = () => {
-    setproductEditVisible(false);
-  };
-
-  const closeproductDeleteHandler = () => {
-    setproductDeleteVisible(false);
+  const closeAdditionalEditHandler = () => {
+    setAdditionalEditVisible(false);
   };
 
   const hideMessageHandler = () => {
@@ -172,7 +133,7 @@ export default function AdditionalPage() {
           </div>
 
           <Searchbar
-            placeholder="Find Product by Name"
+            placeholder="Find Additional by Name"
             getKeyword={(e) => {
               setKeyword(e);
             }}
@@ -181,23 +142,6 @@ export default function AdditionalPage() {
             credentialsData={credentialsData}
             openModal={() => setAccountVisible(true)}
           />
-        </div>
-
-        {/* SHOW UP FILTER-BRANCH AND ADD-BUTTON AT BREAKPOINT-SM: @media (min-width: 640px) */}
-        <div className="block sm:hidden mb-3 md:mb-4 lg:mb-6">
-          <div className="flex justify-between items-center">
-            <FilterBranch
-              branchesData={branchesData}
-              getBranchId={(e) => {
-                setBranchId(e);
-              }}
-            />
-
-            <AddButton
-              title={pageTitle}
-              openModal={() => setproductAddVisible(true)}
-            />
-          </div>
         </div>
 
         {/* HIDE PAGE-TITLE, FILTER-BRANCH, AND ADD-BUTTON AT BREAKPOINT-SM: @media (min-width: 640px) */}
@@ -215,20 +159,6 @@ export default function AdditionalPage() {
                   setMessage(null);
                   hideMessageHandler();
                 }}
-              />
-            </div>
-
-            <div>
-              <FilterBranch
-                branchesData={branchesData}
-                getBranchId={(e) => {
-                  setBranchId(e);
-                }}
-              />
-
-              <AddButton
-                title={pageTitle}
-                openModal={() => setproductAddVisible(true)}
               />
             </div>
           </div>
@@ -250,17 +180,15 @@ export default function AdditionalPage() {
         <div className="flex flex-col justify-between border border-black rounded-3xl overflow-auto pb-4 h-2/3 md:h-4/5 lg:h-3/4">
           <div>
             <div className="flex justify-center px-4 py-2">
-              <DataProduct
-                productsData={productsSorted}
+              <DataAdditional
+                title={pageTitle}
+                additionalsData={additionalsSorted}
                 loading={loading}
                 dataAvailable={dataAvailable}
-                getEdit={(productData) => {
-                  setProductData(productData);
-                  setproductEditVisible(true);
-                }}
-                getDelete={(productData) => {
-                  setProductData(productData);
-                  setproductDeleteVisible(true);
+                getEdit={(additionalData) => {
+                  console.log("AdditionalData:", additionalData);
+                  // setAdditionalData(additionalData);
+                  // setAdditionalEditVisible(true);
                 }}
               />
             </div>
@@ -272,7 +200,7 @@ export default function AdditionalPage() {
             perPage={perPage}
             pageNumber={pageNumber}
             totalPage={totalPage}
-            productsData={productsData}
+            data={additionalsData}
             getPerPage={(e) => {
               setPerPage(e);
             }}
@@ -282,8 +210,8 @@ export default function AdditionalPage() {
             getTotalPage={(e) => {
               setTotalPage(e);
             }}
-            getProductsSorted={(e) => {
-              setproductsSorted(e);
+            getDataSorted={(e) => {
+              setAdditionalsSorted(e);
             }}
           />
         </div>
@@ -301,44 +229,18 @@ export default function AdditionalPage() {
           }}
         />
 
-        <ModalProductAdd
-          isVisible={productAddVisible}
-          branchesData={branchesData}
+        {/* <ModalAdditionalEdit
+          isVisible={additionalEditVisible}
+          additionalData={additionalData}
           closeModal={() => {
-            closeproductHandler();
+            closeAdditionalEditHandler();
           }}
           finishModal={(message, color) => {
             setMessage(message);
             setColor(color);
-            closeproductHandler();
+            closeAdditionalEditHandler();
           }}
-        />
-
-        <ModalProductEdit
-          isVisible={productEditVisible}
-          productData={productData}
-          closeModal={() => {
-            closeproductEditHandler();
-          }}
-          finishModal={(message, color) => {
-            setMessage(message);
-            setColor(color);
-            closeproductEditHandler();
-          }}
-        />
-
-        <ModalProductDelete
-          isVisible={productDeleteVisible}
-          productData={productData}
-          closeModal={() => {
-            closeproductDeleteHandler();
-          }}
-          finishModal={(message, color) => {
-            setMessage(message);
-            setColor(color);
-            closeproductDeleteHandler();
-          }}
-        />
+        /> */}
       </div>
     </div>
   );

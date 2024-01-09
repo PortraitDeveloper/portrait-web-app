@@ -8,10 +8,10 @@ const PagePagination = ({
   perPage,
   pageNumber,
   totalPage,
-  productsData,
+  data,
   getPerPage,
   getPageNumber,
-  getProductsSorted,
+  getDataSorted,
 }) => {
   const [perPage_, setPerPage_] = useState(perPage);
   const [pageNumber_, setPageNumber_] = useState(pageNumber);
@@ -19,16 +19,15 @@ const PagePagination = ({
 
   useEffect(() => {
     const perPage_ = !perPage ? 1 : perPage;
-    let _totalPage = Math.ceil(productsData.length / perPage_);
+    let _totalPage = Math.ceil(data.length / perPage_);
     setTotalPage_(_totalPage);
 
-    const productsSorted = paginate(productsData, perPage, pageNumber);
-    getProductsSorted(productsSorted);
-  }, [perPage, pageNumber, productsData]);
+    const dataSorted = paginate(data, perPage, pageNumber);
+    getDataSorted(dataSorted);
+  }, [perPage, pageNumber, data]);
 
   useEffect(() => {
     if (totalPage_ < pageNumber_) {
-      console.log("Detected!");
       setTotalPage_(1);
       setPageNumber_(1);
       getPageNumber(1);
