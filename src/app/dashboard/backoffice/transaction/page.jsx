@@ -143,7 +143,7 @@ export default function TransactionPage() {
 
       <div className="shadow-xl shadow-gray-400">
         <div className="p-6">
-          <SidebarContent pageTitle={pageTitle}/>
+          <SidebarContent pageTitle={pageTitle} />
         </div>
       </div>
 

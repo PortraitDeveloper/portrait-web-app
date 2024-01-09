@@ -28,8 +28,6 @@ const Searchbar = ({ placeholder, getKeyword }) => {
       />
       <input
         type="text"
-        id="search"
-        name="search"
         placeholder={placeholder}
         className="outline-none w-full"
         ref={inputRef}

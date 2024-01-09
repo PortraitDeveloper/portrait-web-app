@@ -9,41 +9,6 @@ export const dynamic = "force-dynamic";
 // Set Time Zone from UTC to WIB or Asia/Jakarta Timezone where time difference is 7
 const timeDiff = 7;
 
-export async function GET(request) {
-  // Generate timestamp / current datetime
-  const currentTimeStamp = getTimeStamp(timeDiff);
-
-  try {
-    // Read all products data
-    const products = await prisma.products.findMany({
-      include: {
-        branches: true,
-      },
-    });
-
-    // Return all products data
-    return NextResponse.json({
-      created_at: currentTimeStamp,
-      route: "/api/data/product",
-      status: 200,
-      message: "Products data found.",
-      data: products,
-    });
-  } catch (error) {
-    // If the system or database server error then return an error log
-    const log = {
-      created_at: currentTimeStamp,
-      route: "/api/data/product",
-      status: 500,
-      message: error.message,
-    };
-    errorLog(log);
-    return NextResponse.json(log);
-  } finally {
-    await prisma.$disconnect();
-  }
-}
-
 export async function POST(request) {
   // Generate timestamp / current datetime
   const currentTimeStamp = getTimeStamp(timeDiff);
@@ -132,7 +97,9 @@ export async function PATCH(request) {
     const { product_id, product_name, product_price, product_desc, branch_id } =
       await request.json();
 
-    if (parseInt(product_price) === 0) {
+    const productPrice = parseInt(product_price);
+
+    if (productPrice === 0) {
       // Return a success log
       return NextResponse.json({
         created_at: currentTimeStamp,
@@ -142,12 +109,13 @@ export async function PATCH(request) {
       });
     }
 
-    const existingData = await prisma.products.findFirst({
+    let existingData = await prisma.products.findFirst({
       where: {
-        OR: [
-          { product_id, product_name, product_price, product_desc, branch_id },
-          { product_name, branch_id },
-        ],
+        product_id,
+        product_name,
+        product_price: productPrice,
+        product_desc,
+        branch_id,
       },
     });
 
@@ -163,8 +131,8 @@ export async function PATCH(request) {
 
     // Update the product data
     const newData = await prisma.products.update({
-      where: { product_id },
-      data: { product_name, product_price, product_desc },
+      where: { product_id, branch_id },
+      data: { product_name, product_price: productPrice, product_desc },
     });
 
     // Return a success log

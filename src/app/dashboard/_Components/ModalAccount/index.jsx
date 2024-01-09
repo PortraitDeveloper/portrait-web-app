@@ -1,4 +1,3 @@
-"use client";
 import { useState } from "react";
 import Title from "../_ChildComponents/Title";
 import CloseIcon from "../_ChildComponents/CloseIcon";
@@ -14,14 +13,21 @@ const ModalAccount = ({
   closeModal,
   finishModal,
 }) => {
-  let message = null;
-  let color = "green";
   const [userId, setUserId] = useState(1);
   const [oldPassword, setOldPassword] = useState(null);
   const [newPassword, setNewPassword] = useState(null);
   const [confirmPassword, setConfirmPassword] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(true);
+  let message = null;
+  let color = "green";
+
+  const closeHandler = (e) => {
+    if (e.target.id === "container" || e === "closeIcon") {
+      clearStates();
+      closeModal();
+    }
+  };
 
   const clearStates = () => {
     setUserId(1);
@@ -58,13 +64,6 @@ const ModalAccount = ({
       message = "Password berhasil diubah";
       clearStates();
       finishModal(message, color);
-    }
-  };
-
-  const closeHandler = (e) => {
-    if (e.target.id === "container" || e === "closeIcon") {
-      clearStates();
-      closeModal();
     }
   };
 

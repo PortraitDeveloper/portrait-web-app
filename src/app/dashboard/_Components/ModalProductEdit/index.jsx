@@ -3,8 +3,7 @@
 import { useState } from "react";
 import Title from "../_ChildComponents/Title";
 import CloseIcon from "../_ChildComponents/CloseIcon";
-import ReplaceString from "../_ChildComponents/ReplaceString";
-import ReplaceProductType from "../_ChildComponents/ReplaceProductType";
+import LabelProduct from "../_ChildComponents/LabelProduct";
 import ReplaceNumber from "../_ChildComponents/ReplaceNumber";
 import ReplaceText from "../_ChildComponents/ReplaceText";
 import ErrorMessage from "../_ChildComponents/ErrorMessage";
@@ -15,6 +14,8 @@ import YCBMLink from "../_ChildComponents/YCBMLink";
 import Intruction from "../_ChildComponents/Intruction";
 import thousandConversion from "@/utils/thousandConversion";
 
+const url = process.env.NEXT_PUBLIC_PRODUCT_FORM_URL;
+
 const ModalProductEdit = ({
   isVisible,
   productData,
@@ -22,16 +23,23 @@ const ModalProductEdit = ({
   finishModal,
 }) => {
   const [productName, setProductName] = useState(null);
-  const [productType, setProductType] = useState(null);
   const [productPrice, setProductPrice] = useState(null);
   const [productDesc, setProductDesc] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
   const [view, setView] = useState(true);
   const [loading, setLoading] = useState(true);
 
+  let message = null;
+  let color = "green";
+
+  const closeHandler = (e) => {
+    if (e.target.id === "container" || e === "closeIcon") {
+      clearStates();
+      closeModal();
+    }
+  };
+
   const clearStates = () => {
-    setProductName(null);
-    setProductType(null);
     setProductPrice(null);
     setProductDesc(null);
     setErrorMessage("");
@@ -40,8 +48,8 @@ const ModalProductEdit = ({
 
   const submitHandler = async () => {
     setLoading(false);
-    let _productName = productName + " " + productType;
     let _productId = productData.productId;
+    let _productName = productData.productName;
 
     const body = {
       product_id: _productId,
@@ -66,10 +74,7 @@ const ModalProductEdit = ({
     if (response.status === 400) {
       setErrorMessage(response.message);
     } else {
-      if (
-        productData.productName === _productName &&
-        productData.productPrice === productPrice
-      ) {
+      if (productData.productPrice === productPrice) {
         message = `Product dengan ID ${_productId} berhasil diubah`;
         finishModal(message, color);
       } else {
@@ -80,22 +85,7 @@ const ModalProductEdit = ({
     }
   };
 
-  const closeHandler = (e) => {
-    if (e.target.id === "container" || e === "closeIcon") {
-      clearStates();
-      closeModal();
-    }
-  };
-
   if (!isVisible) return null;
-
-  let message = null;
-  let color = "green";
-  const _productId = productData.productId.toUpperCase();
-  const rawProductName = productData.productName;
-  const splitProductName = rawProductName.split("(");
-  const _productName = splitProductName[0].trim();
-  const _productType = `(${splitProductName.slice(1).join("(")}`;
 
   return (
     <>
@@ -108,7 +98,7 @@ const ModalProductEdit = ({
           <div className="bg-white p-6 rounded-l-2xl flex flex-col justify-between">
             <div>
               <div className="flex justify-between items-center mb-5">
-                <Title title={`Edit Product ${_productId}`} />
+                <Title title="Edit Product" />
                 <CloseIcon
                   onClose={() => {
                     clearStates();
@@ -118,22 +108,9 @@ const ModalProductEdit = ({
               </div>
 
               <div className="mb-3">
-                <ReplaceString
-                  inputName={"editProductName"}
-                  placeHolder={"Ubah nama produk"}
-                  value={_productName}
-                  getString={(e) => {
-                    setProductName(e);
-                  }}
-                />
-              </div>
-
-              <div className="mb-3">
-                <ReplaceProductType
-                  productType={_productType}
-                  getProductType={(e) => {
-                    setProductType(e);
-                  }}
+                <LabelProduct
+                  productId={productData.productId}
+                  productName={productData.productName}
                 />
               </div>
 
@@ -189,7 +166,7 @@ const ModalProductEdit = ({
               <Title title={"Copy Product Name"} />
               <CloseIcon
                 onClose={() => {
-                  message = `Product dengan ID ${_productId} berhasil diubah`;
+                  message = `Product dengan ID ${productData.productId} berhasil diubah`;
                   clearStates();
                   finishModal(message, color);
                 }}
@@ -206,7 +183,7 @@ const ModalProductEdit = ({
               />
             </div>
 
-            <YCBMLink spesicURL={process.env.NEXT_PUBLIC_PRODUCT_FORM_URL} />
+            <YCBMLink spesicURL={url} />
           </div>
         </div>
       )}

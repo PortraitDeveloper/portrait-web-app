@@ -6,10 +6,7 @@ const Filter = ({ branchesData, getBranchId }) => {
 
   return (
     <select
-      name="filter"
-      id="filter"
       className="px-3 py-2.5 rounded-xl border border-black text-sm font-sora w-48 mr-3"
-      required
       onChange={changeHandler}
     >
       <option value="all">All Branches</option>

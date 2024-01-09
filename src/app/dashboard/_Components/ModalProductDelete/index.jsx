@@ -13,6 +13,12 @@ const ModalProductDelete = ({
   let message = null;
   let color = "red";
 
+  const closeHandler = (e) => {
+    if (e.target.id === "container" || e === "closeIcon") {
+      closeModal();
+    }
+  };
+
   const deleteHandler = async () => {
     setLoading(false);
     let response = await fetch("/api/data/product", {
@@ -33,12 +39,6 @@ const ModalProductDelete = ({
     } else {
       message = `Product dengan ID ${productData.productId} telah dihapus`;
       finishModal(message, color);
-    }
-  };
-
-  const closeHandler = (e) => {
-    if (e.target.id === "container" || e === "closeIcon") {
-      closeModal();
     }
   };
 

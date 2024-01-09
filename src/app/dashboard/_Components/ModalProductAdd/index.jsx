@@ -1,4 +1,3 @@
-"use client";
 import { useState } from "react";
 import Title from "../_ChildComponents/Title";
 import CloseIcon from "../_ChildComponents/CloseIcon";
@@ -10,11 +9,9 @@ import InputText from "../_ChildComponents/InputText";
 import ErrorMessage from "../_ChildComponents/ErrorMessage";
 import SubmitButton from "../_ChildComponents/SubmitButton";
 import ProcessSubmit from "../_ChildComponents/ProcessSubmit";
-
 import ClipboardCopy from "../_ChildComponents/ClipboardCopy";
 import YCBMLink from "../_ChildComponents/YCBMLink";
 import Intruction from "../_ChildComponents/Intruction";
-
 import thousandConversion from "@/utils/thousandConversion";
 
 const ModalProductAdd = ({
@@ -32,6 +29,15 @@ const ModalProductAdd = ({
   const [errorMessage, setErrorMessage] = useState("");
   const [view, setView] = useState(true);
   const [loading, setLoading] = useState(true);
+  let message = null;
+  let color = "blue";
+
+  const closeHandler = (e) => {
+    if (e.target.id === "container" || e === "closeIcon") {
+      clearStates();
+      closeModal();
+    }
+  };
 
   const clearStates = () => {
     setBranchId("null");
@@ -75,16 +81,7 @@ const ModalProductAdd = ({
     }
   };
 
-  const closeHandler = (e) => {
-    if (e.target.id === "container" || e === "closeIcon") {
-      clearStates();
-      closeModal();
-    }
-  };
-
   if (!isVisible) return null;
-  let message = null;
-  let color = "blue";
 
   return (
     <>

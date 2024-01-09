@@ -1,5 +1,3 @@
-import React from "react";
-
 const SubmitButton = ({ getSubmit, label }) => {
   return (
     <button
