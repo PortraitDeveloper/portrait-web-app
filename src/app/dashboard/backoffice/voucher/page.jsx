@@ -10,27 +10,25 @@ import PageTitle from "../../_Components/PageTitle";
 import Message from "../../_Components/Message";
 import FilterDiscountType from "../../_Components/FilterDiscountType";
 import AddButton from "../../_Components/AddButton";
-import DataProduct from "../../_Components/DataProduct";
+import DataVoucher from "../../_Components/DataVoucher";
 import PagePagination from "../../_Components/PagePagination";
 import ModalAccount from "../../_Components/ModalAccount";
-import ModalProductAdd from "../../_Components/ModalProductAdd";
-import ModalProductEdit from "../../_Components/ModalProductEdit";
-import ModalProductDelete from "../../_Components/ModalProductDelete";
+import ModalvoucherAdd from "../../_Components/ModalvoucherAdd";
+import ModalvoucherEdit from "../../_Components/ModalvoucherEdit";
+import ModalvoucherDelete from "../../_Components/ModalvoucherDelete";
 import ModalLoading from "../../_Components/ModalLoading";
 const pageTitle = "Voucher";
 
 export default function VoucherPage() {
   const [credentialsData, setCredentialsData] = useState([]);
-  const [branchesData, setBranchesData] = useState([]);
 
-  const [productsData, setProductsData] = useState([]);
-  const [productsSorted, setproductsSorted] = useState({});
-  const [productData, setProductData] = useState({});
+  const [vouchersData, setVouchersData] = useState([]);
+  const [vouchersSorted, setVouchersSorted] = useState({});
+  const [voucherData, setVoucherData] = useState({});
 
-  const [branchId, setBranchId] = useState("all");
   const [keyword, setKeyword] = useState("null");
 
-  const [perPage, setPerPage] = useState(4);
+  const [perPage, setPerPage] = useState(5);
   const [pageNumber, setPageNumber] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
 
@@ -40,28 +38,24 @@ export default function VoucherPage() {
   const [color, setColor] = useState("");
 
   const [AccountVisible, setAccountVisible] = useState(false);
-  const [productAddVisible, setproductAddVisible] = useState(false);
-  const [productEditVisible, setproductEditVisible] = useState(false);
-  const [productDeleteVisible, setproductDeleteVisible] = useState(false);
+  const [voucherAddVisible, setVoucherAddVisible] = useState(false);
+  const [voucherEditVisible, setVoucherEditVisible] = useState(false);
+  const [voucherDeleteVisible, setVoucherDeleteVisible] = useState(false);
 
-  const [discountType, setDiscountType] = useState("percentage");
+  const [type, setType] = useState("percentage");
 
   useEffect(() => {
     getCredentialsData();
   }, []);
 
   useEffect(() => {
-    getBranchesData();
-  }, []);
-
-  useEffect(() => {
-    getProductsData();
+    getVouchersData();
   }, [
-    branchId,
     keyword,
-    productAddVisible,
-    productEditVisible,
-    productDeleteVisible,
+    type,
+    voucherAddVisible,
+    voucherEditVisible,
+    voucherDeleteVisible,
   ]);
 
   const getCredentialsData = async () => {
@@ -77,8 +71,8 @@ export default function VoucherPage() {
     setCredentialsData(response.data);
   };
 
-  const getBranchesData = async () => {
-    let response = await fetch(`/api/data/branch`, {
+  const getVouchersData = async () => {
+    let response = await fetch(`/api/data/voucher/${keyword}/${type}`, {
       method: "GET",
       headers: {
         Accept: "application/json",
@@ -87,22 +81,7 @@ export default function VoucherPage() {
     });
 
     response = await response.json();
-    setBranchesData(response.data);
-  };
-
-  const getProductsData = async () => {
-    let response = await fetch(
-      `/api/data/product/search/${branchId}/${keyword}`,
-      {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      }
-    );
-
-    response = await response.json();
+    console.log("Response:", response);
 
     if (response.status === 404) {
       setDataAvailable(false);
@@ -112,7 +91,7 @@ export default function VoucherPage() {
     } else {
       const _totalPage = Math.ceil(response.data.length / perPage);
       setTotalPage(_totalPage);
-      setProductsData(response.data);
+      setVouchersData(response.data);
       setDataAvailable(true);
       setLoading(true);
     }
@@ -122,16 +101,16 @@ export default function VoucherPage() {
     setAccountVisible(false);
   };
 
-  const closeproductHandler = () => {
-    setproductAddVisible(false);
+  const closeVoucherHandler = () => {
+    setVoucherAddVisible(false);
   };
 
-  const closeproductEditHandler = () => {
-    setproductEditVisible(false);
+  const closeVoucherEditHandler = () => {
+    setVoucherEditVisible(false);
   };
 
-  const closeproductDeleteHandler = () => {
-    setproductDeleteVisible(false);
+  const closeVoucherDeleteHandler = () => {
+    setVoucherDeleteVisible(false);
   };
 
   const hideMessageHandler = () => {
@@ -174,7 +153,7 @@ export default function VoucherPage() {
           </div>
 
           <Searchbar
-            placeholder="Find Product by Name"
+            placeholder="Find Voucher By Code"
             getKeyword={(e) => {
               setKeyword(e);
             }}
@@ -188,11 +167,15 @@ export default function VoucherPage() {
         {/* SHOW UP FILTER-BRANCH AND ADD-BUTTON AT BREAKPOINT-SM: @media (min-width: 640px) */}
         <div className="block sm:hidden mb-3 md:mb-4 lg:mb-6">
           <div className="flex justify-between items-center">
-            <FilterDiscountType />
+            <FilterDiscountType
+              getDiscountType={(e) => {
+                setType(e);
+              }}
+            />
 
             <AddButton
               title={pageTitle}
-              openModal={() => setproductAddVisible(true)}
+              openModal={() => setVoucherAddVisible(true)}
             />
           </div>
         </div>
@@ -215,19 +198,22 @@ export default function VoucherPage() {
               />
             </div>
 
-            <div>
-              <FilterDiscountType />
-
+            <div className="flex justify-center items-center">
+              <FilterDiscountType
+                getDiscountType={(e) => {
+                  setType(e);
+                }}
+              />
               <AddButton
                 title={pageTitle}
-                openModal={() => setproductAddVisible(true)}
+                openModal={() => setVoucherAddVisible(true)}
               />
             </div>
           </div>
         </div>
 
         {/* SHOW UP MESSAGE AT BREAKPOINT-LG: @media (min-width: 1024px) */}
-        <div className="block lg:hidden h-10 mb-3 md:mb-4 lg:mb-6">
+        <div className="block lg:hidden h-10 mb-1 md:mb-4 lg:mb-6">
           <Message
             message={message}
             color={color}
@@ -240,17 +226,19 @@ export default function VoucherPage() {
         </div>
 
         <div className="flex flex-col justify-between border border-black rounded-3xl overflow-auto pb-4 h-2/3 md:h-4/5 lg:h-3/4">
-          <DataProduct
-            productsData={productsSorted}
+          <DataVoucher
+            title={pageTitle}
+            vouchersData={vouchersSorted}
+            discountType={type}
             loading={loading}
             dataAvailable={dataAvailable}
-            getEdit={(productData) => {
-              setProductData(productData);
-              setproductEditVisible(true);
+            getEdit={(e) => {
+              setVoucherData(e);
+              setVoucherEditVisible(true);
             }}
-            getDelete={(productData) => {
-              setProductData(productData);
-              setproductDeleteVisible(true);
+            getDelete={(e) => {
+              setVoucherData(e);
+              setVoucherDeleteVisible(true);
             }}
           />
 
@@ -260,7 +248,7 @@ export default function VoucherPage() {
             perPage={perPage}
             pageNumber={pageNumber}
             totalPage={totalPage}
-            productsData={productsData}
+            data={vouchersData}
             getPerPage={(e) => {
               setPerPage(e);
             }}
@@ -270,8 +258,8 @@ export default function VoucherPage() {
             getTotalPage={(e) => {
               setTotalPage(e);
             }}
-            getProductsSorted={(e) => {
-              setproductsSorted(e);
+            getDataSorted={(e) => {
+              setVouchersSorted(e);
             }}
           />
         </div>
@@ -289,44 +277,44 @@ export default function VoucherPage() {
           }}
         />
 
-        <ModalProductAdd
-          isVisible={productAddVisible}
+        {/* <ModalvoucherAdd
+          isVisible={voucherAddVisible}
           branchesData={branchesData}
           closeModal={() => {
-            closeproductHandler();
+            closeVoucherHandler();
           }}
           finishModal={(message, color) => {
             setMessage(message);
             setColor(color);
-            closeproductHandler();
+            closeVoucherHandler();
           }}
         />
 
-        <ModalProductEdit
-          isVisible={productEditVisible}
-          productData={productData}
+        <ModalvoucherEdit
+          isVisible={voucherEditVisible}
+          voucherData={voucherData}
           closeModal={() => {
-            closeproductEditHandler();
+            closeVoucherEditHandler();
           }}
           finishModal={(message, color) => {
             setMessage(message);
             setColor(color);
-            closeproductEditHandler();
+            closeVoucherEditHandler();
           }}
         />
 
-        <ModalProductDelete
-          isVisible={productDeleteVisible}
-          productData={productData}
+        <ModalvoucherDelete
+          isVisible={voucherDeleteVisible}
+          voucherData={voucherData}
           closeModal={() => {
-            closeproductDeleteHandler();
+            closeVoucherDeleteHandler();
           }}
           finishModal={(message, color) => {
             setMessage(message);
             setColor(color);
-            closeproductDeleteHandler();
+            closeVoucherDeleteHandler();
           }}
-        />
+        /> */}
       </div>
     </div>
   );

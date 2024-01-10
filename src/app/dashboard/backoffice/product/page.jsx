@@ -90,7 +90,7 @@ export default function ProductPage() {
 
   const getProductsData = async () => {
     let response = await fetch(
-      `/api/data/product/search/${branchId}/${keyword}`,
+      `/api/data/product/${keyword}/${branchId}`,
       {
         method: "GET",
         headers: {

@@ -29,7 +29,7 @@ const Searchbar = ({ placeholder, getKeyword }) => {
       <input
         type="text"
         placeholder={placeholder}
-        className="outline-none w-full"
+        className="outline-none w-full text-sm"
         ref={inputRef}
         onKeyDown={handleKeyPress}
       />

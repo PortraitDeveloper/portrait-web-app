@@ -58,7 +58,7 @@ export default function AdditionalPage() {
   };
 
   const getAdditionalsData = async () => {
-    let response = await fetch(`/api/data/additional/search/${keyword}`, {
+    let response = await fetch(`/api/data/additional/${keyword}`, {
       method: "GET",
       headers: {
         Accept: "application/json",

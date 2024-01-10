@@ -1,11 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from "react";
 
-// Set timeout
-const timeout = 10000;
-
 const Message = ({ message, color, onHide }) => {
   const [isVisible, setIsVisible] = useState(false);
+
+  // Set timeout
+  const timeout = message === "Data tidak ditemukan" ? 2000 : 5000;
 
   const bgColor =
     color === "red"
@@ -45,7 +45,7 @@ const Message = ({ message, color, onHide }) => {
     <>
       {isVisible && message && (
         <div
-          className={`${bgColor} rounded-3xl shadow-lg border ${borderColor} ${textColor} text-sm text-center font-bold font-roboto px-6 py-2.5`}
+          className={`${bgColor} rounded-3xl shadow-lg border ${borderColor} ${textColor} text-sm text-center font-bold font-roboto px-6 py-1 sm:py-2.5`}
         >
           {message}
         </div>
