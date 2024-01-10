@@ -1,4 +1,4 @@
-const Filter = ({ branchesData, getBranchId }) => {
+const FilterBranch = ({ branchesData, getBranchId }) => {
   const changeHandler = (e) => {
     const branchId = e.target.value;
     getBranchId(branchId);
@@ -19,4 +19,4 @@ const Filter = ({ branchesData, getBranchId }) => {
   );
 };
 
-export default Filter;
+export default FilterBranch;

@@ -42,10 +42,7 @@ export default function AdditionalPage() {
 
   useEffect(() => {
     getAdditionalsData();
-  }, [
-    keyword,
-    additionalEditVisible,
-  ]);
+  }, [keyword, additionalEditVisible]);
 
   const getCredentialsData = async () => {
     let response = await fetch("/api/credential", {
@@ -126,8 +123,7 @@ export default function AdditionalPage() {
         <div className="flex justify-center items-center gap-3 mb-3 md:mb-4 lg:mb-6">
           {/* SHOW UP OPTION-NAVBAR / DROPDOWN AT BREAKPOINT-MD: @media (min-width: 768px) */}
           <div className="block md:hidden">
-            <OptionNavbar
-            />
+            <OptionNavbar />
           </div>
 
           <Searchbar
@@ -176,21 +172,17 @@ export default function AdditionalPage() {
         </div>
 
         <div className="flex flex-col justify-between border border-black rounded-3xl overflow-auto pb-4 h-2/3 md:h-4/5 lg:h-3/4">
-          <div>
-            <div className="px-3 py-2">
-              <DataAdditional
-                title={pageTitle}
-                additionalsData={additionalsSorted}
-                loading={loading}
-                dataAvailable={dataAvailable}
-                getEdit={(additionalData) => {
-                  console.log("AdditionalData:", additionalData);
-                  setAdditionalData(additionalData);
-                  setAdditionalEditVisible(true);
-                }}
-              />
-            </div>
-          </div>
+          <DataAdditional
+            title={pageTitle}
+            additionalsData={additionalsSorted}
+            loading={loading}
+            dataAvailable={dataAvailable}
+            getEdit={(additionalData) => {
+              console.log("AdditionalData:", additionalData);
+              setAdditionalData(additionalData);
+              setAdditionalEditVisible(true);
+            }}
+          />
 
           <PagePagination
             loading={loading}

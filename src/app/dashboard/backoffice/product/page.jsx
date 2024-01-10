@@ -245,24 +245,20 @@ export default function ProductPage() {
         </div>
 
         <div className="flex flex-col justify-between border border-black rounded-3xl overflow-auto pb-4 h-2/3 md:h-4/5 lg:h-3/4">
-          <div>
-            <div className="px-4 py-2">
-              <DataProduct
-                title={pageTitle}
-                productsData={productsSorted}
-                loading={loading}
-                dataAvailable={dataAvailable}
-                getEdit={(e) => {
-                  setProductData(e);
-                  setproductEditVisible(true);
-                }}
-                getDelete={(e) => {
-                  setProductData(e);
-                  setproductDeleteVisible(true);
-                }}
-              />
-            </div>
-          </div>
+          <DataProduct
+            title={pageTitle}
+            productsData={productsSorted}
+            loading={loading}
+            dataAvailable={dataAvailable}
+            getEdit={(e) => {
+              setProductData(e);
+              setproductEditVisible(true);
+            }}
+            getDelete={(e) => {
+              setProductData(e);
+              setproductDeleteVisible(true);
+            }}
+          />
 
           <PagePagination
             loading={loading}

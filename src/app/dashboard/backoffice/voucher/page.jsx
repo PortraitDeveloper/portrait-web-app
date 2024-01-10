@@ -8,7 +8,7 @@ import Searchbar from "../../_Components/SearchBar";
 import OptionAccount from "../../_Components/OptionAccount";
 import PageTitle from "../../_Components/PageTitle";
 import Message from "../../_Components/Message";
-import FilterBranch from "../../_Components/FilterBranch";
+import FilterDiscountType from "../../_Components/FilterDiscountType";
 import AddButton from "../../_Components/AddButton";
 import DataProduct from "../../_Components/DataProduct";
 import PagePagination from "../../_Components/PagePagination";
@@ -43,6 +43,8 @@ export default function VoucherPage() {
   const [productAddVisible, setproductAddVisible] = useState(false);
   const [productEditVisible, setproductEditVisible] = useState(false);
   const [productDeleteVisible, setproductDeleteVisible] = useState(false);
+
+  const [discountType, setDiscountType] = useState("percentage");
 
   useEffect(() => {
     getCredentialsData();
@@ -186,12 +188,7 @@ export default function VoucherPage() {
         {/* SHOW UP FILTER-BRANCH AND ADD-BUTTON AT BREAKPOINT-SM: @media (min-width: 640px) */}
         <div className="block sm:hidden mb-3 md:mb-4 lg:mb-6">
           <div className="flex justify-between items-center">
-            <FilterBranch
-              branchesData={branchesData}
-              getBranchId={(e) => {
-                setBranchId(e);
-              }}
-            />
+            <FilterDiscountType />
 
             <AddButton
               title={pageTitle}
@@ -219,12 +216,7 @@ export default function VoucherPage() {
             </div>
 
             <div>
-              <FilterBranch
-                branchesData={branchesData}
-                getBranchId={(e) => {
-                  setBranchId(e);
-                }}
-              />
+              <FilterDiscountType />
 
               <AddButton
                 title={pageTitle}
@@ -248,23 +240,19 @@ export default function VoucherPage() {
         </div>
 
         <div className="flex flex-col justify-between border border-black rounded-3xl overflow-auto pb-4 h-2/3 md:h-4/5 lg:h-3/4">
-          <div>
-            <div className="flex justify-center px-4 py-2">
-              <DataProduct
-                productsData={productsSorted}
-                loading={loading}
-                dataAvailable={dataAvailable}
-                getEdit={(productData) => {
-                  setProductData(productData);
-                  setproductEditVisible(true);
-                }}
-                getDelete={(productData) => {
-                  setProductData(productData);
-                  setproductDeleteVisible(true);
-                }}
-              />
-            </div>
-          </div>
+          <DataProduct
+            productsData={productsSorted}
+            loading={loading}
+            dataAvailable={dataAvailable}
+            getEdit={(productData) => {
+              setProductData(productData);
+              setproductEditVisible(true);
+            }}
+            getDelete={(productData) => {
+              setProductData(productData);
+              setproductDeleteVisible(true);
+            }}
+          />
 
           <PagePagination
             loading={loading}
