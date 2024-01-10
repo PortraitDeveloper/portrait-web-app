@@ -289,7 +289,7 @@ export default function VoucherPage() {
           }}
         />
 
-        {/* <ModalvoucherEdit
+        <ModalvoucherEdit
           isVisible={voucherEditVisible}
           voucherData={voucherData}
           closeModal={() => {
@@ -300,7 +300,7 @@ export default function VoucherPage() {
             setColor(color);
             closeVoucherEditHandler();
           }}
-        /> */}
+        />
 
         <ModalvoucherDelete
           isVisible={voucherDeleteVisible}
