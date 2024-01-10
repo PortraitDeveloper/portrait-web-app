@@ -81,7 +81,6 @@ export default function VoucherPage() {
     });
 
     response = await response.json();
-    console.log("Response:", response);
 
     if (response.status === 404) {
       setDataAvailable(false);
@@ -277,9 +276,8 @@ export default function VoucherPage() {
           }}
         />
 
-        {/* <ModalvoucherAdd
+        <ModalvoucherAdd
           isVisible={voucherAddVisible}
-          branchesData={branchesData}
           closeModal={() => {
             closeVoucherHandler();
           }}
@@ -290,7 +288,7 @@ export default function VoucherPage() {
           }}
         />
 
-        <ModalvoucherEdit
+        {/* <ModalvoucherEdit
           isVisible={voucherEditVisible}
           voucherData={voucherData}
           closeModal={() => {

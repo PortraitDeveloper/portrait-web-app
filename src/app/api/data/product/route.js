@@ -23,7 +23,7 @@ export async function POST(request) {
         created_at: currentTimeStamp,
         route: "/api/data/product",
         status: 400,
-        message: "The product name, price, and branch ID must be filled in",
+        message: "All fields are required to be filled in",
       });
     }
 

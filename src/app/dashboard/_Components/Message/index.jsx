@@ -5,7 +5,7 @@ const Message = ({ message, color, onHide }) => {
   const [isVisible, setIsVisible] = useState(false);
 
   // Set timeout
-  const timeout = message === "Data tidak ditemukan" ? 2000 : 5000;
+  const timeout = message === "Data tidak ditemukan" ? 2000 : 8000;
 
   const bgColor =
     color === "red"

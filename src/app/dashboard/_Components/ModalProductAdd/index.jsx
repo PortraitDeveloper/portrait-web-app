@@ -115,7 +115,7 @@ const ModalProductAdd = ({
               <div className="mb-3">
                 <InputString
                   inputName="product"
-                  placeHolder={"Masukan Nama Produk"}
+                  placeHolder={"Nama Produk"}
                   getString={(e) => {
                     setProductName(e);
                   }}
@@ -133,7 +133,7 @@ const ModalProductAdd = ({
               <div className="mb-3">
                 <InputNumber
                   inputName="price"
-                  placeHolder={"Masukan Harga"}
+                  placeHolder={"Harga"}
                   getNumber={(e) => {
                     setProductPrice(e);
                   }}
@@ -143,7 +143,7 @@ const ModalProductAdd = ({
               <div className="mb-3">
                 <InputText
                   inputName="description"
-                  placeHolder={"Masukan Deskripsi (Optional)"}
+                  placeHolder={"Deskripsi (Optional)"}
                   getText={(e) => {
                     setProductDesc(e);
                   }}

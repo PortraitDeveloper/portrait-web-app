@@ -9,37 +9,6 @@ export const dynamic = "force-dynamic";
 // Set Time Zone from UTC to WIB or Asia/Jakarta Timezone where time difference is 7
 const timeDiff = 7;
 
-export async function GET(request) {
-  // Generate timestamp / current datetime
-  const currentTimeStamp = getTimeStamp(timeDiff);
-
-  try {
-    // Read all voucher data
-    const vouchers = await prisma.vouchers.findMany();
-
-    // Return all voucher data
-    return NextResponse.json({
-      created_at: currentTimeStamp,
-      route: "/api/data/voucher",
-      status: 200,
-      message: "Vouchers data found.",
-      data: vouchers,
-    });
-  } catch (error) {
-    // If the system or database server error then return an error log
-    const log = {
-      created_at: currentTimeStamp,
-      route: "/api/data/voucher",
-      status: 500,
-      message: error.message,
-    };
-    errorLog(log);
-    return NextResponse.json(log);
-  } finally {
-    await prisma.$disconnect();
-  }
-}
-
 export async function POST(request) {
   // Generate timestamp / current datetime
   const currentTimeStamp = getTimeStamp(timeDiff);
@@ -53,8 +22,48 @@ export async function POST(request) {
       expired_date,
     } = await request.json();
 
+    if (
+      !voucher_code ||
+      !expired_date ||
+      (!percentage_discount && !nominal_discount)
+    ) {
+      return NextResponse.json({
+        created_at: currentTimeStamp,
+        route: "/api/data/voucher",
+        status: 400,
+        message: "All fields are required to be filled in",
+      });
+    }
+
+    let percentageDiscount = parseInt(percentage_discount);
+    const nominalDiscount = parseInt(nominal_discount);
+
+    if (
+      nominalDiscount === 0 ||
+      percentageDiscount === 0 ||
+      percentageDiscount > 99
+    ) {
+      return NextResponse.json({
+        created_at: currentTimeStamp,
+        route: "/api/data/voucher",
+        status: 400,
+        message: "Invalid discount value",
+      });
+    }
+
+    percentageDiscount = parseFloat(percentageDiscount / 100);
+
+    if (new Date(expired_date) < new Date()) {
+      return NextResponse.json({
+        created_at: currentTimeStamp,
+        route: "/api/data/voucher",
+        status: 400,
+        message: "Invalid expired date",
+      });
+    }
+
     // Check whether the voucher data already exists
-    const voucher = await prisma.vouchers.findFirst({
+    const voucher = await prisma.vouchers.findUnique({
       where: {
         voucher_code,
       },
@@ -62,36 +71,33 @@ export async function POST(request) {
 
     // If voucher data already exists then return an error log
     if (voucher) {
-      const log = {
-        created_at: currentTimeStamp,
-        route: "/api/data/voucher",
-        status: 400,
-        message: "Voucher data already exists.",
-      };
-      return NextResponse.json(log);
-    } else {
-      // Create a new voucher data
-      const newData = await prisma.vouchers.create({
-        data: {
-          voucher_code,
-          percentage_discount,
-          nominal_discount,
-          start_date: currentTimeStamp,
-          expired_date,
-        },
-      });
-
-      console.log(newData);
-
-      // Return a success log
       return NextResponse.json({
         created_at: currentTimeStamp,
         route: "/api/data/voucher",
-        status: 201,
-        message: "Voucher data inserted.",
-        data: newData,
+        status: 400,
+        message: "Voucher code already exists",
       });
     }
+
+    // Create a new voucher data
+    const newData = await prisma.vouchers.create({
+      data: {
+        voucher_code,
+        percentage_discount: percentageDiscount,
+        nominal_discount: nominalDiscount,
+        start_date: currentTimeStamp,
+        expired_date,
+      },
+    });
+
+    // Return a success log
+    return NextResponse.json({
+      created_at: currentTimeStamp,
+      route: "/api/data/voucher",
+      status: 201,
+      message: "Voucher data inserted.",
+      data: newData,
+    });
   } catch (error) {
     // If the system or database server error then return an error log
     const log = {
