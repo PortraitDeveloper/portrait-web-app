@@ -177,7 +177,7 @@ export async function DELETE(request) {
       created_at: currentTimeStamp,
       route: "/api/data/voucher",
       status: 200,
-      message: "Voucher data has been deleted.",
+      message: "Voucher has been deleted.",
     });
   } catch (error) {
     // If the system or database server error then return an error log

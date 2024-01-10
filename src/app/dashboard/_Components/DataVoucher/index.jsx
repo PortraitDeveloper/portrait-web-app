@@ -53,7 +53,7 @@ const DataVoucher = ({
                     <div className="flex justify-center">
                       <EditOption
                         title={title}
-                        voucherData={{
+                        data={{
                           voucherCode: data.voucher_code,
                           voucherDiscount: "20%",
                           startDate: data.start_date,

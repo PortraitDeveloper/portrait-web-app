@@ -59,7 +59,7 @@ const DataProduct = ({
                     <div className="flex justify-center">
                       <EditOption
                         title={title}
-                        productData={{
+                        data={{
                           productId: data.product_id,
                           productName: data.product_name,
                           productPrice: data.product_price,

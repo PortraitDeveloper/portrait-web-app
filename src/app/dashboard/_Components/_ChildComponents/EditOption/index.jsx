@@ -1,15 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react";
 
-const EditOption = ({ title, productData, getEdit, getDelete }) => {
+const EditOption = ({ title, data, getEdit, getDelete }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const onEdit = () => {
-    getEdit(productData);
+    getEdit(data);
   };
 
   const onDelete = () => {
-    getDelete(productData);
+    getDelete(data);
   };
 
   const toggleDropdown = () => {

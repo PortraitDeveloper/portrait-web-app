@@ -5,7 +5,7 @@ import ButtonDelete from "../_ChildComponents/ButtonDelete";
 
 const ModalVoucherDelete = ({
   isVisible,
-  productData,
+  voucherData,
   closeModal,
   finishModal,
 }) => {
@@ -21,23 +21,23 @@ const ModalVoucherDelete = ({
 
   const deleteHandler = async () => {
     setLoading(false);
-    let response = await fetch("/api/data/product", {
+    let response = await fetch("/api/data/voucher", {
       method: "DELETE",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ product_id: productData.productId }),
+      body: JSON.stringify({ voucher_code: voucherData.voucherCode }),
     });
 
     response = await response.json();
     setLoading(true);
 
     if (response.status !== 200) {
-      message = `Gagal menghapus product ${productData.productName}`;
+      message = `Gagal menghapus voucher dengan kode ${voucherData.voucherCode}`;
       finishModal(message, color);
     } else {
-      message = `Product dengan ID ${productData.productId} telah dihapus`;
+      message = `Voucher dengan kode ${voucherData.voucherCode} telah dihapus`;
       finishModal(message, color);
     }
   };
@@ -66,9 +66,9 @@ const ModalVoucherDelete = ({
               <div className="text-red-500 font-bold mb-3">
                 Apakah kamu yakin
               </div>
-              <div className="text-sm">Ingin menghapus produk</div>
+              <div className="text-sm">Ingin menghapus voucher</div>
               <div className="text-sm font-bold w-56">
-                {productData.productName}
+                {voucherData.voucherCode}
               </div>
             </div>
 

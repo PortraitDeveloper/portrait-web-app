@@ -236,6 +236,7 @@ export default function VoucherPage() {
               setVoucherEditVisible(true);
             }}
             getDelete={(e) => {
+              console.log(e);
               setVoucherData(e);
               setVoucherDeleteVisible(true);
             }}
@@ -299,7 +300,7 @@ export default function VoucherPage() {
             setColor(color);
             closeVoucherEditHandler();
           }}
-        />
+        /> */}
 
         <ModalvoucherDelete
           isVisible={voucherDeleteVisible}
@@ -312,7 +313,7 @@ export default function VoucherPage() {
             setColor(color);
             closeVoucherDeleteHandler();
           }}
-        /> */}
+        />
       </div>
     </div>
   );
