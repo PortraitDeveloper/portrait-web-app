@@ -4,12 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 
-const OptionNavbar = ({ openModal }) => {
+const OptionNavbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-
-  const clickHandler = () => {
-    openModal();
-  };
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
@@ -62,7 +58,7 @@ const OptionNavbar = ({ openModal }) => {
               href="/dashboard/backoffice/additional"
               className="block px-4 py-2 text-sm text-gray-700 hover:font-bold"
             >
-              Additional
+              Add-ons
             </Link>
             <Link
               href="/dashboard/backoffice/voucher"

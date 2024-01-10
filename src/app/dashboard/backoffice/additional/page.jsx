@@ -127,8 +127,6 @@ export default function AdditionalPage() {
           {/* SHOW UP OPTION-NAVBAR / DROPDOWN AT BREAKPOINT-MD: @media (min-width: 768px) */}
           <div className="block md:hidden">
             <OptionNavbar
-              credentialsData={credentialsData}
-              openModal={() => setAccountVisible(true)}
             />
           </div>
 

@@ -165,10 +165,7 @@ export default function ProductPage() {
         <div className="flex justify-center items-center gap-3 mb-3 md:mb-4 lg:mb-6">
           {/* SHOW UP OPTION-NAVBAR / DROPDOWN AT BREAKPOINT-MD: @media (min-width: 768px) */}
           <div className="block md:hidden">
-            <OptionNavbar
-              credentialsData={credentialsData}
-              openModal={() => setAccountVisible(true)}
-            />
+            <OptionNavbar />
           </div>
 
           <Searchbar
