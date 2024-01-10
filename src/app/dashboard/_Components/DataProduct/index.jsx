@@ -23,39 +23,39 @@ const DataProduct = ({
       {loading && dataAvailable && (
         <div className="text-sm w-full">
           <table className="min-w-full">
-            <thead>
+            <thead className="border-b border-blue-900">
               <tr>
-                <th className="py-3 border-b border-gray-400 text-sm md:text-md">
+                <th className="py-3 text-sm md:text-md">
                   ID
                 </th>
-                <th className="py-3 border-b border-gray-400 text-sm md:text-md w-32 md:w-1/4">
+                <th className="py-3 text-sm md:text-md w-32 md:w-1/4">
                   PRODUCT_NAME
                 </th>
-                <th className="py-3 border-b border-gray-400 text-sm md:text-md">
+                <th className="py-3 text-sm md:text-md">
                   PRICE
                 </th>
-                <th className="hidden md:table-cell py-3 border-b border-gray-400 text-md w-1/3 lg:w-1/2">
+                <th className="hidden md:table-cell py-3 text-md w-1/3 lg:w-1/2">
                   DESCRIPTION
                 </th>
-                <th className="py-3 border-b border-gray-400"></th>
+                <th className="py-3"></th>
               </tr>
             </thead>
             <tbody>
               {productsData.map((data, index) => (
-                <tr key={index}>
-                  <td className="text-center py-3 border-b border-gray-400">
+                <tr key={index} className="border-b border-blue-900">
+                  <td className="text-center py-3">
                     {data.product_id}
                   </td>
-                  <td className="text-center py-3 border-b border-gray-400 w-32 md:w-1/4">
+                  <td className="text-center py-3 w-32 md:w-1/4">
                     {data.product_name}
                   </td>
-                  <td className="text-center py-3 border-b border-gray-400">
+                  <td className="text-center py-3">
                     {data.product_price}
                   </td>
-                  <td className="text-center hidden md:table-cell py-3 border-b border-gray-400 w-1/3 lg:w-1/2">
+                  <td className="text-center hidden md:table-cell py-3 w-1/3 lg:w-1/2">
                     {data.product_desc}
                   </td>
-                  <td className="py-3 border-b border-gray-400">
+                  <td className="py-3">
                     <div className="flex justify-center">
                       <EditOption
                         title={title}

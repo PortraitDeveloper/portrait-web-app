@@ -53,7 +53,10 @@ export async function PATCH(request) {
     // Update the item data
     const newData = await prisma.additionals.update({
       where: { item_id },
-      data: { item_price: itemPrice, item_desc },
+      data: {
+        item_price: itemPrice,
+        item_desc,
+      },
     });
 
     // Return a success log

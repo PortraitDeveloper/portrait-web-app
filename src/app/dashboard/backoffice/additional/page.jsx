@@ -179,7 +179,7 @@ export default function AdditionalPage() {
 
         <div className="flex flex-col justify-between border border-black rounded-3xl overflow-auto pb-4 h-2/3 md:h-4/5 lg:h-3/4">
           <div>
-            <div className="flex justify-center px-4 py-2">
+            <div className="px-3 py-2">
               <DataAdditional
                 title={pageTitle}
                 additionalsData={additionalsSorted}
