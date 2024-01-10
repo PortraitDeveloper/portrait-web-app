@@ -35,7 +35,7 @@ const ClipboardCopy = ({ copytext }) => {
 
       <div className="flex justify-center items-center">
         <div
-          className={`border-[1.5px] border-black rounded-2xl px-3 py-2.5 mr-5`}
+          className={`border-[1.5px] border-black rounded-2xl px-3 py-2.5 w-full mr-5`}
         >
           <p>{copytext}</p>
         </div>

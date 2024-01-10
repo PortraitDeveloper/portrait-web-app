@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Title from "../_ChildComponents/Title";
 import CloseIcon from "../_ChildComponents/CloseIcon";
-import LabelProduct from "../_ChildComponents/LabelProduct";
+import Label from "../_ChildComponents/Label";
 import ReplaceNumber from "../_ChildComponents/ReplaceNumber";
 import ReplaceText from "../_ChildComponents/ReplaceText";
 import ErrorMessage from "../_ChildComponents/ErrorMessage";
@@ -14,17 +14,16 @@ import YCBMLink from "../_ChildComponents/YCBMLink";
 import Intruction from "../_ChildComponents/Intruction";
 import thousandConversion from "@/utils/thousandConversion";
 
-const url = process.env.NEXT_PUBLIC_PRODUCT_FORM_URL;
+const url = process.env.NEXT_PUBLIC_FORM_URL;
 
-const ModalProductEdit = ({
+const ModalAdditionalEdit = ({
   isVisible,
-  productData,
+  additionalData,
   closeModal,
   finishModal,
 }) => {
-  const [productName, setProductName] = useState(null);
-  const [productPrice, setProductPrice] = useState(null);
-  const [productDesc, setProductDesc] = useState(null);
+  const [additionalPrice, setAdditionalPrice] = useState(null);
+  const [additionalDesc, setAdditionalDesc] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
   const [view, setView] = useState(true);
   const [loading, setLoading] = useState(true);
@@ -40,26 +39,25 @@ const ModalProductEdit = ({
   };
 
   const clearStates = () => {
-    setProductPrice(null);
-    setProductDesc(null);
+    setAdditionalPrice(null);
+    setAdditionalDesc(null);
     setErrorMessage("");
     setView(true);
   };
 
   const submitHandler = async () => {
     setLoading(false);
-    let _productId = productData.productId;
-    let _productName = productData.productName;
+    let _itemId = additionalData.itemId;
+    let _itemName = additionalData.itemName;
 
     const body = {
-      product_id: _productId,
-      product_name: _productName,
-      product_price: productPrice,
-      product_desc: productDesc,
-      branch_id: productData.branch_id,
+      item_id: _itemId,
+      item_name: _itemName,
+      item_price: additionalPrice,
+      item_desc: additionalDesc,
     };
 
-    let response = await fetch("/api/data/product", {
+    let response = await fetch("/api/data/additional", {
       method: "PATCH",
       headers: {
         Accept: "application/json",
@@ -74,12 +72,12 @@ const ModalProductEdit = ({
     if (response.status === 400) {
       setErrorMessage(response.message);
     } else {
-      if (productData.productPrice === productPrice) {
-        message = `Product dengan ID ${_productId} berhasil diubah`;
+      if (additionalData.itemPrice === additionalPrice) {
+        message = `additional dengan ID ${_itemId} berhasil diubah`;
         finishModal(message, color);
       } else {
-        _productName = _productName + "  " + thousandConversion(productPrice);
-        setProductName(_productName);
+        const _itemPrice = thousandConversion(additionalPrice);
+        setAdditionalPrice(_itemPrice);
         setView(false);
       }
     }
@@ -98,7 +96,7 @@ const ModalProductEdit = ({
           <div className="bg-white p-6 md:rounded-l-2xl flex flex-col justify-between">
             <div>
               <div className="flex justify-between items-center mb-5">
-                <Title title="Edit Product" />
+                <Title title="Edit Add-ons" />
                 <CloseIcon
                   onClose={() => {
                     clearStates();
@@ -108,30 +106,30 @@ const ModalProductEdit = ({
               </div>
 
               <div className="mb-3">
-                <LabelProduct
-                  productId={productData.productId}
-                  productName={productData.productName}
+                <Label
+                  id={additionalData.itemId}
+                  name={additionalData.itemName}
                 />
               </div>
 
               <div className="mb-3">
                 <ReplaceNumber
-                  inputName={"editProductPrice"}
-                  placeHolder={"Ubah harga produk"}
-                  value={productData.productPrice}
+                  inputName={"editAdditionalPrice"}
+                  placeHolder={"Ubah harga add-ons"}
+                  value={additionalData.itemPrice}
                   getNumber={(e) => {
-                    setProductPrice(e);
+                    setAdditionalPrice(e);
                   }}
                 />
               </div>
 
               <div className="mb-3">
                 <ReplaceText
-                  inputName={"editProductPrice"}
-                  placeHolder={"Ubah harga produk"}
-                  value={productData.productDesc}
+                  inputName={"editAdditionalDesc"}
+                  placeHolder={"Ubah deskripsi produk"}
+                  value={additionalData.itemDesc}
                   getText={(e) => {
-                    setProductDesc(e);
+                    setAdditionalDesc(e);
                   }}
                 />
               </div>
@@ -163,10 +161,10 @@ const ModalProductEdit = ({
         <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center">
           <div className="bg-white p-6 rounded-2xl">
             <div className="flex justify-between items-center mb-2">
-              <Title title={"Copy Product Name"} />
+              <Title title={"Copy Add-ons Name"} />
               <CloseIcon
                 onClose={() => {
-                  message = `Product dengan ID ${productData.productId} berhasil diubah`;
+                  message = `Add-ons dengan ID ${additionalData.itemId} berhasil diubah`;
                   clearStates();
                   finishModal(message, color);
                 }}
@@ -174,12 +172,12 @@ const ModalProductEdit = ({
             </div>
 
             <div className="mb-5 w-72">
-              <ClipboardCopy copytext={productName} />
+              <ClipboardCopy copytext={additionalPrice} />
             </div>
 
             <div className="mb-5 w-72">
               <Intruction
-                message={"Copy-Paste nama produk ke halaman formulir YCBM"}
+                message={"Copy-Paste harga add-ons ke halaman formulir YCBM"}
               />
             </div>
 
@@ -191,4 +189,4 @@ const ModalProductEdit = ({
   );
 };
 
-export default ModalProductEdit;
+export default ModalAdditionalEdit;

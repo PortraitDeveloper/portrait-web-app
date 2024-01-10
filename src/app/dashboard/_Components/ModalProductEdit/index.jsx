@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Title from "../_ChildComponents/Title";
 import CloseIcon from "../_ChildComponents/CloseIcon";
-import LabelProduct from "../_ChildComponents/LabelProduct";
+import Label from "../_ChildComponents/Label";
 import ReplaceNumber from "../_ChildComponents/ReplaceNumber";
 import ReplaceText from "../_ChildComponents/ReplaceText";
 import ErrorMessage from "../_ChildComponents/ErrorMessage";
@@ -108,9 +108,9 @@ const ModalProductEdit = ({
               </div>
 
               <div className="mb-3">
-                <LabelProduct
-                  productId={productData.productId}
-                  productName={productData.productName}
+                <Label
+                  id={productData.productId}
+                  name={productData.productName}
                 />
               </div>
 
@@ -127,8 +127,8 @@ const ModalProductEdit = ({
 
               <div className="mb-3">
                 <ReplaceText
-                  inputName={"editProductPrice"}
-                  placeHolder={"Ubah harga produk"}
+                  inputName={"editProductDesc"}
+                  placeHolder={"Ubah deskripsi produk"}
                   value={productData.productDesc}
                   getText={(e) => {
                     setProductDesc(e);

@@ -5,7 +5,7 @@ const SidebarContent = ({ pageTitle }) => {
   const links = [
     { href: "/dashboard/backoffice/transaction", label: "Transaction" },
     { href: "/dashboard/backoffice/product", label: "Product" },
-    { href: "/dashboard/backoffice/additional", label: "Additional" },
+    { href: "/dashboard/backoffice/additional", label: "Add-ons" },
     { href: "/dashboard/backoffice/voucher", label: "Voucher" },
   ];
 

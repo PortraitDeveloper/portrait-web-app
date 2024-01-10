@@ -13,7 +13,7 @@ import PagePagination from "../../_Components/PagePagination";
 import ModalAccount from "../../_Components/ModalAccount";
 import ModalAdditionalEdit from "../../_Components/ModalAdditionalEdit";
 import ModalLoading from "../../_Components/ModalLoading";
-const pageTitle = "Additional";
+const pageTitle = "Add-ons";
 
 export default function AdditionalPage() {
   const [credentialsData, setCredentialsData] = useState([]);
@@ -145,8 +145,8 @@ export default function AdditionalPage() {
         </div>
 
         {/* HIDE PAGE-TITLE, FILTER-BRANCH, AND ADD-BUTTON AT BREAKPOINT-SM: @media (min-width: 640px) */}
-        <div className="hidden sm:block mb-6">
-          <div className="flex justify-between items-center">
+        <div className="hidden sm:block mb-3 sm:mb-6">
+          <div className="flex justify-start items-center gap-6">
             <PageTitle pageTitle={pageTitle} />
 
             {/* HIDE MESSAGE AT BREAKPOINT-LG: @media (min-width: 1024px) */}
@@ -187,8 +187,8 @@ export default function AdditionalPage() {
                 dataAvailable={dataAvailable}
                 getEdit={(additionalData) => {
                   console.log("AdditionalData:", additionalData);
-                  // setAdditionalData(additionalData);
-                  // setAdditionalEditVisible(true);
+                  setAdditionalData(additionalData);
+                  setAdditionalEditVisible(true);
                 }}
               />
             </div>
@@ -229,7 +229,7 @@ export default function AdditionalPage() {
           }}
         />
 
-        {/* <ModalAdditionalEdit
+        <ModalAdditionalEdit
           isVisible={additionalEditVisible}
           additionalData={additionalData}
           closeModal={() => {
@@ -240,7 +240,7 @@ export default function AdditionalPage() {
             setColor(color);
             closeAdditionalEditHandler();
           }}
-        /> */}
+        />
       </div>
     </div>
   );

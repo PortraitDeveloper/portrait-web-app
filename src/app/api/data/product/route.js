@@ -97,10 +97,20 @@ export async function PATCH(request) {
     const { product_id, product_name, product_price, product_desc, branch_id } =
       await request.json();
 
+    if (!product_price) {
+      // Return a error log
+      return NextResponse.json({
+        created_at: currentTimeStamp,
+        route: "/api/data/product",
+        status: 400,
+        message: "Product price must be filled in",
+      });
+    }
+
     const productPrice = parseInt(product_price);
 
     if (productPrice === 0) {
-      // Return a success log
+      // Return a error log
       return NextResponse.json({
         created_at: currentTimeStamp,
         route: "/api/data/product",
@@ -109,7 +119,7 @@ export async function PATCH(request) {
       });
     }
 
-    let existingData = await prisma.products.findFirst({
+    const existingData = await prisma.products.findFirst({
       where: {
         product_id,
         product_name,
@@ -120,7 +130,7 @@ export async function PATCH(request) {
     });
 
     if (existingData) {
-      // Return a success log
+      // Return a error log
       return NextResponse.json({
         created_at: currentTimeStamp,
         route: "/api/data/product",
