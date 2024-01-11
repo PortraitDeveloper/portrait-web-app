@@ -6,7 +6,6 @@ const ReplaceDiscountType = ({ voucherType, getType }) => {
   const [typeValue, setTypeValue] = useState("");
 
   useEffect(() => {
-    console.log(voucherType)
     const _voucherType =
       voucherType === "percentage" ? "Persentase" : "Nominal";
 

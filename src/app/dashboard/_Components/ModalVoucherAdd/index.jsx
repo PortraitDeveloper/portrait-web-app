@@ -61,8 +61,8 @@ const ModalVoucherAdd = ({ isVisible, closeModal, finishModal }) => {
     if (response.status === 400) {
       setErrorMessage(response.message);
     } else {
-      message = `Voucher dengan kode ${voucherCode} telah ditambahkan`;
       clearStates();
+      message = `Voucher dengan kode ${voucherCode} telah ditambahkan`;
       finishModal(message, color);
     }
   };

@@ -232,7 +232,6 @@ export default function VoucherPage() {
             loading={loading}
             dataAvailable={dataAvailable}
             getEdit={(e) => {
-              console.log("Get Edit:", e);
               setVoucherData(e);
               setVoucherEditVisible(true);
             }}

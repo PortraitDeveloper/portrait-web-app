@@ -63,14 +63,14 @@ export async function POST(request) {
     }
 
     // Check whether the voucher data already exists
-    const voucher = await prisma.vouchers.findUnique({
+    const voucherExist = await prisma.vouchers.findUnique({
       where: {
         voucher_code,
       },
     });
 
     // If voucher data already exists then return an error log
-    if (voucher) {
+    if (voucherExist) {
       return NextResponse.json({
         created_at: currentTimeStamp,
         route: "/api/data/voucher",
@@ -123,15 +123,75 @@ export async function PATCH(request) {
       voucher_code,
       percentage_discount,
       nominal_discount,
+      start_date,
       expired_date,
     } = await request.json();
+
+    if (
+      !voucher_code ||
+      !expired_date ||
+      (!percentage_discount && !nominal_discount)
+    ) {
+      return NextResponse.json({
+        created_at: currentTimeStamp,
+        route: "/api/data/voucher",
+        status: 400,
+        message: "All fields are required to be filled in",
+      });
+    }
+
+    let percentageDiscount = parseInt(percentage_discount);
+    const nominalDiscount = parseInt(nominal_discount);
+
+    if (
+      nominalDiscount === 0 ||
+      percentageDiscount === 0 ||
+      percentageDiscount > 99
+    ) {
+      return NextResponse.json({
+        created_at: currentTimeStamp,
+        route: "/api/data/voucher",
+        status: 400,
+        message: "Invalid discount value",
+      });
+    }
+
+    percentageDiscount = parseFloat(percentageDiscount / 100);
+
+    const existingData = await prisma.vouchers.findFirst({
+      where: {
+        voucher_code,
+        percentage_discount: percentageDiscount,
+        nominal_discount: nominalDiscount,
+        start_date,
+        expired_date,
+      },
+    });
+
+    if (existingData) {
+      return NextResponse.json({
+        created_at: currentTimeStamp,
+        route: "/api/data/voucher",
+        status: 400,
+        message: "Voucher data already exist",
+      });
+    }
+
+    if (new Date(expired_date) < new Date()) {
+      return NextResponse.json({
+        created_at: currentTimeStamp,
+        route: "/api/data/voucher",
+        status: 400,
+        message: "Invalid expired date",
+      });
+    }
 
     // Update the voucher data
     const newData = await prisma.vouchers.update({
       where: { voucher_code },
       data: {
-        percentage_discount: percentage_discount ? percentage_discount : null,
-        nominal_discount: nominal_discount ? nominal_discount : null,
+        percentage_discount: percentage_discount ? percentageDiscount : null,
+        nominal_discount: nominal_discount ? nominalDiscount : null,
         expired_date,
       },
     });
