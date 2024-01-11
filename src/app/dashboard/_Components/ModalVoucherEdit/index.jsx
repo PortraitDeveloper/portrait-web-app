@@ -17,13 +17,11 @@ const ModalVoucherEdit = ({
   closeModal,
   finishModal,
 }) => {
-  const [voucherCode, setVoucherCode] = useState("");
   const [voucherType, setVoucherType] = useState("percentage");
   const [percentageDiscount, setPercentageDiscount] = useState(null);
   const [nominalDiscount, setNominalDiscount] = useState(null);
   const [voucherExpired, setVoucherExpired] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
-  const [view, setView] = useState(true);
   const [loading, setLoading] = useState(true);
 
   let message = null;
@@ -37,6 +35,10 @@ const ModalVoucherEdit = ({
   };
 
   const clearStates = () => {
+    setVoucherType("percentage");
+    setPercentageDiscount(null);
+    setNominalDiscount(null);
+    setVoucherExpired(null);
     setErrorMessage("");
     setView(true);
   };
@@ -109,7 +111,6 @@ const ModalVoucherEdit = ({
               <ReplaceDiscountType
                 voucherType={type}
                 getType={(e) => {
-                  console.log("Get Discount Type:", e);
                   setVoucherType(e);
                 }}
               />
@@ -121,7 +122,6 @@ const ModalVoucherEdit = ({
                   placeHolder={"Contoh : 20%"}
                   unit={"%"}
                   getDiscount={(e) => {
-                    console.log("Get Percentage Disc:", e);
                     setPercentageDiscount(e);
                   }}
                 />
@@ -131,7 +131,6 @@ const ModalVoucherEdit = ({
                   placeHolder={"Contoh : 20000 IDR"}
                   unit={"IDR"}
                   getDiscount={(e) => {
-                    console.log("Get Nominal Disc:", e);
                     setNominalDiscount(e);
                   }}
                 />
@@ -142,8 +141,7 @@ const ModalVoucherEdit = ({
               <ReplaceDate
                 expiredDate={voucherData.expiredDate}
                 getExpiredDate={(e) => {
-                  console.log("Get Expired Date:", e)
-                  // setExpiredDate(e);
+                  setVoucherExpired(e);
                 }}
               />
             </div>
