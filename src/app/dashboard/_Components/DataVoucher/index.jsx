@@ -55,7 +55,10 @@ const DataVoucher = ({
                         title={title}
                         data={{
                           voucherCode: data.voucher_code,
-                          voucherDiscount: "20%",
+                          voucherDiscount:
+                            discountType === "percentage"
+                              ? data.percentage_discount
+                              : data.nominal_discount,
                           startDate: data.start_date,
                           expiredDate: data.expired_date,
                         }}

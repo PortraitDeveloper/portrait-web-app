@@ -232,11 +232,11 @@ export default function VoucherPage() {
             loading={loading}
             dataAvailable={dataAvailable}
             getEdit={(e) => {
+              console.log("Get Edit:", e);
               setVoucherData(e);
               setVoucherEditVisible(true);
             }}
             getDelete={(e) => {
-              console.log(e);
               setVoucherData(e);
               setVoucherDeleteVisible(true);
             }}
@@ -291,6 +291,7 @@ export default function VoucherPage() {
 
         <ModalvoucherEdit
           isVisible={voucherEditVisible}
+          type={type}
           voucherData={voucherData}
           closeModal={() => {
             closeVoucherEditHandler();

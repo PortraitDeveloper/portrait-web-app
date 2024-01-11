@@ -2,14 +2,17 @@
 import { useState } from "react";
 import Title from "../_ChildComponents/Title";
 import CloseIcon from "../_ChildComponents/CloseIcon";
-import Label from "../_ChildComponents/Label";
-
+import LabelVoucher from "../_ChildComponents/LabelVoucher";
+import ReplaceDiscountType from "../_ChildComponents/ReplaceDiscountType";
+import ReplaceDiscount from "../_ChildComponents/ReplaceDiscount";
+import ReplaceDate from "../_ChildComponents/ReplaceDate";
 import ErrorMessage from "../_ChildComponents/ErrorMessage";
 import SubmitButton from "../_ChildComponents/SubmitButton";
 import ProcessSubmit from "../_ChildComponents/ProcessSubmit";
 
 const ModalVoucherEdit = ({
   isVisible,
+  type,
   voucherData,
   closeModal,
   finishModal,
@@ -95,7 +98,54 @@ const ModalVoucherEdit = ({
             </div>
 
             <div className="mb-3">
-              <Label id={""} name={voucherData.voucherCode} />
+              <LabelVoucher
+                voucherCode={voucherData.voucherCode}
+                voucherType={type}
+                voucherDiscount={voucherData.voucherDiscount}
+              />
+            </div>
+
+            <div className="mb-3">
+              <ReplaceDiscountType
+                voucherType={type}
+                getType={(e) => {
+                  console.log("Get Discount Type:", e);
+                  setVoucherType(e);
+                }}
+              />
+            </div>
+
+            <div className="mb-3">
+              {voucherType === "percentage" && (
+                <ReplaceDiscount
+                  placeHolder={"Contoh : 20%"}
+                  unit={"%"}
+                  getDiscount={(e) => {
+                    console.log("Get Percentage Disc:", e);
+                    setPercentageDiscount(e);
+                  }}
+                />
+              )}
+              {voucherType === "nominal" && (
+                <ReplaceDiscount
+                  placeHolder={"Contoh : 20000 IDR"}
+                  unit={"IDR"}
+                  getDiscount={(e) => {
+                    console.log("Get Nominal Disc:", e);
+                    setNominalDiscount(e);
+                  }}
+                />
+              )}
+            </div>
+
+            <div className="mb-3">
+              <ReplaceDate
+                expiredDate={voucherData.expiredDate}
+                getExpiredDate={(e) => {
+                  console.log("Get Expired Date:", e)
+                  // setExpiredDate(e);
+                }}
+              />
             </div>
 
             <div className="h-6">
