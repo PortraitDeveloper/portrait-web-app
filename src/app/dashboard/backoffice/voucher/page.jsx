@@ -13,9 +13,9 @@ import AddButton from "../../_Components/AddButton";
 import DataVoucher from "../../_Components/DataVoucher";
 import PagePagination from "../../_Components/PagePagination";
 import ModalAccount from "../../_Components/ModalAccount";
-import ModalvoucherAdd from "../../_Components/ModalvoucherAdd";
-import ModalvoucherEdit from "../../_Components/ModalvoucherEdit";
-import ModalvoucherDelete from "../../_Components/ModalvoucherDelete";
+import ModalVoucherAdd from "../../_Components/ModalVoucherAdd";
+import ModalVoucherEdit from "../../_Components/ModalVoucherEdit";
+import ModalVoucherDelete from "../../_Components/ModalVoucherDelete";
 import ModalLoading from "../../_Components/ModalLoading";
 const pageTitle = "Voucher";
 
@@ -276,7 +276,7 @@ export default function VoucherPage() {
           }}
         />
 
-        <ModalvoucherAdd
+        <ModalVoucherAdd
           isVisible={voucherAddVisible}
           closeModal={() => {
             closeVoucherHandler();
@@ -288,7 +288,7 @@ export default function VoucherPage() {
           }}
         />
 
-        <ModalvoucherEdit
+        <ModalVoucherEdit
           isVisible={voucherEditVisible}
           type={type}
           voucherData={voucherData}
@@ -302,7 +302,7 @@ export default function VoucherPage() {
           }}
         />
 
-        <ModalvoucherDelete
+        <ModalVoucherDelete
           isVisible={voucherDeleteVisible}
           voucherData={voucherData}
           closeModal={() => {
