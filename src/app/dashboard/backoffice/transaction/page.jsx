@@ -159,7 +159,7 @@ export default function TransactionPage() {
           </div>
         </div>
 
-        <div className="flex justify-center items-center gap-3 mb-3 lg:mb-6">
+        <div className="flex justify-center items-center gap-3 mb-3">
           {/* SHOW UP OPTION-NAVBAR / DROPDOWN AT BREAKPOINT-MD: @media (min-width: 768px) */}
           <div className="block md:hidden">
             <OptionNavbar />
@@ -178,7 +178,7 @@ export default function TransactionPage() {
         </div>
 
         <div className="hidden sm:block ">
-          <div className="flex justify-end md:justify-between items-center gap-3 mb-3 lg:mb-4">
+          <div className="flex justify-end md:justify-between items-center gap-3 mb-3">
             <div className="hidden md:block">
               <PageTitle pageTitle={pageTitle} />
             </div>
@@ -189,27 +189,27 @@ export default function TransactionPage() {
           </div>
         </div>
 
-        <div className="flex justify-center lg:justify-start gap-3 mb-3 lg:mb-4">
+        <div className="flex justify-center lg:justify-start gap-3 mb-3">
           <div className="border border-black rounded-2xl p-2 w-32 lg:w-48">
-            <p className="font-roboto">Total</p>
-            <p className="text-xl sm:text-2xl font-sora font-semibold">50</p>
+            <p className="text-sm font-roboto">Total</p>
+            <p className="text-xl font-sora font-semibold">50</p>
           </div>
           <div className="border border-black rounded-2xl p-2 w-32 lg:w-48">
-            <p className="font-roboto">Paid</p>
-            <p className="text-xl sm:text-2x font-sora font-semibold">48</p>
+            <p className="text-sm font-roboto">Paid</p>
+            <p className="text-xl font-sora font-semibold">48</p>
           </div>
           <div className="border border-black rounded-2xl p-2 w-32 lg:w-48">
-            <p className="font-roboto">Unpaid</p>
-            <p className="text-xl sm:text-2x font-sora font-semibold">1</p>
+            <p className="text-sm font-roboto">Unpaid</p>
+            <p className="text-xl font-sora font-semibold">1</p>
           </div>
           <div className="border border-black rounded-2xl p-2 w-32 lg:w-48">
-            <p className="font-roboto">Refund</p>
-            <p className="text-xl sm:text-2x font-sora font-semibold">1</p>
+            <p className="text-sm font-roboto">Refund</p>
+            <p className="text-xl font-sora font-semibold">1</p>
           </div>
         </div>
 
         <div className="hidden sm:block ">
-          <div className="flex justify-center lg:justify-between items-center mb-3 lg:mb-6">
+          <div className="flex justify-center lg:justify-between items-center mb-3">
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
               <div className="border border-blue-900 rounded-2xl text-blue-900 text-sm text-center p-2 w-48">
                 Periode
@@ -252,7 +252,7 @@ export default function TransactionPage() {
           </div>
         </div>
 
-        <div className="flex flex-col justify-between border border-black rounded-3xl overflow-auto pb-4 h-3/5 md:h-2/3 lg:2/3 xl:h-1/2">
+        <div className="flex flex-col justify-between border border-black rounded-3xl overflow-auto pb-4 h-3/5 md:h-2/3 lg:2/3 xl:h-3/5">
           {/* <Datatransaction
             title={pageTitle}
             transactionsData={transactionsSorted}
