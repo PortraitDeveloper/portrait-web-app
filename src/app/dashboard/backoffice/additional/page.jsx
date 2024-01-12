@@ -120,7 +120,7 @@ export default function AdditionalPage() {
           </div>
         </div>
 
-        <div className="flex justify-center items-center gap-3 mb-3 md:mb-4 lg:mb-6">
+        <div className="flex justify-center items-center gap-3 mb-3 lg:mb-4">
           {/* SHOW UP OPTION-NAVBAR / DROPDOWN AT BREAKPOINT-MD: @media (min-width: 768px) */}
           <div className="block md:hidden">
             <OptionNavbar />
@@ -139,7 +139,7 @@ export default function AdditionalPage() {
         </div>
 
         {/* HIDE PAGE-TITLE, FILTER-BRANCH, AND ADD-BUTTON AT BREAKPOINT-SM: @media (min-width: 640px) */}
-        <div className="hidden sm:block mb-3 sm:mb-6">
+        <div className="hidden sm:block mb-3 sm:mb-4">
           <div className="flex justify-start items-center gap-6">
             <PageTitle pageTitle={pageTitle} />
 
@@ -178,7 +178,6 @@ export default function AdditionalPage() {
             loading={loading}
             dataAvailable={dataAvailable}
             getEdit={(additionalData) => {
-              console.log("AdditionalData:", additionalData);
               setAdditionalData(additionalData);
               setAdditionalEditVisible(true);
             }}

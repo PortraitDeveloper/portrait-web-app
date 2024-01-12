@@ -40,7 +40,8 @@ export default function TransactionPage() {
   const [AccountVisible, setAccountVisible] = useState(false);
   const [transactionAddVisible, setTransactionAddVisible] = useState(false);
   const [transactionEditVisible, setTransactionEditVisible] = useState(false);
-  const [transactionDeleteVisible, setTransactionDeleteVisible] = useState(false);
+  const [transactionDeleteVisible, setTransactionDeleteVisible] =
+    useState(false);
 
   useEffect(() => {
     getCredentialsData();
@@ -87,18 +88,16 @@ export default function TransactionPage() {
   };
 
   const getTransactionsData = async () => {
-    let response = await fetch(
-      `/api/data/transaction/${keyword}/${branchId}`,
-      {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    let response = await fetch(`/api/data/book`, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    });
 
     response = await response.json();
+    setLoading(true);
 
     if (response.status === 404) {
       setDataAvailable(false);
@@ -140,13 +139,13 @@ export default function TransactionPage() {
       {!loading && <ModalLoading />}
 
       {/* HIDE SIDEBAR AT BREAKPOINT-MD: @media (min-width: 768px) */}
-      <div className="hidden md:block shadow-xl shadow-gray-400">
+      <div className="hidden md:block shadow-lg shadow-gray-400">
         <div className="p-6">
           <SidebarContent pageTitle={pageTitle} />
         </div>
       </div>
 
-      <div className="w-full p-3 md:p-4 lg:p-6">
+      <div className="w-full p-3 md:p-3 lg:p-6">
         {/* SHOW UP TPP-LOGO AND TITLE AT BREAKPOINT-SM: @media (min-width: 640px) */}
         <div className="block sm:hidden mb-2">
           <div className="flex justify-between items-center">
@@ -160,7 +159,7 @@ export default function TransactionPage() {
           </div>
         </div>
 
-        <div className="flex justify-center items-center gap-3 mb-3 md:mb-4 lg:mb-6">
+        <div className="flex justify-center items-center gap-3 mb-3 lg:mb-6">
           {/* SHOW UP OPTION-NAVBAR / DROPDOWN AT BREAKPOINT-MD: @media (min-width: 768px) */}
           <div className="block md:hidden">
             <OptionNavbar />
@@ -178,50 +177,68 @@ export default function TransactionPage() {
           />
         </div>
 
-        {/* SHOW UP FILTER-BRANCH AND ADD-BUTTON AT BREAKPOINT-SM: @media (min-width: 640px) */}
-        <div className="block sm:hidden mb-3 md:mb-4 lg:mb-6">
-          <div className="flex justify-between items-center">
-            {/* FILTER */}
-
-            <AddButton
-              title={pageTitle}
-              openModal={() => setTransactionAddVisible(true)}
-            />
+        <div className="hidden sm:block ">
+          <div className="flex justify-end md:justify-between items-center gap-3 mb-3 lg:mb-4">
+            <div className="hidden md:block">
+              <PageTitle pageTitle={pageTitle} />
+            </div>
+            <div className="hidden lg:block bg-red-50 border border-red-500 rounded-2xl text-red-500 text-sm text-center font-bold px-3 py-2">
+              Data tidak ditemukan
+            </div>
+            <AddButton title={pageTitle} />
           </div>
         </div>
 
-        {/* HIDE PAGE-TITLE, FILTER-BRANCH, AND ADD-BUTTON AT BREAKPOINT-SM: @media (min-width: 640px) */}
-        <div className="hidden sm:block mb-6">
-          <div className="flex justify-between items-center">
-            <PageTitle pageTitle={pageTitle} />
+        <div className="flex justify-center lg:justify-start gap-3 mb-3 lg:mb-4">
+          <div className="border border-black rounded-2xl p-2 w-32 lg:w-48">
+            <p className="font-roboto">Total</p>
+            <p className="text-xl sm:text-2xl font-sora font-semibold">50</p>
+          </div>
+          <div className="border border-black rounded-2xl p-2 w-32 lg:w-48">
+            <p className="font-roboto">Paid</p>
+            <p className="text-xl sm:text-2x font-sora font-semibold">48</p>
+          </div>
+          <div className="border border-black rounded-2xl p-2 w-32 lg:w-48">
+            <p className="font-roboto">Unpaid</p>
+            <p className="text-xl sm:text-2x font-sora font-semibold">1</p>
+          </div>
+          <div className="border border-black rounded-2xl p-2 w-32 lg:w-48">
+            <p className="font-roboto">Refund</p>
+            <p className="text-xl sm:text-2x font-sora font-semibold">1</p>
+          </div>
+        </div>
 
-            {/* HIDE MESSAGE AT BREAKPOINT-LG: @media (min-width: 1024px) */}
-            <div className="hidden lg:block">
-              <Message
-                message={message}
-                color={color}
-                onHide={() => {
-                  setColor("");
-                  setMessage(null);
-                  hideMessageHandler();
-                }}
-              />
-            </div>
-
-            <div>
-              {/* FILTER */}
-
-              <AddButton
-                title={pageTitle}
-                openModal={() => setTransactionAddVisible(true)}
-              />
+        <div className="hidden sm:block ">
+          <div className="flex justify-center lg:justify-between items-center mb-3 lg:mb-6">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+              <div className="border border-blue-900 rounded-2xl text-blue-900 text-sm text-center p-2 w-48">
+                Periode
+              </div>
+              <div className="border border-blue-900 rounded-2xl text-blue-900 text-sm text-center p-2 w-48">
+                Paskal
+              </div>
+              <div className="border border-blue-900 rounded-2xl text-blue-900 text-sm text-center p-2 w-48">
+                All Book
+              </div>
+              <div className="border border-blue-900 rounded-2xl text-blue-900 text-sm text-center p-2 w-48">
+                All Payment
+              </div>
             </div>
           </div>
         </div>
 
-        {/* SHOW UP MESSAGE AT BREAKPOINT-LG: @media (min-width: 1024px) */}
-        <div className="block lg:hidden h-10 mb-3 md:mb-4 lg:mb-6">
-          <Message
+        <div className="block sm:hidden mb-3">
+          <div className="flex justify-between items-center">
+            <div className="bg-blue-900 rounded-xl text-sm text-white px-3 py-2 w-38">
+              Filter
+            </div>
+            <AddButton title={pageTitle} />
+          </div>
+        </div>
+
+        {/* HIDE MESSAGE AT BREAKPOINT-LG: @media (min-width: 1024px) */}
+        <div className="block lg:hidden">
+          {/* <Message
             message={message}
             color={color}
             onHide={() => {
@@ -229,10 +246,13 @@ export default function TransactionPage() {
               setMessage(null);
               hideMessageHandler();
             }}
-          />
+          /> */}
+          <div className="bg-red-50 border border-red-500 rounded-2xl text-red-500 text-sm text-center font-bold px-3 py-1 mb-3">
+            Data tidak ditemukan
+          </div>
         </div>
 
-        <div className="flex flex-col justify-between border border-black rounded-3xl overflow-auto pb-4 h-2/3 md:h-4/5 lg:h-3/4">
+        <div className="flex flex-col justify-between border border-black rounded-3xl overflow-auto pb-4 h-3/5 md:h-2/3 lg:2/3 xl:h-1/2">
           {/* <Datatransaction
             title={pageTitle}
             transactionsData={transactionsSorted}

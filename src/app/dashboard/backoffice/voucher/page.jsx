@@ -142,7 +142,7 @@ export default function VoucherPage() {
           </div>
         </div>
 
-        <div className="flex justify-center items-center gap-3 mb-3 md:mb-4 lg:mb-6">
+        <div className="flex justify-center items-center gap-3 mb-3 lg:mb-4">
           {/* SHOW UP OPTION-NAVBAR / DROPDOWN AT BREAKPOINT-MD: @media (min-width: 768px) */}
           <div className="block md:hidden">
             <OptionNavbar
@@ -164,7 +164,7 @@ export default function VoucherPage() {
         </div>
 
         {/* SHOW UP FILTER-BRANCH AND ADD-BUTTON AT BREAKPOINT-SM: @media (min-width: 640px) */}
-        <div className="block sm:hidden mb-3 md:mb-4 lg:mb-6">
+        <div className="block sm:hidden mb-3 lg:mb-4">
           <div className="flex justify-between items-center">
             <FilterDiscountType
               getDiscountType={(e) => {
@@ -180,7 +180,7 @@ export default function VoucherPage() {
         </div>
 
         {/* HIDE PAGE-TITLE, FILTER-BRANCH, AND ADD-BUTTON AT BREAKPOINT-SM: @media (min-width: 640px) */}
-        <div className="hidden sm:block mb-6">
+        <div className="hidden sm:block mb-4">
           <div className="flex justify-between items-center">
             <PageTitle pageTitle={pageTitle} />
 
