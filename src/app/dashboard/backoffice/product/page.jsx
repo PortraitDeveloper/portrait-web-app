@@ -30,7 +30,7 @@ export default function ProductPage() {
   const [branchId, setBranchId] = useState("all");
   const [keyword, setKeyword] = useState("null");
 
-  const [perPage, setPerPage] = useState(4);
+  const [perPage, setPerPage] = useState(5);
   const [pageNumber, setPageNumber] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
 

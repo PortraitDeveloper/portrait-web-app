@@ -8,14 +8,12 @@ import Searchbar from "../../_Components/SearchBar";
 import OptionAccount from "../../_Components/OptionAccount";
 import PageTitle from "../../_Components/PageTitle";
 import Message from "../../_Components/Message";
-import FilterBranch from "../../_Components/FilterBranch";
+
 import AddButton from "../../_Components/AddButton";
-import DataProduct from "../../_Components/DataProduct";
+
 import PagePagination from "../../_Components/PagePagination";
 import ModalAccount from "../../_Components/ModalAccount";
-import ModalProductAdd from "../../_Components/ModalProductAdd";
-import ModalProductEdit from "../../_Components/ModalProductEdit";
-import ModalProductDelete from "../../_Components/ModalProductDelete";
+
 import ModalLoading from "../../_Components/ModalLoading";
 const pageTitle = "Transaction";
 
@@ -23,14 +21,14 @@ export default function TransactionPage() {
   const [credentialsData, setCredentialsData] = useState([]);
   const [branchesData, setBranchesData] = useState([]);
 
-  const [productsData, setProductsData] = useState([]);
-  const [productsSorted, setproductsSorted] = useState({});
-  const [productData, setProductData] = useState({});
+  const [transactionsData, setTransactionsData] = useState([]);
+  const [transactionsSorted, setTransactionsSorted] = useState({});
+  const [transactionData, setTransactionData] = useState({});
 
   const [branchId, setBranchId] = useState("all");
   const [keyword, setKeyword] = useState("null");
 
-  const [perPage, setPerPage] = useState(4);
+  const [perPage, setPerPage] = useState(5);
   const [pageNumber, setPageNumber] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
 
@@ -40,9 +38,9 @@ export default function TransactionPage() {
   const [color, setColor] = useState("");
 
   const [AccountVisible, setAccountVisible] = useState(false);
-  const [productAddVisible, setproductAddVisible] = useState(false);
-  const [productEditVisible, setproductEditVisible] = useState(false);
-  const [productDeleteVisible, setproductDeleteVisible] = useState(false);
+  const [transactionAddVisible, setTransactionAddVisible] = useState(false);
+  const [transactionEditVisible, setTransactionEditVisible] = useState(false);
+  const [transactionDeleteVisible, setTransactionDeleteVisible] = useState(false);
 
   useEffect(() => {
     getCredentialsData();
@@ -53,13 +51,13 @@ export default function TransactionPage() {
   }, []);
 
   useEffect(() => {
-    getProductsData();
+    getTransactionsData();
   }, [
     branchId,
     keyword,
-    productAddVisible,
-    productEditVisible,
-    productDeleteVisible,
+    transactionAddVisible,
+    transactionEditVisible,
+    transactionDeleteVisible,
   ]);
 
   const getCredentialsData = async () => {
@@ -88,9 +86,9 @@ export default function TransactionPage() {
     setBranchesData(response.data);
   };
 
-  const getProductsData = async () => {
+  const getTransactionsData = async () => {
     let response = await fetch(
-      `/api/data/product/search/${branchId}/${keyword}`,
+      `/api/data/transaction/${keyword}/${branchId}`,
       {
         method: "GET",
         headers: {
@@ -110,7 +108,7 @@ export default function TransactionPage() {
     } else {
       const _totalPage = Math.ceil(response.data.length / perPage);
       setTotalPage(_totalPage);
-      setProductsData(response.data);
+      setTransactionsData(response.data);
       setDataAvailable(true);
       setLoading(true);
     }
@@ -120,16 +118,16 @@ export default function TransactionPage() {
     setAccountVisible(false);
   };
 
-  const closeproductHandler = () => {
-    setproductAddVisible(false);
+  const closeTransactionHandler = () => {
+    setTransactionAddVisible(false);
   };
 
-  const closeproductEditHandler = () => {
-    setproductEditVisible(false);
+  const closeTransactionEditHandler = () => {
+    setTransactionEditVisible(false);
   };
 
-  const closeproductDeleteHandler = () => {
-    setproductDeleteVisible(false);
+  const closeTransactionDeleteHandler = () => {
+    setTransactionDeleteVisible(false);
   };
 
   const hideMessageHandler = () => {
@@ -165,14 +163,11 @@ export default function TransactionPage() {
         <div className="flex justify-center items-center gap-3 mb-3 md:mb-4 lg:mb-6">
           {/* SHOW UP OPTION-NAVBAR / DROPDOWN AT BREAKPOINT-MD: @media (min-width: 768px) */}
           <div className="block md:hidden">
-            <OptionNavbar
-              credentialsData={credentialsData}
-              openModal={() => setAccountVisible(true)}
-            />
+            <OptionNavbar />
           </div>
 
           <Searchbar
-            placeholder="Find Product by Name"
+            placeholder="Find transaction by Name"
             getKeyword={(e) => {
               setKeyword(e);
             }}
@@ -186,16 +181,11 @@ export default function TransactionPage() {
         {/* SHOW UP FILTER-BRANCH AND ADD-BUTTON AT BREAKPOINT-SM: @media (min-width: 640px) */}
         <div className="block sm:hidden mb-3 md:mb-4 lg:mb-6">
           <div className="flex justify-between items-center">
-            <FilterBranch
-              branchesData={branchesData}
-              getBranchId={(e) => {
-                setBranchId(e);
-              }}
-            />
+            {/* FILTER */}
 
             <AddButton
               title={pageTitle}
-              openModal={() => setproductAddVisible(true)}
+              openModal={() => setTransactionAddVisible(true)}
             />
           </div>
         </div>
@@ -219,16 +209,11 @@ export default function TransactionPage() {
             </div>
 
             <div>
-              <FilterBranch
-                branchesData={branchesData}
-                getBranchId={(e) => {
-                  setBranchId(e);
-                }}
-              />
+              {/* FILTER */}
 
               <AddButton
                 title={pageTitle}
-                openModal={() => setproductAddVisible(true)}
+                openModal={() => setTransactionAddVisible(true)}
               />
             </div>
           </div>
@@ -248,31 +233,28 @@ export default function TransactionPage() {
         </div>
 
         <div className="flex flex-col justify-between border border-black rounded-3xl overflow-auto pb-4 h-2/3 md:h-4/5 lg:h-3/4">
-          <div>
-            <div className="flex justify-center px-4 py-2">
-              <DataProduct
-                productsData={productsSorted}
-                loading={loading}
-                dataAvailable={dataAvailable}
-                getEdit={(productData) => {
-                  setProductData(productData);
-                  setproductEditVisible(true);
-                }}
-                getDelete={(productData) => {
-                  setProductData(productData);
-                  setproductDeleteVisible(true);
-                }}
-              />
-            </div>
-          </div>
+          {/* <Datatransaction
+            title={pageTitle}
+            transactionsData={transactionsSorted}
+            loading={loading}
+            dataAvailable={dataAvailable}
+            getEdit={(e) => {
+              setTransactionData(e);
+              setTransactionEditVisible(true);
+            }}
+            getDelete={(e) => {
+              setTransactionData(e);
+              setTransactionDeleteVisible(true);
+            }}
+          /> */}
 
-          <PagePagination
+          {/* <PagePagination
             loading={loading}
             dataAvailable={dataAvailable}
             perPage={perPage}
             pageNumber={pageNumber}
             totalPage={totalPage}
-            productsData={productsData}
+            data={transactionsData}
             getPerPage={(e) => {
               setPerPage(e);
             }}
@@ -282,10 +264,10 @@ export default function TransactionPage() {
             getTotalPage={(e) => {
               setTotalPage(e);
             }}
-            getProductsSorted={(e) => {
-              setproductsSorted(e);
+            getDataSorted={(e) => {
+              setTransactionsSorted(e);
             }}
-          />
+          /> */}
         </div>
 
         <ModalAccount
@@ -301,44 +283,44 @@ export default function TransactionPage() {
           }}
         />
 
-        <ModalProductAdd
-          isVisible={productAddVisible}
+        {/* <ModaltransactionAdd
+          isVisible={transactionAddVisible}
           branchesData={branchesData}
           closeModal={() => {
-            closeproductHandler();
+            closeTransactionHandler();
           }}
           finishModal={(message, color) => {
             setMessage(message);
             setColor(color);
-            closeproductHandler();
+            closeTransactionHandler();
           }}
         />
 
-        <ModalProductEdit
-          isVisible={productEditVisible}
-          productData={productData}
+        <ModaltransactionEdit
+          isVisible={transactionEditVisible}
+          transactionData={transactionData}
           closeModal={() => {
-            closeproductEditHandler();
+            closeTransactionEditHandler();
           }}
           finishModal={(message, color) => {
             setMessage(message);
             setColor(color);
-            closeproductEditHandler();
+            closeTransactionEditHandler();
           }}
         />
 
-        <ModalProductDelete
-          isVisible={productDeleteVisible}
-          productData={productData}
+        <ModaltransactionDelete
+          isVisible={transactionDeleteVisible}
+          transactionData={transactionData}
           closeModal={() => {
-            closeproductDeleteHandler();
+            closeTransactionDeleteHandler();
           }}
           finishModal={(message, color) => {
             setMessage(message);
             setColor(color);
-            closeproductDeleteHandler();
+            closeTransactionDeleteHandler();
           }}
-        />
+        /> */}
       </div>
     </div>
   );

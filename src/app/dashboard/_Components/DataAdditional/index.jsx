@@ -19,37 +19,37 @@ const DataAdditional = ({
           <table className="min-w-full">
             <thead className="border-b border-blue-900">
               <tr>
-                <th className="py-3">
+                <th className="px-2 py-2">
                   ID
                 </th>
-                <th className="py-3 w-32 md:w-1/4">
+                <th className="px-2 py-2">
                   ITEM_NAME
                 </th>
-                <th className="py-3">
+                <th className="px-2 py-2">
                   PRICE
                 </th>
-                <th className="hidden md:table-cell py-3 w-1/3 lg:w-1/2">
+                <th className="hidden md:table-cell px-2 py-2">
                   DESCRIPTION
                 </th>
-                <th className="py-3"></th>
+                <th className="px-2 py-2"></th>
               </tr>
             </thead>
             <tbody>
               {additionalsData.map((data, index) => (
                 <tr key={index} className="border-b border-blue-900">
-                  <td className="py-3">
+                  <td className="px-2 py-2">
                     {data.item_id}
                   </td>
-                  <td className="py-3 w-32 md:w-1/4">
+                  <td className="px-2 py-2">
                     {data.item_name}
                   </td>
-                  <td className="py-3">
+                  <td className="px-2 py-2">
                     {data.item_price}
                   </td>
-                  <td className="hidden md:table-cell py-3 w-1/3 lg:w-1/2">
+                  <td className="hidden md:table-cell px-2 py-2">
                     {data.item_desc}
                   </td>
-                  <td className="flex justify-center py-3">
+                  <td className="flex justify-center px-2 py-2">
                     <ButtonEdit
                       data={{
                         itemId: data.item_id,

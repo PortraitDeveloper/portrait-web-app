@@ -25,37 +25,23 @@ const DataProduct = ({
           <table className="min-w-full">
             <thead className="border-b border-blue-900">
               <tr>
-                <th className="py-3">
-                  ID
-                </th>
-                <th className="py-3 w-32 md:w-1/4">
-                  PRODUCT_NAME
-                </th>
-                <th className="py-3">
-                  PRICE
-                </th>
-                <th className="hidden md:table-cell py-3 w-1/3 lg:w-1/2">
-                  DESCRIPTION
-                </th>
-                <th className="py-3"></th>
+                <th className="w-16 px-2 py-2 ">ID</th>
+                <th className="px-2 py-2">PRODUCT_NAME</th>
+                <th className="px-2 py-2">PRICE</th>
+                <th className="hidden md:table-cell px-2 py-2">DESCRIPTION</th>
+                <th className="px-2 py-2"></th>
               </tr>
             </thead>
             <tbody>
               {productsData.map((data, index) => (
                 <tr key={index} className="border-b border-blue-900">
-                  <td className="py-3">
-                    {data.product_id}
-                  </td>
-                  <td className="py-3 w-32 md:w-1/4">
-                    {data.product_name}
-                  </td>
-                  <td className="py-3">
-                    {data.product_price}
-                  </td>
-                  <td className="hidden md:table-cell py-3 w-1/3 lg:w-1/2">
+                  <td className="w-16 px-2 py-2">{data.product_id}</td>
+                  <td className="px-2 py-2">{data.product_name}</td>
+                  <td className="px-2 py-2">{data.product_price}</td>
+                  <td className="hidden md:table-cell px-2 py-2">
                     {data.product_desc}
                   </td>
-                  <td className="py-3">
+                  <td className="px-2 py-2">
                     <div className="flex justify-center">
                       <EditOption
                         title={title}

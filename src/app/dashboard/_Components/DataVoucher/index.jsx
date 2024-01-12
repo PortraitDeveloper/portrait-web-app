@@ -27,29 +27,31 @@ const DataVoucher = ({
           <table className="min-w-full">
             <thead className="border-b border-blue-900">
               <tr>
-                <th className="py-3">CODE</th>
-                <th className="py-3">DISCOUNT</th>
-                <th className="hidden md:table-cell py-3">START</th>
-                <th className="py-3">EXPIRED</th>
-                <th className="py-3"></th>
+                <th className="px-2 py-2">CODE</th>
+                <th className="px-2 py-2">DISCOUNT</th>
+                <th className="hidden md:table-cell px-2 py-2">START</th>
+                <th className="px-2 py-2">EXPIRED</th>
+                <th className="px-2 py-2"></th>
               </tr>
             </thead>
             <tbody>
               {vouchersData.map((data, index) => (
                 <tr key={index} className="border-b border-blue-900">
-                  <td className="py-3">{data.voucher_code}</td>
-                  <td className="py-3">
+                  <td className="px-2 py-2">{data.voucher_code}</td>
+                  <td className="px-2 py-2">
                     {discountType === "percentage"
                       ? (data.percentage_discount * 100).toString() + "%"
                       : (data.nominal_discount * 1)
                           .toString()
                           .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
                   </td>
-                  <td className="hidden md:table-cell py-3">
+                  <td className="hidden md:table-cell px-2 py-2">
                     {dateConvertion(data.start_date)}
                   </td>
-                  <td className="py-3">{dateConvertion(data.expired_date)}</td>
-                  <td className="py-3">
+                  <td className="px-2 py-2">
+                    {dateConvertion(data.expired_date)}
+                  </td>
+                  <td className="px-2 py-2">
                     <div className="flex justify-center">
                       <EditOption
                         title={title}
