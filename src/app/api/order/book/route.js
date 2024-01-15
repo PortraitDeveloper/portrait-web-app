@@ -166,10 +166,10 @@ export async function POST(request) {
 
         // Determine whether the print5R is color or black&white
         const foundIndex = productName.indexOf("Black and White");
-        const itemId = foundIndex !== -1 ? "lt-3" : "lt-4";
+        const itemId = foundIndex !== -1 ? "it-3" : "it-4";
         dataFiltered = additionals.filter((item) => item.item_id === itemId);
         console.log("Data Filtered:", dataFiltered)
-        
+
         const print5RPrice = dataFiltered[0].item_price;
         console.log("Print5r Price:", print5RPrice);
 
