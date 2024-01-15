@@ -159,6 +159,8 @@ export async function POST(request) {
         let dataFiltered = additionals.filter(
           (item) => item.item_id === "it-1"
         );
+        console.log("Data Filtered:", dataFiltered)
+
         const personPrice = dataFiltered.item_price;
         console.log("PersonPrice:", personPrice);
 
