@@ -158,20 +158,18 @@ export async function POST(request) {
 
         let dataFiltered = additionals.filter(
           (item) => item.item_id === "it-1"
-        );
-        console.log("Data Filtered:", dataFiltered)
-
+        ); 
         const personPrice = dataFiltered[0].item_price;
-        console.log("PersonPrice:", personPrice);
-
+ 
         dataFiltered = additionals.filter((item) => item.item_id === "it-2");
         const petPrice = dataFiltered[0].item_price;
-        console.log("PetPrice:", petPrice);
 
         // Determine whether the print5R is color or black&white
         const foundIndex = productName.indexOf("Black and White");
         const itemId = foundIndex !== -1 ? "lt-3" : "lt-4";
         dataFiltered = additionals.filter((item) => item.item_id === itemId);
+        console.log("Data Filtered:", dataFiltered)
+        
         const print5RPrice = dataFiltered[0].item_price;
         console.log("Print5r Price:", print5RPrice);
 
