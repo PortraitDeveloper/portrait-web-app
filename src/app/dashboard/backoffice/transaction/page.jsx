@@ -8,27 +8,31 @@ import Searchbar from "../../_Components/SearchBar";
 import OptionAccount from "../../_Components/OptionAccount";
 import PageTitle from "../../_Components/PageTitle";
 import Message from "../../_Components/Message";
-
-import AddButton from "../../_Components/AddButton";
-
+import AddTransaction from "../../_Components/AddTransaction";
+import DataTransaction from "../../_Components/DataTransaction";
 import PagePagination from "../../_Components/PagePagination";
 import ModalAccount from "../../_Components/ModalAccount";
-
 import ModalLoading from "../../_Components/ModalLoading";
+import TotalOrders from "../../_Components/TotalOrders/page";
 const pageTitle = "Transaction";
 
 export default function TransactionPage() {
   const [credentialsData, setCredentialsData] = useState([]);
   const [branchesData, setBranchesData] = useState([]);
 
-  const [transactionsData, setTransactionsData] = useState([]);
-  const [transactionsSorted, setTransactionsSorted] = useState({});
-  const [transactionData, setTransactionData] = useState({});
+  const [orders, setOrders] = useState([]);
+  const [ordersSorted, setOrdersSorted] = useState({});
+  const [orderSelected, setOrderSelected] = useState({});
+
+  const [totalTransaction, setTotalTransaction] = useState(0);
+  const [totalPaid, setTotalPaid] = useState(0);
+  const [totalUnpaid, setTotalUnpaid] = useState(0);
+  const [totalRefund, setTotalRefund] = useState(0);
 
   const [branchId, setBranchId] = useState("all");
   const [keyword, setKeyword] = useState("null");
 
-  const [perPage, setPerPage] = useState(5);
+  const [perPage, setPerPage] = useState(3);
   const [pageNumber, setPageNumber] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
 
@@ -105,9 +109,35 @@ export default function TransactionPage() {
       setColor("red");
       setMessage("Data tidak ditemukan");
     } else {
-      const _totalPage = Math.ceil(response.data.length / perPage);
+      const _orders = response.data;
+      setOrders(_orders);
+
+      const _totalTransactions = _orders.length;
+      setTotalTransaction(_totalTransactions);
+
+      const _totalPage = Math.ceil(_totalTransactions / perPage);
       setTotalPage(_totalPage);
-      setTransactionsData(response.data);
+
+      let _transactions = [];
+      for (let i = 0; i < _totalTransactions; i++) {
+        _transactions.push(_orders[i].transactions);
+      }
+
+      let _totalPaid = _transactions.filter(
+        (item) => item.payment_status === "paid"
+      );
+      setTotalPaid(_totalPaid.length);
+
+      let _totalUnpaid = _transactions.filter(
+        (item) => item.payment_status === "unpaid"
+      );
+      setTotalUnpaid(_totalUnpaid.length);
+
+      let _totalRefund = _transactions.filter(
+        (item) => item.payment_status === "refund"
+      );
+      setTotalRefund(_totalRefund.length);
+
       setDataAvailable(true);
       setLoading(true);
     }
@@ -182,30 +212,26 @@ export default function TransactionPage() {
             <div className="hidden md:block">
               <PageTitle pageTitle={pageTitle} />
             </div>
-            <div className="hidden lg:block bg-red-50 border border-red-500 rounded-2xl text-red-500 text-sm text-center font-bold px-3 py-2">
-              Data tidak ditemukan
-            </div>
-            <AddButton title={pageTitle} />
+            <Message
+              message={message}
+              color={color}
+              onHide={() => {
+                setColor("");
+                setMessage(null);
+                hideMessageHandler();
+              }}
+            />
+            <AddTransaction />
           </div>
         </div>
 
         <div className="flex justify-center lg:justify-start gap-3 mb-3">
-          <div className="border border-black rounded-2xl p-2 w-32 lg:w-48">
-            <p className="text-sm font-roboto">Total</p>
-            <p className="text-xl font-sora font-semibold">50</p>
-          </div>
-          <div className="border border-black rounded-2xl p-2 w-32 lg:w-48">
-            <p className="text-sm font-roboto">Paid</p>
-            <p className="text-xl font-sora font-semibold">48</p>
-          </div>
-          <div className="border border-black rounded-2xl p-2 w-32 lg:w-48">
-            <p className="text-sm font-roboto">Unpaid</p>
-            <p className="text-xl font-sora font-semibold">1</p>
-          </div>
-          <div className="border border-black rounded-2xl p-2 w-32 lg:w-48">
-            <p className="text-sm font-roboto">Refund</p>
-            <p className="text-xl font-sora font-semibold">1</p>
-          </div>
+          <TotalOrders
+            totalTransaction={totalTransaction}
+            totalPaid={totalPaid}
+            totalUnpaid={totalUnpaid}
+            totalRefund={totalRefund}
+          />
         </div>
 
         <div className="hidden sm:block ">
@@ -232,13 +258,13 @@ export default function TransactionPage() {
             <div className="bg-blue-900 rounded-xl text-sm text-white px-3 py-2 w-38">
               Filter
             </div>
-            <AddButton title={pageTitle} />
+            <AddTransaction />
           </div>
         </div>
 
         {/* HIDE MESSAGE AT BREAKPOINT-LG: @media (min-width: 1024px) */}
         <div className="block lg:hidden">
-          {/* <Message
+          <Message
             message={message}
             color={color}
             onHide={() => {
@@ -246,35 +272,32 @@ export default function TransactionPage() {
               setMessage(null);
               hideMessageHandler();
             }}
-          /> */}
-          <div className="bg-red-50 border border-red-500 rounded-2xl text-red-500 text-sm text-center font-bold px-3 py-1 mb-3">
-            Data tidak ditemukan
-          </div>
+          />
         </div>
 
         <div className="flex flex-col justify-between border border-black rounded-3xl overflow-auto pb-4 h-3/5 md:h-2/3 lg:2/3 xl:h-3/5">
-          {/* <Datatransaction
+          <DataTransaction
             title={pageTitle}
-            transactionsData={transactionsSorted}
+            transactionsData={ordersSorted}
             loading={loading}
             dataAvailable={dataAvailable}
             getEdit={(e) => {
-              setTransactionData(e);
+              setOrderSelected(e);
               setTransactionEditVisible(true);
             }}
             getDelete={(e) => {
-              setTransactionData(e);
+              setOrderSelected(e);
               setTransactionDeleteVisible(true);
             }}
-          /> */}
+          />
 
-          {/* <PagePagination
+          <PagePagination
             loading={loading}
             dataAvailable={dataAvailable}
             perPage={perPage}
             pageNumber={pageNumber}
             totalPage={totalPage}
-            data={transactionsData}
+            data={orders}
             getPerPage={(e) => {
               setPerPage(e);
             }}
@@ -285,9 +308,9 @@ export default function TransactionPage() {
               setTotalPage(e);
             }}
             getDataSorted={(e) => {
-              setTransactionsSorted(e);
+              setOrdersSorted(e);
             }}
-          /> */}
+          />
         </div>
 
         <ModalAccount
