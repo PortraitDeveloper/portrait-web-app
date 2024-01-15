@@ -156,18 +156,29 @@ export async function POST(request) {
         // Read additionals data
         const additionals = await prisma.additionals.findMany();
 
+        let dataFiltered = additionals.filter(
+          (item) => item.item_id === "it-1"
+        );
+        const personPrice = dataFiltered.item_price;
+
+        dataFiltered = additionals.filter((item) => item.item_id === "it-2");
+        const petPrice = dataFiltered.item_price;
+
         // Determine whether the print5R is color or black&white
         const foundIndex = productName.indexOf("Black and White");
-        const n = foundIndex !== -1 ? 2 : 3;
+        const itemId = foundIndex !== -1 ? "lt-3" : "lt-4";
+        dataFiltered = additionals.filter((item) => item.item_id === itemId);
+        const print5RPrice = dataFiltered.item_price;
+
+        dataFiltered = additionals.filter((item) => item.item_id === "it-5");
+        const softfilePrice = dataFiltered.item_price;
 
         // Additionals Price List Calculation
-        const additionalPersonPrice =
-          numberOfAddPerson * additionals[0].item_price;
-        const additionalPetPrice = numberOfAddPets * additionals[1].item_price;
-        const additionalPrint5r =
-          numberOfAddPrint5R * additionals[n].item_price;
+        const additionalPersonPrice = numberOfAddPerson * parseInt(personPrice);
+        const additionalPetPrice = numberOfAddPets * parseInt(petPrice);
+        const additionalPrint5r = numberOfAddPrint5R * parseInt(print5RPrice);
         const additionalSoftfile =
-          numberOfAddSoftfile * additionals[4].item_price;
+          numberOfAddSoftfile * parseInt(softfilePrice);
 
         // Total price initial
         let totalPrice = null;
