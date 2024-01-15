@@ -79,6 +79,7 @@ export default function CheckoutPage() {
           body: JSON.stringify({ bookid }),
         });
         const payload = await response.json();
+        console.log("Payload /api/order/book", payload);
 
         if (
           payload.status === 404 &&
