@@ -156,11 +156,12 @@ export async function POST(request) {
         // Read additionals data
         const additionals = await prisma.additionals.findMany();
 
+        // Additionals Price List Calculation
         let dataFiltered = additionals.filter(
           (item) => item.item_id === "it-1"
-        ); 
+        );
         const personPrice = dataFiltered[0].item_price;
- 
+
         dataFiltered = additionals.filter((item) => item.item_id === "it-2");
         const petPrice = dataFiltered[0].item_price;
 
@@ -168,16 +169,12 @@ export async function POST(request) {
         const foundIndex = productName.indexOf("Black and White");
         const itemId = foundIndex !== -1 ? "it-3" : "it-4";
         dataFiltered = additionals.filter((item) => item.item_id === itemId);
-        console.log("Data Filtered:", dataFiltered)
 
         const print5RPrice = dataFiltered[0].item_price;
-        console.log("Print5r Price:", print5RPrice);
 
         dataFiltered = additionals.filter((item) => item.item_id === "it-5");
         const softfilePrice = dataFiltered[0].item_price;
-        console.log("SoftFile:", softfilePrice);
 
-        // Additionals Price List Calculation
         const additionalPersonPrice = numberOfAddPerson * parseInt(personPrice);
         const additionalPetPrice = numberOfAddPets * parseInt(petPrice);
         const additionalPrint5r = numberOfAddPrint5R * parseInt(print5RPrice);
