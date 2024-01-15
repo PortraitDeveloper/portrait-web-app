@@ -152,7 +152,7 @@ export default function VoucherPage() {
           </div>
 
           <Searchbar
-            placeholder="Find Voucher By Code"
+            placeholder="Find by Voucher Code"
             getKeyword={(e) => {
               setKeyword(e);
             }}

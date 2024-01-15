@@ -9,11 +9,15 @@ import OptionAccount from "../../_Components/OptionAccount";
 import PageTitle from "../../_Components/PageTitle";
 import Message from "../../_Components/Message";
 import AddTransaction from "../../_Components/AddTransaction";
+import TotalOrders from "../../_Components/TotalOrders/page";
+import FilterBranch from "../../_Components/FilterBranch";
+import FilterBook from "../../_Components/FilterBook";
+import FilterPayment from "../../_Components/FilterPayment";
 import DataTransaction from "../../_Components/DataTransaction";
 import PagePagination from "../../_Components/PagePagination";
 import ModalAccount from "../../_Components/ModalAccount";
 import ModalLoading from "../../_Components/ModalLoading";
-import TotalOrders from "../../_Components/TotalOrders/page";
+
 const pageTitle = "Transaction";
 
 export default function TransactionPage() {
@@ -29,8 +33,10 @@ export default function TransactionPage() {
   const [totalUnpaid, setTotalUnpaid] = useState(0);
   const [totalRefund, setTotalRefund] = useState(0);
 
-  const [branchId, setBranchId] = useState("all");
   const [keyword, setKeyword] = useState("null");
+  const [branchId, setBranchId] = useState("all");
+  const [book, setBook] = useState("all");
+  const [payment, setPayment] = useState("all");
 
   const [perPage, setPerPage] = useState(3);
   const [pageNumber, setPageNumber] = useState(1);
@@ -196,7 +202,7 @@ export default function TransactionPage() {
           </div>
 
           <Searchbar
-            placeholder="Find transaction by Name"
+            placeholder="Find by Customer"
             getKeyword={(e) => {
               setKeyword(e);
             }}
@@ -240,15 +246,25 @@ export default function TransactionPage() {
               <div className="border border-blue-900 rounded-2xl text-blue-900 text-sm text-center p-2 w-48">
                 Periode
               </div>
-              <div className="border border-blue-900 rounded-2xl text-blue-900 text-sm text-center p-2 w-48">
-                Paskal
-              </div>
-              <div className="border border-blue-900 rounded-2xl text-blue-900 text-sm text-center p-2 w-48">
-                All Book
-              </div>
-              <div className="border border-blue-900 rounded-2xl text-blue-900 text-sm text-center p-2 w-48">
-                All Payment
-              </div>
+
+              <FilterBranch
+                branchesData={branchesData}
+                getBranchId={(e) => {
+                  setBranchId(e);
+                }}
+              />
+
+              <FilterBook
+                getBookStatus={(e) => {
+                  setBook(e);
+                }}
+              />
+
+              <FilterPayment
+                getPaymentStatus={(e) => {
+                  setBook(e);
+                }}
+              />
             </div>
           </div>
         </div>

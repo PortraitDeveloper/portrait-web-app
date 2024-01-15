@@ -89,16 +89,13 @@ export default function ProductPage() {
   };
 
   const getProductsData = async () => {
-    let response = await fetch(
-      `/api/data/product/${keyword}/${branchId}`,
-      {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    let response = await fetch(`/api/data/product/${keyword}/${branchId}`, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    });
 
     response = await response.json();
 
@@ -169,7 +166,7 @@ export default function ProductPage() {
           </div>
 
           <Searchbar
-            placeholder="Find Product by Name"
+            placeholder="Find by Product Name"
             getKeyword={(e) => {
               setKeyword(e);
             }}
@@ -183,17 +180,18 @@ export default function ProductPage() {
         {/* SHOW UP FILTER-BRANCH AND ADD-BUTTON AT BREAKPOINT-SM: @media (min-width: 640px) */}
         <div className="block sm:hidden mb-3 lg:mb-4">
           <div className="flex justify-between items-center">
-            <FilterBranch
-              branchesData={branchesData}
-              getBranchId={(e) => {
-                setBranchId(e);
-              }}
-            />
 
-            <AddButton
-              title={pageTitle}
-              openModal={() => setproductAddVisible(true)}
-            />
+              <FilterBranch
+                branchesData={branchesData}
+                getBranchId={(e) => {
+                  setBranchId(e);
+                }}
+              />
+      
+              <AddButton
+                title={pageTitle}
+                openModal={() => setproductAddVisible(true)}
+              />
           </div>
         </div>
 

@@ -127,7 +127,7 @@ export default function AdditionalPage() {
           </div>
 
           <Searchbar
-            placeholder="Find Additional by Name"
+            placeholder="Find by Item Name"
             getKeyword={(e) => {
               setKeyword(e);
             }}
