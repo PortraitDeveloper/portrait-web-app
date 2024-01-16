@@ -9,7 +9,7 @@ import ErrorMessage from "../_ChildComponents/ErrorMessage";
 import ButtonSubmit from "../_ChildComponents/ButtonSubmit";
 import ProcessSubmit from "../_ChildComponents/ProcessSubmit";
 import ClipboardCopy from "../_ChildComponents/ClipboardCopy";
-import YCBMLink from "../_ChildComponents/YCBMLink";
+import ButtonLink from "../_ChildComponents/ButtonLink";
 import Intruction from "../_ChildComponents/Intruction";
 import thousandConversion from "@/utils/thousandConversion";
 
@@ -182,7 +182,7 @@ const ModalProductEdit = ({
               />
             </div>
 
-            <YCBMLink spesicURL={url} />
+            <ButtonLink label={"Go to YCBM"} spesicURL={url} />
           </div>
         </div>
       )}

@@ -10,8 +10,6 @@ const ModalOrderDetail = ({
   closeModal,
   finishModal,
 }) => {
-  console.log(orderData);
-
   const closeHandler = (e) => {
     if (e.target.id === "container" || e === "closeIcon") {
       closeModal();

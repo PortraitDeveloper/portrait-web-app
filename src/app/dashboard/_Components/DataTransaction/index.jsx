@@ -7,8 +7,9 @@ const DataTransaction = ({
   ordersData,
   loading,
   dataAvailable,
-  getDetail,
-  getEdit,
+  getOrderDetail,
+  getChangeOrder,
+  getCustomerDetail,
   getRefund,
 }) => {
   return (
@@ -82,13 +83,16 @@ const DataTransaction = ({
                     <div className="flex justify-center">
                       <OptionEditOrder
                         data={data}
-                        getDetail={(e) => {
-                          getDetail(e);
+                        onOrderDetail={(e) => {
+                          getOrderDetail(e);
                         }}
-                        getEdit={(e) => {
-                          getEdit(e);
+                        onChangeOrder={(e) => {
+                          getChangeOrder(e);
                         }}
-                        getRefund={(e) => {
+                        onCustomerDetail={(e) => {
+                          getCustomerDetail(e);
+                        }}
+                        onRefund={(e) => {
                           getRefund(e);
                         }}
                       />

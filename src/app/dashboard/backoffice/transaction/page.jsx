@@ -16,11 +16,12 @@ import FilterPayment from "../../_Components/FilterPayment";
 import DataTransaction from "../../_Components/DataTransaction";
 import PagePagination from "../../_Components/PagePagination";
 import ModalAccount from "../../_Components/ModalAccount";
-import ModalOrderDetail from "../../_Components/ModalOrderDetail/page";
+import ModalOrderDetail from "../../_Components/ModalOrderDetail";
+import ModalChangeOrder from "../../_Components/ModalChangeOrder";
+import ModalCustomerDetail from "../../_Components/ModalCustomerDetail";
+import ModalFilter from "../../_Components/ModalFilter";
 import ModalLoading from "../../_Components/ModalLoading";
-
 import dataConversion from "@/utils/dataConversion";
-
 const pageTitle = "Transaction";
 
 export default function TransactionPage() {
@@ -54,6 +55,7 @@ export default function TransactionPage() {
   const [AccountVisible, setAccountVisible] = useState(false);
   const [orderDetailVisible, setOrderDetailVisible] = useState(false);
   const [changeOrderVisible, setChangeOrderVisible] = useState(false);
+  const [customerDetailVisible, setCustomerDetailVisible] = useState(false);
   const [refundOrderVisible, setRefundOrderVisible] = useState(false);
   const [filterVisible, setFilterVisible] = useState(false);
 
@@ -158,12 +160,16 @@ export default function TransactionPage() {
     setAccountVisible(false);
   };
 
-  const closeDetailHandler = () => {
+  const closeOrderDetailHandler = () => {
     setOrderDetailVisible(false);
   };
 
-  const closeEditHandler = () => {
+  const closeChangeOrderHandler = () => {
     setChangeOrderVisible(false);
+  };
+
+  const closeCustomerDetailHandler = () => {
+    setCustomerDetailVisible(false);
   };
 
   const closeRefundHandler = () => {
@@ -305,17 +311,23 @@ export default function TransactionPage() {
             ordersData={ordersSorted}
             loading={loading}
             dataAvailable={dataAvailable}
-            getDetail={(e) => {
+            getOrderDetail={(e) => {
               const dataConv = dataConversion(e);
               setOrderSelected(e);
               setOrderDetailSelected(dataConv);
               setOrderDetailVisible(true);
             }}
-            getEdit={(e) => {
+            getChangeOrder={(e) => {
               setOrderSelected(e);
+              setChangeOrderVisible(true);
+            }}
+            getCustomerDetail={(e) => {
+              setOrderSelected(e);
+              setCustomerDetailVisible(true);
             }}
             getRefund={(e) => {
               setOrderSelected(e);
+              setRefundOrderVisible(true);
             }}
           />
 
@@ -359,53 +371,40 @@ export default function TransactionPage() {
           orderDetailData={orderDetailSelected}
           isVisible={orderDetailVisible}
           closeModal={() => {
-            closeDetailHandler();
+            closeOrderDetailHandler();
           }}
           finishModal={(message, color) => {
             setMessage(message);
             setColor(color);
-            closeDetailHandler();
+            closeOrderDetailHandler();
           }}
         />
 
-        {/* <ModaltransactionAdd
-          isVisible={transactionAddVisible}
-          branchesData={branchesData}
+        <ModalChangeOrder
+          orderData={orderSelected}
+          isVisible={changeOrderVisible}
           closeModal={() => {
-            closeTransactionHandler();
+            closeChangeOrderHandler();
           }}
           finishModal={(message, color) => {
             setMessage(message);
             setColor(color);
-            closeTransactionHandler();
+            closeChangeOrderHandler();
           }}
         />
 
-        <ModaltransactionEdit
-          isVisible={transactionEditVisible}
-          transactionData={transactionData}
+        <ModalCustomerDetail
+          orderData={orderSelected}
+          isVisible={customerDetailVisible}
           closeModal={() => {
-            closeTransactionEditHandler();
+            closeCustomerDetailHandler();
           }}
           finishModal={(message, color) => {
             setMessage(message);
             setColor(color);
-            closeTransactionEditHandler();
+            closeCustomerDetailHandler();
           }}
         />
-
-        <ModaltransactionDelete
-          isVisible={transactionDeleteVisible}
-          transactionData={transactionData}
-          closeModal={() => {
-            closeTransactionDeleteHandler();
-          }}
-          finishModal={(message, color) => {
-            setMessage(message);
-            setColor(color);
-            closeTransactionDeleteHandler();
-          }}
-        /> */}
       </div>
     </div>
   );

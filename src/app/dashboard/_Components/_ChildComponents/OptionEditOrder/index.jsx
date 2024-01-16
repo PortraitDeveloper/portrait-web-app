@@ -1,19 +1,29 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react";
 
-const OptionEditOrder = ({ data, getDetail, getEdit, getRefund }) => {
+const OptionEditOrder = ({
+  data,
+  onOrderDetail,
+  onChangeOrder,
+  onCustomerDetail,
+  onRefund,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const onDetail = () => {
-    getDetail(data);
+  const getCustomerDetail = () => {
+    onCustomerDetail(data);
   };
 
-  const onEdit = () => {
-    getEdit(data);
+  const getOrderDetail = () => {
+    onOrderDetail(data);
   };
 
-  const onRefund = () => {
-    getRefund(data);
+  const getChangeOrder = () => {
+    onChangeOrder(data);
+  };
+
+  const getRefund = () => {
+    onRefund(data);
   };
 
   const toggleDropdown = () => {
@@ -53,19 +63,25 @@ const OptionEditOrder = ({ data, getDetail, getEdit, getRefund }) => {
         <div className="z-10 origin-top-right absolute right-0 mt-2 w-36 rounded-xl shadow-xl bg-white ring-1 ring-black ring-opacity-5">
           <div className="py-1">
             <button
-              onClick={onDetail}
+              onClick={getOrderDetail}
               className="block px-4 py-2 text-sm hover:font-bold"
             >
               <p>Order Detail</p>
             </button>
             <button
-              onClick={onEdit}
+              onClick={getChangeOrder}
               className="block px-4 py-2 text-sm hover:font-bold"
             >
               <p>Change Order</p>
             </button>
             <button
-              onClick={onRefund}
+              onClick={getCustomerDetail}
+              className="block px-4 py-2 text-sm hover:font-bold"
+            >
+              <p>Customer Detail</p>
+            </button>
+            <button
+              onClick={getRefund}
               className="block px-4 py-2 text-sm text-red-500 hover:font-bold"
             >
               <p>Refund</p>
