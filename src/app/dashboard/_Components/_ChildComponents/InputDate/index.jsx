@@ -1,14 +1,14 @@
 import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import dateConvertion from "@/utils/dateConversion";
+import dateConversion from "@/utils/dateConversion";
 
 const InputDate = ({ getDate }) => {
   const [expiredDate, setExpiredDate] = useState("");
   const changeHandler = (date) => {
     if (date) {
       const formattedDate = new Date(date.setHours(7, 0, 0)).toISOString();
-      setExpiredDate(dateConvertion(formattedDate));
+      setExpiredDate(dateConversion(formattedDate));
       getDate(formattedDate);
     } else {
       getDate(null);

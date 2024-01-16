@@ -1,9 +1,9 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @next/next/no-img-element */
-import EditOption from "../_ChildComponents/EditOption";
+import OptionEditOrder from "../_ChildComponents/OptionEditOrder";
+import dateConversion from "@/utils/dateConversion";
 
 const DataTransaction = ({
-  title,
   transactionsData,
   loading,
   dataAvailable,
@@ -28,7 +28,7 @@ const DataTransaction = ({
                 <th className="py-2">CUSTOMER</th>
                 <th className="hidden md:table-cell py-2">CONTACT</th>
                 <th className="hidden lg:table-cell py-2">STATUS</th>
-                <th className="py-2">BOOK_START</th>
+                <th className="py-2">BOOKING</th>
                 <th className="py-2"></th>
               </tr>
             </thead>
@@ -81,25 +81,13 @@ const DataTransaction = ({
                       </div>
                     )}
                   </td>
-                  <td className="py-2 font-semibold">{data.start_at}</td>
+                  <td className="py-2 font-semibold">
+                    <div>{dateConversion(data.booking_date)}</div>
+                    <div>{data.start_at}</div>
+                  </td>
                   <td className="py-2">
                     <div className="flex justify-center">
-                      <EditOption
-                        title={title}
-                        data={{
-                          transactionId: data.transaction_id,
-                          transactionName: data.transaction_name,
-                          transactionPrice: data.transaction_price,
-                          transactionDesc: data.transaction_desc,
-                          branchId: data.branchId,
-                        }}
-                        getEdit={(transactionData) => {
-                          onEdit(transactionData);
-                        }}
-                        getDelete={(transactionData) => {
-                          onDelete(transactionData);
-                        }}
-                      />
+                      <OptionEditOrder />
                     </div>
                   </td>
                 </tr>

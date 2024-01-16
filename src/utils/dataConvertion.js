@@ -1,3 +1,5 @@
+import dateConversion from "./dateConversion";
+
 export default function dataConvertion(payload) {
   // Name convertion
   const name = payload.data.customers.cust_name.split(" ");
@@ -5,26 +7,27 @@ export default function dataConvertion(payload) {
   const last_name = name[1];
 
   // Booking date convertion
-  const dateObj = new Date(payload.data.booking_date);
-  const day = dateObj.getDate();
-  const monthIndex = dateObj.getMonth();
-  const year = dateObj.getFullYear();
-  const monthNames = [
-    "Januari",
-    "Februari",
-    "Maret",
-    "April",
-    "Mei",
-    "Juni",
-    "Juli",
-    "Agustus",
-    "September",
-    "Oktober",
-    "November",
-    "Desember",
-  ];
-  const monthName = monthNames[monthIndex];
-  const booking_date = `${day} ${monthName} ${year}`;
+  // const dateObj = new Date(payload.data.booking_date);
+  // const day = dateObj.getDate();
+  // const monthIndex = dateObj.getMonth();
+  // const year = dateObj.getFullYear();
+  // const monthNames = [
+  //   "Januari",
+  //   "Februari",
+  //   "Maret",
+  //   "April",
+  //   "Mei",
+  //   "Juni",
+  //   "Juli",
+  //   "Agustus",
+  //   "September",
+  //   "Oktober",
+  //   "November",
+  //   "Desember",
+  // ];
+  // const monthName = monthNames[monthIndex];
+  // const booking_date = `${day} ${monthName} ${year}`;
+  const booking_date = dateConversion(payload.data.booking_date);
 
   // Product name convertion
   const productNameArray = payload.data.products.product_name.split("(");

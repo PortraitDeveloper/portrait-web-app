@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @next/next/no-img-element */
-import EditOption from "../_ChildComponents/EditOption";
+import EditOption from "../_ChildComponents/OptionEdit";
 import dateConvertion from "@/utils/dateConversion";
 
 const DataVoucher = ({

@@ -1,11 +1,10 @@
-export default function dateConvertion(date) {
-  const inputDate = date;
-  const dateObject = new Date(inputDate);
+import moment from "moment";
 
-  const options = { day: "numeric", month: "short", year: "numeric" };
-  const formattedDate = new Intl.DateTimeFormat("id-ID", options).format(
-    dateObject
-  );
-
-  return formattedDate;
+export default function dateConversion(date) {
+  const momentDate = moment(date);
+  const day = momentDate.date();
+  const monthName = momentDate.format("MMMM");
+  const year = momentDate.year();
+  const conversionDate = `${day} ${monthName} ${year}`;
+  return conversionDate;
 }

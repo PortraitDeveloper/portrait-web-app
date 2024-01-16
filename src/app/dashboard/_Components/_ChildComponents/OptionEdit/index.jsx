@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react";
 
-const EditOption = ({ title, data, getEdit, getDelete }) => {
+const OptionEdit = ({ title, data, getEdit, getDelete }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const onEdit = () => {
@@ -67,4 +67,4 @@ const EditOption = ({ title, data, getEdit, getDelete }) => {
   );
 };
 
-export default EditOption;
+export default OptionEdit;
