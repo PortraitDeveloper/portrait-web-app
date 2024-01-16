@@ -4,10 +4,10 @@
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
-import Loading from "./components/Loading";
-import Checkout from "./components/Checkout";
-import SetCountdown from "./utils/SetCountdown";
-import DataConvertion from "./utils/DataConvertion";
+import Loading from "./_Components/Loading";
+import Checkout from "./_Components/Checkout";
+import getCountdown from "@/utils/getCountdown";
+import dataConvertion from "@/utils/dataConvertion";
 import getTimeStamp from "@/utils/getTimeStamp";
 
 // Set Time Zone from UTC to WIB or Asia/Jakarta Timezone where time difference is 7
@@ -121,14 +121,14 @@ export default function CheckoutPage() {
 
   const getData = (payload) => {
     // Setup countdown
-    const countdown = SetCountdown(payload.data.created_at, timeOut, timeDiff);
+    const countdown = getCountdown(payload.data.created_at, timeOut, timeDiff);
 
     // If timeout then redirect page
     if (countdown.minutes <= 0) {
       router.push(redirectUrl);
     } else {
       // Payload data convertion
-      const convertion = DataConvertion(payload);
+      const convertion = dataConvertion(payload);
 
       setOrderBook({
         book_code: payload.data.book_code,

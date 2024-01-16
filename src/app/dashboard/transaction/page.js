@@ -19,7 +19,7 @@ export default function TransactionPage() {
   return (
     <main className="bg-black flex flex-col justify-center items-center space-y-8 h-screen">
       <h1 className="text-white text-center text-2xl font-bold uppercase">
-        This is Dashboard Transaction Page
+        This is Dashboard Transa ction Page
       </h1>
       <button
         onClick={signOut}

@@ -1,6 +1,6 @@
 import getTimeStamp from "@/utils/getTimeStamp";
 
-export default function SetCountdown(createdAt, timeOut, timeDiff) {
+export default function getCountdown(createdAt, timeOut, timeDiff) {
   // Generate timestamp / current datetime
   const currentTimeStamp = getTimeStamp(timeDiff);
 

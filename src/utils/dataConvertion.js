@@ -1,4 +1,4 @@
-export default function DataConvertion(payload) {
+export default function dataConvertion(payload) {
   // Name convertion
   const name = payload.data.customers.cust_name.split(" ");
   const first_name = name[0];
