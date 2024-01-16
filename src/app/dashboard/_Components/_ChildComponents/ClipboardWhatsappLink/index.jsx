@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 
-const ClipboardCopy = ({ copytext }) => {
+const ClipboardWhatsappLink = ({ copytext, getClick }) => {
   const [message, setMessage] = useState("");
   const [messageColor, setMessageColor] = useState("");
 
@@ -9,8 +9,9 @@ const ClipboardCopy = ({ copytext }) => {
     navigator.clipboard
       .writeText(copytext)
       .then(() => {
-        setMessage("Text copied to clipboard");
+        setMessage("Phone Number copied, ready chat on WA");
         setMessageColor("text-green-500");
+        getClick();
       })
       .catch((err) => {
         setMessage(`Failed to copy text to clipboard: ${err}`);
@@ -22,7 +23,7 @@ const ClipboardCopy = ({ copytext }) => {
     const timeout = setTimeout(() => {
       setMessage("");
       setMessageColor("");
-    }, 5000);
+    }, 2000);
 
     return () => clearTimeout(timeout);
   }, [message]);
@@ -44,11 +45,11 @@ const ClipboardCopy = ({ copytext }) => {
           onClick={handleCopyToClipboard}
           className="p-2 border-[1.5px] border-black hover:border-blue-900 rounded-2xl hover:bg-slate-100"
         >
-          <Image src="/copy.png" alt="Icon" width={24} height={24} />
+          <Image src="/call.png" alt="Call Icon" width={24} height={24} />
         </button>
       </div>
     </>
   );
 };
 
-export default ClipboardCopy;
+export default ClipboardWhatsappLink;

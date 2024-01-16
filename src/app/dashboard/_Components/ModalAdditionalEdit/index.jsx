@@ -181,7 +181,7 @@ const ModalAdditionalEdit = ({
               />
             </div>
 
-            <ButtonLink label={"Go to YCBM"} spesicURL={url} />
+            <ButtonLink label={"Go to YCBM"} url={url} />
           </div>
         </div>
       )}

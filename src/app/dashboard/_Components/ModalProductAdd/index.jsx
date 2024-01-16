@@ -194,7 +194,7 @@ const ModalProductAdd = ({
               />
             </div>
 
-            <ButtonLink label={"Go to YCBM"} spesicURL={process.env.NEXT_PUBLIC_PRODUCT_FORM_URL} />
+            <ButtonLink label={"Go to YCBM"} url={process.env.NEXT_PUBLIC_PRODUCT_FORM_URL} />
           </div>
         </div>
       )}
