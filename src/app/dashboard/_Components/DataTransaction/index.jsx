@@ -34,8 +34,8 @@ const DataTransaction = ({
                     <div>{data.customers.cust_name}</div>
                   </td>
                   <td className="hidden md:table-cell py-2">
-                    <div>{data.customers.phone_number}</div>
                     <div>{data.customers.email}</div>
+                    <div>{data.customers.phone_number}</div>
                   </td>
                   <td className="hidden lg:table-cell py-2">
                     {data.book_status === "canceled" && (

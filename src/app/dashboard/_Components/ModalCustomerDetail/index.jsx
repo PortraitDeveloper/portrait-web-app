@@ -53,7 +53,7 @@ const ModalCustomerDetail = ({
             <ClipboardWhatsappLink
               copytext={orderData.customers.phone_number}
               getClick={() => {
-                setToggle(true);
+                setToggle(false);
               }}
             />
           </div>
@@ -62,15 +62,15 @@ const ModalCustomerDetail = ({
             <ClipboardEmailLink
               copytext={orderData.customers.email}
               getClick={() => {
-                setToggle(false);
+                setToggle(true);
               }}
             />
           </div>
         </div>
 
         <div>
-          {!toggle && <ButtonLink label={"SendEmail"} url={emailUrl} />}
-          {toggle && (
+          {toggle && <ButtonLink label={"SendEmail"} url={emailUrl} />}
+          {!toggle && (
             <ButtonLink
               label={"Chat on WhatsApp"}
               url={`${waUrl}${orderData.customers.phone_number.replace(
