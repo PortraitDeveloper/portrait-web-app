@@ -16,7 +16,10 @@ import FilterPayment from "../../_Components/FilterPayment";
 import DataTransaction from "../../_Components/DataTransaction";
 import PagePagination from "../../_Components/PagePagination";
 import ModalAccount from "../../_Components/ModalAccount";
+import ModalOrderDetail from "../../_Components/ModalOrderDetail/page";
 import ModalLoading from "../../_Components/ModalLoading";
+
+import dataConversion from "@/utils/dataConversion";
 
 const pageTitle = "Transaction";
 
@@ -27,6 +30,7 @@ export default function TransactionPage() {
   const [orders, setOrders] = useState([]);
   const [ordersSorted, setOrdersSorted] = useState({});
   const [orderSelected, setOrderSelected] = useState({});
+  const [orderDetailSelected, setOrderDetailSelected] = useState({});
 
   const [totalTransaction, setTotalTransaction] = useState(0);
   const [totalPaid, setTotalPaid] = useState(0);
@@ -48,10 +52,10 @@ export default function TransactionPage() {
   const [color, setColor] = useState("");
 
   const [AccountVisible, setAccountVisible] = useState(false);
-  const [transactionAddVisible, setTransactionAddVisible] = useState(false);
-  const [transactionEditVisible, setTransactionEditVisible] = useState(false);
-  const [transactionDeleteVisible, setTransactionDeleteVisible] =
-    useState(false);
+  const [orderDetailVisible, setOrderDetailVisible] = useState(false);
+  const [changeOrderVisible, setChangeOrderVisible] = useState(false);
+  const [refundOrderVisible, setRefundOrderVisible] = useState(false);
+  const [filterVisible, setFilterVisible] = useState(false);
 
   useEffect(() => {
     getCredentialsData();
@@ -62,13 +66,14 @@ export default function TransactionPage() {
   }, []);
 
   useEffect(() => {
-    getTransactionsData();
+    getOrdersData();
   }, [
     branchId,
     keyword,
-    transactionAddVisible,
-    transactionEditVisible,
-    transactionDeleteVisible,
+    book,
+    payment,
+    changeOrderVisible,
+    refundOrderVisible,
   ]);
 
   const getCredentialsData = async () => {
@@ -97,7 +102,7 @@ export default function TransactionPage() {
     setBranchesData(response.data);
   };
 
-  const getTransactionsData = async () => {
+  const getOrdersData = async () => {
     let response = await fetch(`/api/data/book`, {
       method: "GET",
       headers: {
@@ -153,16 +158,20 @@ export default function TransactionPage() {
     setAccountVisible(false);
   };
 
-  const closeTransactionHandler = () => {
-    setTransactionAddVisible(false);
+  const closeDetailHandler = () => {
+    setOrderDetailVisible(false);
   };
 
-  const closeTransactionEditHandler = () => {
-    setTransactionEditVisible(false);
+  const closeEditHandler = () => {
+    setChangeOrderVisible(false);
   };
 
-  const closeTransactionDeleteHandler = () => {
-    setTransactionDeleteVisible(false);
+  const closeRefundHandler = () => {
+    setRefundOrderVisible(false);
+  };
+
+  const closeFilterHandler = () => {
+    setFilterVisible(false);
   };
 
   const hideMessageHandler = () => {
@@ -262,7 +271,7 @@ export default function TransactionPage() {
 
               <FilterPayment
                 getPaymentStatus={(e) => {
-                  setBook(e);
+                  setPayment(e);
                 }}
               />
             </div>
@@ -279,7 +288,7 @@ export default function TransactionPage() {
         </div>
 
         {/* HIDE MESSAGE AT BREAKPOINT-LG: @media (min-width: 1024px) */}
-        <div className="block lg:hidden">
+        <div className="block lg:hidden h-10 mb-2">
           <Message
             message={message}
             color={color}
@@ -291,19 +300,22 @@ export default function TransactionPage() {
           />
         </div>
 
-        <div className="flex flex-col justify-between border border-black rounded-3xl overflow-auto pb-4 h-3/5 md:h-2/3 lg:2/3 xl:h-3/5">
+        <div className="flex flex-col justify-between border border-black rounded-3xl overflow-auto pb-4 h-1/2 md:h-2/3 lg:2/3 xl:h-3/5">
           <DataTransaction
-            title={pageTitle}
-            transactionsData={ordersSorted}
+            ordersData={ordersSorted}
             loading={loading}
             dataAvailable={dataAvailable}
+            getDetail={(e) => {
+              const dataConv = dataConversion(e);
+              setOrderSelected(e);
+              setOrderDetailSelected(dataConv);
+              setOrderDetailVisible(true);
+            }}
             getEdit={(e) => {
               setOrderSelected(e);
-              setTransactionEditVisible(true);
             }}
-            getDelete={(e) => {
+            getRefund={(e) => {
               setOrderSelected(e);
-              setTransactionDeleteVisible(true);
             }}
           />
 
@@ -339,6 +351,20 @@ export default function TransactionPage() {
             setMessage(message);
             setColor(color);
             closeAccountHandler();
+          }}
+        />
+
+        <ModalOrderDetail
+          orderData={orderSelected}
+          orderDetailData={orderDetailSelected}
+          isVisible={orderDetailVisible}
+          closeModal={() => {
+            closeDetailHandler();
+          }}
+          finishModal={(message, color) => {
+            setMessage(message);
+            setColor(color);
+            closeDetailHandler();
           }}
         />
 

@@ -4,20 +4,13 @@ import OptionEditOrder from "../_ChildComponents/OptionEditOrder";
 import dateConversion from "@/utils/dateConversion";
 
 const DataTransaction = ({
-  transactionsData,
+  ordersData,
   loading,
   dataAvailable,
+  getDetail,
   getEdit,
-  getDelete,
+  getRefund,
 }) => {
-  const onEdit = (e) => {
-    getEdit(e);
-  };
-
-  const onDelete = (e) => {
-    getDelete(e);
-  };
-
   return (
     <>
       {loading && dataAvailable && (
@@ -33,7 +26,7 @@ const DataTransaction = ({
               </tr>
             </thead>
             <tbody className="text-center">
-              {transactionsData.map((data, index) => (
+              {ordersData.map((data, index) => (
                 <tr key={index} className="border-b border-blue-900">
                   <td className="py-2">
                     <div className="font-semibold">{data.book_code}</div>
@@ -87,7 +80,18 @@ const DataTransaction = ({
                   </td>
                   <td className="py-2">
                     <div className="flex justify-center">
-                      <OptionEditOrder />
+                      <OptionEditOrder
+                        data={data}
+                        getDetail={(e) => {
+                          getDetail(e);
+                        }}
+                        getEdit={(e) => {
+                          getEdit(e);
+                        }}
+                        getRefund={(e) => {
+                          getRefund(e);
+                        }}
+                      />
                     </div>
                   </td>
                 </tr>

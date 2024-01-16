@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import Loading from "./_Components/Loading";
 import Checkout from "./_Components/Checkout";
 import getCountdown from "@/utils/getCountdown";
-import dataConvertion from "@/utils/dataConvertion";
+import dataConversion from "@/utils/dataConversion";
 import getTimeStamp from "@/utils/getTimeStamp";
 
 // Set Time Zone from UTC to WIB or Asia/Jakarta Timezone where time difference is 7
@@ -128,7 +128,7 @@ export default function CheckoutPage() {
       router.push(redirectUrl);
     } else {
       // Payload data convertion
-      const convertion = dataConvertion(payload);
+      const convertion = dataConversion(payload.data);
 
       setOrderBook({
         book_code: payload.data.book_code,

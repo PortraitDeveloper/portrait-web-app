@@ -6,7 +6,7 @@ import SelectDiscountType from "../_ChildComponents/SelectDiscountType";
 import InputDiscount from "../_ChildComponents/InputDiscount";
 import InputDate from "../_ChildComponents/InputDate";
 import ErrorMessage from "../_ChildComponents/ErrorMessage";
-import SubmitButton from "../_ChildComponents/SubmitButton";
+import SubmitButton from "../_ChildComponents/ButtonSubmit";
 import ProcessSubmit from "../_ChildComponents/ProcessSubmit";
 
 const ModalVoucherAdd = ({ isVisible, closeModal, finishModal }) => {

@@ -68,7 +68,7 @@ export default function Checkout({
             </div>
             <div className="text-xs pl-2 xs:block hidden">
               <div className="flex justify-end">
-                <span className="bg-blue-900 rounded-xl text-white text-xs flex justify-center item-center p-1">
+                <span className="bg-blue-900 rounded-xl text-white text-xs flex justify-center items-center px-2 py-1">
                   <img
                     src="/clock.png"
                     alt="Clock Icon"
@@ -83,7 +83,7 @@ export default function Checkout({
           <div className="xs:hidden"></div>
           <div className="xs:hidden text-xs">
             <div className="flex justify-end">
-              <span className="bg-blue-900 rounded-md text-white text-xs flex justify-center item-center p-1">
+              <span className="bg-blue-900 rounded-md text-white text-xs flex justify-center item-center px-2 py-1">
                 <img
                   src="/clock.png"
                   alt="Clock Icon"

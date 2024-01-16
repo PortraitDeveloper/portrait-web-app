@@ -7,7 +7,7 @@ import ReplaceDiscountType from "../_ChildComponents/ReplaceDiscountType";
 import ReplaceDiscount from "../_ChildComponents/ReplaceDiscount";
 import ReplaceDate from "../_ChildComponents/ReplaceDate";
 import ErrorMessage from "../_ChildComponents/ErrorMessage";
-import SubmitButton from "../_ChildComponents/SubmitButton";
+import SubmitButton from "../_ChildComponents/ButtonSubmit";
 import ProcessSubmit from "../_ChildComponents/ProcessSubmit";
 
 const ModalVoucherEdit = ({
