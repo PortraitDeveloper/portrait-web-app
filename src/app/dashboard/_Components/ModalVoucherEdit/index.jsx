@@ -7,7 +7,7 @@ import ReplaceDiscountType from "../_ChildComponents/ReplaceDiscountType";
 import ReplaceDiscount from "../_ChildComponents/ReplaceDiscount";
 import ReplaceDate from "../_ChildComponents/ReplaceDate";
 import ErrorMessage from "../_ChildComponents/ErrorMessage";
-import SubmitButton from "../_ChildComponents/ButtonSubmit";
+import ButtonSubmit from "../_ChildComponents/ButtonSubmit";
 import ProcessSubmit from "../_ChildComponents/ProcessSubmit";
 
 const ModalVoucherEdit = ({
@@ -151,7 +151,7 @@ const ModalVoucherEdit = ({
 
           {loading && (
             <div>
-              <SubmitButton label={"Confirm Edit"} getSubmit={submitHandler} />
+              <ButtonSubmit label={"Confirm Edit"} getSubmit={submitHandler} />
             </div>
           )}
 

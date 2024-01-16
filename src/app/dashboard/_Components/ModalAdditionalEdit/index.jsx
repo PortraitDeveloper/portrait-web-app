@@ -7,7 +7,7 @@ import Label from "../_ChildComponents/Label";
 import ReplaceNumber from "../_ChildComponents/ReplaceNumber";
 import ReplaceText from "../_ChildComponents/ReplaceText";
 import ErrorMessage from "../_ChildComponents/ErrorMessage";
-import SubmitButton from "../_ChildComponents/ButtonSubmit";
+import ButtonSubmit from "../_ChildComponents/ButtonSubmit";
 import ProcessSubmit from "../_ChildComponents/ProcessSubmit";
 import ClipboardCopy from "../_ChildComponents/ClipboardCopy";
 import YCBMLink from "../_ChildComponents/YCBMLink";
@@ -141,7 +141,7 @@ const ModalAdditionalEdit = ({
 
             {loading && (
               <div>
-                <SubmitButton
+                <ButtonSubmit
                   label={"Confirm Edit"}
                   getSubmit={submitHandler}
                 />

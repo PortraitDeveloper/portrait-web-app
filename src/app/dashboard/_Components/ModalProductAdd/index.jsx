@@ -7,7 +7,7 @@ import InputString from "../_ChildComponents/InputString";
 import InputNumber from "../_ChildComponents/InputNumber";
 import InputText from "../_ChildComponents/InputText";
 import ErrorMessage from "../_ChildComponents/ErrorMessage";
-import SubmitButton from "../_ChildComponents/ButtonSubmit";
+import ButtonSubmit from "../_ChildComponents/ButtonSubmit";
 import ProcessSubmit from "../_ChildComponents/ProcessSubmit";
 import ClipboardCopy from "../_ChildComponents/ClipboardCopy";
 import YCBMLink from "../_ChildComponents/YCBMLink";
@@ -157,7 +157,7 @@ const ModalProductAdd = ({
 
             {loading && (
               <div>
-                <SubmitButton label={"Add Product"} getSubmit={submitHandler} />
+                <ButtonSubmit label={"Add Product"} getSubmit={submitHandler} />
               </div>
             )}
 

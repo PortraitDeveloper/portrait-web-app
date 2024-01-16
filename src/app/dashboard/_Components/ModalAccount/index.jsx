@@ -4,7 +4,7 @@ import CloseIcon from "../_ChildComponents/CloseIcon";
 import SelectAccount from "../_ChildComponents/SelectAccount";
 import InputPassword from "../_ChildComponents/InputPassword";
 import ErrorMessage from "../_ChildComponents/ErrorMessage";
-import SubmitButton from "../_ChildComponents/ButtonSubmit";
+import ButtonSubmit from "../_ChildComponents/ButtonSubmit";
 import ProcessSubmit from "../_ChildComponents/ProcessSubmit";
 
 const ModalAccount = ({
@@ -130,7 +130,7 @@ const ModalAccount = ({
 
         {loading && (
           <div>
-            <SubmitButton label={"Save"} getSubmit={submitHandler} />
+            <ButtonSubmit label={"Save"} getSubmit={submitHandler} />
           </div>
         )}
 

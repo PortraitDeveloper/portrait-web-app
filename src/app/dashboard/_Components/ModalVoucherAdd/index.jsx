@@ -6,7 +6,7 @@ import SelectDiscountType from "../_ChildComponents/SelectDiscountType";
 import InputDiscount from "../_ChildComponents/InputDiscount";
 import InputDate from "../_ChildComponents/InputDate";
 import ErrorMessage from "../_ChildComponents/ErrorMessage";
-import SubmitButton from "../_ChildComponents/ButtonSubmit";
+import ButtonSubmit from "../_ChildComponents/ButtonSubmit";
 import ProcessSubmit from "../_ChildComponents/ProcessSubmit";
 
 const ModalVoucherAdd = ({ isVisible, closeModal, finishModal }) => {
@@ -143,7 +143,7 @@ const ModalVoucherAdd = ({ isVisible, closeModal, finishModal }) => {
 
           {loading && (
             <div>
-              <SubmitButton label={"Add voucher"} getSubmit={submitHandler} />
+              <ButtonSubmit label={"Add voucher"} getSubmit={submitHandler} />
             </div>
           )}
 
