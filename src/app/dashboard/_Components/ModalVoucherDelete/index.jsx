@@ -62,12 +62,12 @@ const ModalVoucherDelete = ({
               />
             </div>
 
-            <div className="text-center mb-5">
+            <div className="text-center w-56 mb-5">
               <div className="text-red-500 font-bold mb-3">
                 Apakah kamu yakin
               </div>
               <div className="text-sm">Ingin menghapus voucher</div>
-              <div className="text-sm font-bold w-56">
+              <div className="text-sm font-bold">
                 {voucherData.voucherCode}
               </div>
             </div>

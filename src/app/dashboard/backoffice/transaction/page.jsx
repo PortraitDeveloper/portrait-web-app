@@ -9,6 +9,7 @@ import OptionAccount from "../../_Components/OptionAccount";
 import PageTitle from "../../_Components/PageTitle";
 import Message from "../../_Components/Message";
 import AddTransaction from "../../_Components/AddTransaction";
+import AddFilters from "../../_Components/AddFilters";
 import TotalOrders from "../../_Components/TotalOrders/page";
 import FilterBranch from "../../_Components/FilterBranch";
 import FilterBook from "../../_Components/FilterBook";
@@ -22,6 +23,7 @@ import ModalCustomerDetail from "../../_Components/ModalCustomerDetail";
 import ModalFilter from "../../_Components/ModalFilter";
 import ModalLoading from "../../_Components/ModalLoading";
 import dataConversion from "@/utils/dataConversion";
+import ModalRefund from "../../_Components/ModalRefund";
 const pageTitle = "Transaction";
 
 export default function TransactionPage() {
@@ -286,9 +288,11 @@ export default function TransactionPage() {
 
         <div className="block sm:hidden mb-3">
           <div className="flex justify-between items-center">
-            <div className="bg-blue-900 rounded-xl text-sm text-white px-3 py-2 w-38">
-              Filter
-            </div>
+            <AddFilters
+              openModal={() => {
+                setFilterVisible(true);
+              }}
+            />
             <AddTransaction />
           </div>
         </div>
@@ -403,6 +407,32 @@ export default function TransactionPage() {
             setMessage(message);
             setColor(color);
             closeCustomerDetailHandler();
+          }}
+        />
+
+        <ModalRefund
+          orderData={orderSelected}
+          isVisible={refundOrderVisible}
+          closeModal={() => {
+            closeRefundHandler();
+          }}
+          finishModal={(message, color) => {
+            setMessage(message);
+            setColor(color);
+            closeRefundHandler();
+          }}
+        />
+
+        <ModalFilter
+          orderData={orderSelected}
+          isVisible={filterVisible}
+          closeModal={() => {
+            closeFilterHandler();
+          }}
+          finishModal={(message, color) => {
+            setMessage(message);
+            setColor(color);
+            closeFilterHandler();
           }}
         />
       </div>

@@ -25,7 +25,7 @@ const ModalCustomerDetail = ({
       <div className="bg-white p-6 md:rounded-l-2xl flex flex-col justify-between">
         <div className="w-72">
           <div className="flex justify-between items-center mb-5">
-            <Title title={"Order Detail"} />
+            <Title title={"Customer Detail"} />
             <CloseIcon
               onClose={() => {
                 closeModal();

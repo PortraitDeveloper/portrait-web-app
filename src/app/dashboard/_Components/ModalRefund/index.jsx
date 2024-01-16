@@ -3,9 +3,9 @@ import Image from "next/image";
 import ButtonCancel from "../_ChildComponents/ButtonCancel";
 import ButtonDelete from "../_ChildComponents/ButtonDelete";
 
-const ModalProductDelete = ({
+const ModalRefund = ({
   isVisible,
-  productData,
+  orderData,
   closeModal,
   finishModal,
 }) => {
@@ -20,26 +20,29 @@ const ModalProductDelete = ({
   };
 
   const deleteHandler = async () => {
-    setLoading(false);
-    let response = await fetch("/api/data/product", {
-      method: "DELETE",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ product_id: productData.productId }),
-    });
+    // setLoading(false);
+    // let response = await fetch("/api/data/product", {
+    //   method: "DELETE",
+    //   headers: {
+    //     Accept: "application/json",
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({ product_id: orderData.productId }),
+    // });
 
-    response = await response.json();
-    setLoading(true);
+    // response = await response.json();
+    // setLoading(true);
 
-    if (response.status !== 200) {
-      message = `Gagal menghapus product ${productData.productName}`;
-      finishModal(message, color);
-    } else {
-      message = `Product dengan ID ${productData.productId} telah dihapus`;
-      finishModal(message, color);
-    }
+    // if (response.status !== 200) {
+    //   message = `Gagal menghapus product ${orderData.productName}`;
+    //   finishModal(message, color);
+    // } else {
+    //   message = `Product dengan ID ${orderData.productId} telah dihapus`;
+    //   finishModal(message, color);
+    // }
+
+    message = `Testing Refund`;
+    finishModal(message, color);
   };
 
   if (!isVisible) return null;
@@ -66,9 +69,9 @@ const ModalProductDelete = ({
               <div className="text-red-500 font-bold mb-3">
                 Apakah kamu yakin
               </div>
-              <div className="text-sm">Ingin menghapus produk</div>
+              <div className="text-sm">Ingin melakukan refund ?</div>
               <div className="text-sm font-bold">
-                {productData.productName}
+                {orderData.book_code}
               </div>
             </div>
 
@@ -99,4 +102,4 @@ const ModalProductDelete = ({
   );
 };
 
-export default ModalProductDelete;
+export default ModalRefund;
