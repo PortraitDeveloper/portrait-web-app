@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @next/next/no-img-element */
-"use client";
 import { useState, useEffect } from "react";
 import Title from "../_ChildComponents/Title";
 import CloseIcon from "../_ChildComponents/CloseIcon";
@@ -12,34 +11,29 @@ import toRupiah from "@/utils/toRupiah";
 const ModalChangeOrder = ({
   orderData,
   productsData,
-  productPrice,
-  numberPerson,
   addonsData,
   vouchersData,
   orderDetailData,
-  getNumberPerson,
   isVisible,
   closeModal,
   finishModal,
 }) => {
-  const [productId, setProductId] = useState(null);
-  const [productName, setProductName] = useState(null);
-  const [productPrice_, setProductPrice_] = useState(productPrice);
+  const [productsDataSorted, setProductsDataSorted] = useState([]);
+  const [voucherType, setVoucherType] = useState(null);
+  const [voucherDiscount, setVoucherDiscount] = useState(null);
   const [personPrice, setPersonPrice] = useState(null);
   const [petPrice, setPetPrice] = useState(null);
   const [print5RBWPrice, setPrint5RBWPrice] = useState(null);
   const [print5RCPrice, setPrint5RCPrice] = useState(null);
   const [softfilePrice, setSoftfilePrice] = useState(null);
-  const [voucherType, setVoucherType] = useState(null);
-  const [voucherDiscount, setVoucherDiscount] = useState(null);
 
-  // useEffect(() => {
-  //   setProductPrice(orderData.products.product_price)
-  // }, [isVisible]);
-
-  const handleNumberPerson = (e) => {
-    getNumberPerson(e);
-  };
+  useEffect(() => {
+    const productSorted = productsData.filter(
+      (item) => item.product_name !== orderData.products.product_name
+    );
+    console.log("Product Sorted:", productSorted);
+    setProductsDataSorted(productSorted);
+  }, [isVisible]);
 
   const closeHandler = (e) => {
     if (e.target.id === "container" || e === "closeIcon") {
@@ -67,19 +61,11 @@ const ModalChangeOrder = ({
           </div>
 
           <div className="mb-4">
-            <div className="flex justify-start gap-2 items-center mb-1">
-              <p className="font-semibold">Paket </p>
-              <p className="font-semibold text-xs">{productPrice}</p>
-            </div>
+            <p className="font-semibold mb-1">Paket</p>
             <ReplaceProduct
-              orderData={orderData}
-              productsData={productsData}
+              productsData={productsDataSorted}
               getSelectedProduct={(e) => {
-                console.log(e);
-                setProductId(e.product_id);
-                setProductName(e.product_name);
-                const price = toRupiah(e.product_price);
-                setProductPrice(price);
+                console.log("Selected Product:", e);
               }}
             />
           </div>
@@ -90,16 +76,19 @@ const ModalChangeOrder = ({
               <div>
                 <div className="text-sm">Orang Dewasa</div>
                 <div className="text-xs font-semibold">
-                  {toRupiah(addonsData[0].item_price * numberPerson)}
+                  {toRupiah(
+                    orderData.transactions.additional_person_price *
+                      numberPerson
+                  )}
                 </div>
               </div>
               <div className="flex justify-end items-center">
                 <ReplaceQuantity
                   inputName={"editQty"}
                   placeHolder={""}
-                  value={orderData.number_of_add_person}
+                  value={numberPerson}
                   getNumber={(e) => {
-                    handleNumberPerson(e);
+                    setNumberPerson(e);
                   }}
                 />
               </div>
@@ -116,7 +105,7 @@ const ModalChangeOrder = ({
                   placeHolder={""}
                   value={orderData.number_of_add_pet}
                   getNumber={(e) => {
-                    console.log(e);
+                    setNumberPet(e);
                   }}
                 />
               </div>
@@ -133,7 +122,7 @@ const ModalChangeOrder = ({
                   placeHolder={""}
                   value={orderData.number_of_add_print5r}
                   getNumber={(e) => {
-                    console.log(e);
+                    setNumberPrint5r(e);
                   }}
                 />
               </div>
@@ -172,7 +161,7 @@ const ModalChangeOrder = ({
             <div></div>
             {/* Discount */}
             <div className="text-right text-xs text-green-500 font-roboto font-semibold">
-              {/* {orderDetailData.discount} */}
+              {orderDetailData.discount}
             </div>
           </div>
 
@@ -197,9 +186,9 @@ const ModalChangeOrder = ({
               Rp -
             </div>
           </div>
-
-          <ButtonSubmit label={"Change Order"} />
         </div>
+
+        <ButtonSubmit label={"Change Order"} />
       </div>
     </div>
   );

@@ -29,9 +29,12 @@ const pageTitle = "Transaction";
 export default function TransactionPage() {
   const [credentialsData, setCredentialsData] = useState([]);
   const [branchesData, setBranchesData] = useState([]);
+  const [productsData, setProductsData] = useState([]);
+  const [addonsData, setAddonsData] = useState([]);
+  const [vouchersData, setVouchersData] = useState([]);
 
-  const [orders, setOrders] = useState([]);
-  const [ordersSorted, setOrdersSorted] = useState({});
+  const [ordersData, setOrdersData] = useState([]);
+  const [ordersDataSorted, setOrdersDataSorted] = useState({});
   const [orderSelected, setOrderSelected] = useState({});
   const [orderDetailSelected, setOrderDetailSelected] = useState({});
 
@@ -61,12 +64,27 @@ export default function TransactionPage() {
   const [refundOrderVisible, setRefundOrderVisible] = useState(false);
   const [filterVisible, setFilterVisible] = useState(false);
 
+  const [productPrice, setProductPrice] = useState(null);
+  const [numberPerson, setNumberPerson] = useState(null);
+
   useEffect(() => {
     getCredentialsData();
   }, []);
 
   useEffect(() => {
     getBranchesData();
+  }, []);
+
+  useEffect(() => {
+    getProductsData();
+  }, []);
+
+  useEffect(() => {
+    getAddonsData();
+  }, []);
+
+  useEffect(() => {
+    getVouchersData();
   }, []);
 
   useEffect(() => {
@@ -106,6 +124,34 @@ export default function TransactionPage() {
     setBranchesData(response.data);
   };
 
+  const getAddonsData = async () => {
+    let response = await fetch(`/api/data/additional/null`, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    });
+
+    response = await response.json();
+    console.log("AddonsData:", response.data);
+    setAddonsData(response.data);
+  };
+
+  const getVouchersData = async () => {
+    let response = await fetch(`/api/data/branch`, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    });
+
+    response = await response.json();
+    console.log("VouchersData:", response.data);
+    setVouchersData(response.data);
+  };
+
   const getOrdersData = async () => {
     let response = await fetch(`/api/data/book`, {
       method: "GET",
@@ -124,10 +170,11 @@ export default function TransactionPage() {
       setColor("red");
       setMessage("Data tidak ditemukan");
     } else {
-      const _orders = response.data;
-      setOrders(_orders);
+      const _ordersData = response.data;
+      console.log("OrdersData:", _ordersData);
+      setOrdersData(_ordersData);
 
-      const _totalTransactions = _orders.length;
+      const _totalTransactions = _ordersData.length;
       setTotalTransaction(_totalTransactions);
 
       const _totalPage = Math.ceil(_totalTransactions / perPage);
@@ -135,7 +182,7 @@ export default function TransactionPage() {
 
       let _transactions = [];
       for (let i = 0; i < _totalTransactions; i++) {
-        _transactions.push(_orders[i].transactions);
+        _transactions.push(_ordersData[i].transactions);
       }
 
       let _totalPaid = _transactions.filter(
@@ -152,10 +199,23 @@ export default function TransactionPage() {
         (item) => item.payment_status === "refund"
       );
       setTotalRefund(_totalRefund.length);
-
       setDataAvailable(true);
       setLoading(true);
     }
+  };
+
+  const getProductsData = async () => {
+    let response = await fetch("/api/data/product/null/all", {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    });
+
+    response = await response.json();
+    console.log("ProducsData:", response.data);
+    setProductsData(response.data);
   };
 
   const closeAccountHandler = () => {
@@ -314,7 +374,7 @@ export default function TransactionPage() {
 
         <div className="flex flex-col justify-between border border-black rounded-3xl overflow-auto pb-4 h-1/2 md:h-2/3 lg:2/3 xl:h-3/5">
           <DataTransaction
-            ordersData={ordersSorted}
+            ordersData={ordersDataSorted}
             loading={loading}
             dataAvailable={dataAvailable}
             getOrderDetail={(e) => {
@@ -324,6 +384,8 @@ export default function TransactionPage() {
               setOrderDetailVisible(true);
             }}
             getChangeOrder={(e) => {
+              setProductPrice(e.products.product_price);
+              setNumberPerson(e.number_of_add_person);
               setOrderSelected(e);
               setChangeOrderVisible(true);
             }}
@@ -343,7 +405,7 @@ export default function TransactionPage() {
             perPage={perPage}
             pageNumber={pageNumber}
             totalPage={totalPage}
-            data={orders}
+            data={ordersData}
             getPerPage={(e) => {
               setPerPage(e);
             }}
@@ -354,7 +416,7 @@ export default function TransactionPage() {
               setTotalPage(e);
             }}
             getDataSorted={(e) => {
-              setOrdersSorted(e);
+              setOrdersDataSorted(e);
             }}
           />
         </div>
@@ -388,8 +450,15 @@ export default function TransactionPage() {
 
         <ModalChangeOrder
           orderData={orderSelected}
-          orderDetailData={orderDetailSelected}
+          productsData={productsData}
+          productPrice={productPrice}
+          numberPerson={numberPerson}
+          addonsData={addonsData}
+          vouchersData={vouchersData}
           isVisible={changeOrderVisible}
+          getNumberPerson={(e) => {
+            setNumberPerson(e);
+          }}
           closeModal={() => {
             closeChangeOrderHandler();
           }}

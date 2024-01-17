@@ -1,40 +1,23 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useState, useEffect } from "react";
-
-const ReplaceProduct = ({ orderData, getProductName }) => {
-  const [productName, setProductName] = useState("")
-  const [products, setProducts] = useState([]);
-
-  useEffect(() => {
-    setProductName(orderData.products.product_name)
-  }, []);
-
-  useEffect(() => {
-    getProductsData();
-  }, []);
-
-  const getProductsData = async () => {
-    let response = await fetch(`/api/data/product/null/${orderData.products.branches.branch_id}`, {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-    });
-
-    response = await response.json();
-    let _products = response.data;
-
-    _products = _products.filter(
-      (item) => item.product_name !== orderData.products.product_name
-    );
-
-    setProducts(_products);
-  };
+const ReplaceProduct = ({ orderData, productsData, getSelectedProduct }) => {
+  const filteredProducts = productsData.filter(
+    (item) =>
+      item.product_name !== orderData.products.product_name &&
+      item.branch_id === orderData.products.branch_id &&
+      item.product_price === orderData.products.product_price
+  );
 
   const changeHandler = (e) => {
-    const productName = e.target.value;
-    getProductName(productName);
+    const productId = e.target.value;
+    const productFiltered = productsData.filter(
+      (item) => item.product_id === productId
+    );
+    const productSelected = {
+      product_id: productFiltered[0].product_id,
+      product_name: productFiltered[0].product_name,
+      product_price: productFiltered[0].product_price,
+    };
+    getSelectedProduct(productSelected);
   };
 
   return (
@@ -45,11 +28,11 @@ const ReplaceProduct = ({ orderData, getProductName }) => {
       required
       onChange={changeHandler}
     >
-      <option value={productName}>
-        {productName}
+      <option value={orderData.products.product_id}>
+        {orderData.products.product_name}
       </option>
-      {products.map((data, index) => (
-        <option key={index} value={data.product_name}>
+      {filteredProducts.map((data, index) => (
+        <option key={index} value={data.product_id}>
           {data.product_name}
         </option>
       ))}
