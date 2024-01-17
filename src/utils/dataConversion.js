@@ -1,7 +1,6 @@
 import dateConversion from "./dateConversion";
 
 export default function dataConversion(payload) {
-  console.log(payload)
   // Name convertion
   const name = payload.customers.cust_name.split(" ");
   const first_name = name[0];
@@ -100,21 +99,7 @@ export default function dataConversion(payload) {
     })
     .replace(",00", "");
 
-  // // Additional cost convertion
-  // const additional_cost = payload.transactions.additional_cost
-  //   .toLocaleString("id-ID", {
-  //     style: "currency",
-  //     currency: "IDR",
-  //   })
-  //   .replace(",00", "");
-
-  // // New total by cust convertion
-  // const new_total = payload.transactions.new_total
-  //   .toLocaleString("id-ID", {
-  //     style: "currency",
-  //     currency: "IDR",
-  //   })
-  //   .replace(",00", "");
+ 
 
   const convertion = {
     first_name,
