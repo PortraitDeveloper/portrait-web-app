@@ -3,12 +3,7 @@ import Image from "next/image";
 import ButtonCancel from "../_ChildComponents/ButtonCancel";
 import ButtonDelete from "../_ChildComponents/ButtonDelete";
 
-const ModalRefund = ({
-  isVisible,
-  orderData,
-  closeModal,
-  finishModal,
-}) => {
+const ModalRefund = ({ isVisible, orderData, closeModal, finishModal }) => {
   const [loading, setLoading] = useState(true);
   let message = null;
   let color = "red";
@@ -19,29 +14,22 @@ const ModalRefund = ({
     }
   };
 
-  const deleteHandler = async () => {
-    // setLoading(false);
-    // let response = await fetch("/api/data/product", {
-    //   method: "DELETE",
-    //   headers: {
-    //     Accept: "application/json",
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({ product_id: orderData.productId }),
-    // });
+  const refundHandler = async () => {
+    setLoading(false);
+    let response = await fetch("/api/data/book", {
+      method: "PATCH",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ book_code: orderData.book_code }),
+    });
 
-    // response = await response.json();
-    // setLoading(true);
+    response = await response.json();
+    message = response.message;
+    color = response.status === 200 ? "green" : color;
 
-    // if (response.status !== 200) {
-    //   message = `Gagal menghapus product ${orderData.productName}`;
-    //   finishModal(message, color);
-    // } else {
-    //   message = `Product dengan ID ${orderData.productId} telah dihapus`;
-    //   finishModal(message, color);
-    // }
-
-    message = `Testing Refund`;
+    setLoading(true);
     finishModal(message, color);
   };
 
@@ -70,9 +58,7 @@ const ModalRefund = ({
                 Apakah kamu yakin
               </div>
               <div className="text-sm">Ingin melakukan refund ?</div>
-              <div className="text-sm font-bold">
-                {orderData.book_code}
-              </div>
+              <div className="text-sm font-bold">{orderData.book_code}</div>
             </div>
 
             <div className="flex justify-center gap-3">
@@ -81,7 +67,7 @@ const ModalRefund = ({
                   closeModal();
                 }}
               />
-              <ButtonDelete getDelete={deleteHandler} />
+              <ButtonDelete getDelete={refundHandler} />
             </div>
           </div>
         </div>

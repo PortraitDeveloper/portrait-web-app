@@ -189,7 +189,8 @@ const ModalOrderDetail = ({
             </div>
             {/* Book Status */}
             <div className="text-right text-xs font-roboto font-semibold">
-              {orderData.transactions.payment_status === "refund" && (
+              {(orderData.transactions.payment_status === "refund" ||
+                orderData.transactions.payment_status === "refund 50%") && (
                 <div className="text-red-500">
                   {orderData.transactions.payment_status}
                 </div>

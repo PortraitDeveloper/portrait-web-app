@@ -54,7 +54,8 @@ const DataTransaction = ({
                       </div>
                     )}
 
-                    {data.transactions.payment_status === "refund" && (
+                    {(data.transactions.payment_status === "refund" ||
+                      data.transactions.payment_status === "refund 50%") && (
                       <div className="bg-red-50 border border-red-500 rounded-xl text-red-500">
                         {data.transactions.payment_status}
                       </div>

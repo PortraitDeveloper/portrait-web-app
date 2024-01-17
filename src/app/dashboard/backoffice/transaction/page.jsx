@@ -235,15 +235,17 @@ export default function TransactionPage() {
             <div className="hidden md:block">
               <PageTitle pageTitle={pageTitle} />
             </div>
-            <Message
-              message={message}
-              color={color}
-              onHide={() => {
-                setColor("");
-                setMessage(null);
-                hideMessageHandler();
-              }}
-            />
+            <div className="hidden lg:block">
+              <Message
+                message={message}
+                color={color}
+                onHide={() => {
+                  setColor("");
+                  setMessage(null);
+                  hideMessageHandler();
+                }}
+              />
+            </div>
             <AddTransaction />
           </div>
         </div>

@@ -45,7 +45,7 @@ const Message = ({ message, color, onHide }) => {
     <>
       {isVisible && message && (
         <div
-          className={`${bgColor} rounded-3xl shadow-lg border ${borderColor} ${textColor} text-sm text-center font-bold font-roboto px-6 py-1 lg:py-2`}
+          className={`${bgColor} rounded-3xl shadow-lg border ${borderColor} ${textColor} text-sm text-center font-semibold font-roboto px-3 py-1`}
         >
           {message}
         </div>
