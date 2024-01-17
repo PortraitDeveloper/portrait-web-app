@@ -8,7 +8,7 @@ const SelectProductType = ({ getProductType }) => {
     <select
       name="productType"
       id="productType"
-      className="border border-black rounded-3xl font-roboto px-3 py-2.5 w-72"
+      className="border border-black rounded-3xl font-roboto px-3 py-2 w-72"
       required
       onChange={changeHandler}
     >

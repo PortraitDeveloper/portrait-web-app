@@ -99,7 +99,19 @@ export default function dataConversion(payload) {
     })
     .replace(",00", "");
 
- 
+  const additional_cost = payload.transactions.additional_cost
+    .toLocaleString("id-ID", {
+      style: "currency",
+      currency: "IDR",
+    })
+    .replace(",00", "");
+
+  const new_total = payload.transactions.new_total
+    .toLocaleString("id-ID", {
+      style: "currency",
+      currency: "IDR",
+    })
+    .replace(",00", "");
 
   const convertion = {
     first_name,
@@ -120,8 +132,8 @@ export default function dataConversion(payload) {
     additional_softfile_price,
     total_price,
     total_paid_by_cust,
-    // additional_cost,
-    // new_total,
+    additional_cost,
+    new_total,
   };
 
   return convertion;

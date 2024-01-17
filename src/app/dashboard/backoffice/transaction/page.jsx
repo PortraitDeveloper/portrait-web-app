@@ -388,6 +388,7 @@ export default function TransactionPage() {
 
         <ModalChangeOrder
           orderData={orderSelected}
+          orderDetailData={orderDetailSelected}
           isVisible={changeOrderVisible}
           closeModal={() => {
             closeChangeOrderHandler();

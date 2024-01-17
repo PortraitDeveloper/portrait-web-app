@@ -26,7 +26,7 @@ const ModalOrderDetail = ({
     >
       <div className="bg-white p-6 md:rounded-l-2xl flex flex-col justify-between">
         <div className="w-72">
-          <div className="flex justify-between items-center mb-5">
+          <div className="flex justify-between items-center mb-3">
             <Title title={"Order Detail"} />
             <CloseIcon
               onClose={() => {
@@ -83,7 +83,7 @@ const ModalOrderDetail = ({
 
           {/* Additional */}
           <div className="grid grid-cols-2 grid-rows-9 mb-1">
-            <div className="text-xs font-sora font-semibold">Tambahan</div>
+            <div className="text-xs font-sora font-semibold">Add-ons</div>
             <div></div>
 
             {/* Person */}
@@ -137,33 +137,33 @@ const ModalOrderDetail = ({
 
           <hr className="border mb-1"></hr>
 
-          <div className="grid grid-cols-2 grid-rows-3 mb-1">
+          <div className="grid grid-cols-2 grid-rows-3 gap-1 mb-1">
             <div className="text-xs font-sora font-semibold">Subtotal</div>
             {/* Total Price */}
-            <div className="text-right text-xs font-roboto font-semibold pt-1">
+            <div className="text-right text-xs font-roboto font-semibold ">
               {orderDetailData.total_price}
             </div>
 
-            <div className="text-xs font-roboto ">Kode Voucher</div>
+            <div className="text-xs font-sora font-semibold ">Kode Voucher</div>
             {/* Voucher Code */}
-            <div className="text-right text-xs text-blue-900 font-roboto font-semibold pt-1">
+            <div className="text-right text-xs text-blue-900 font-roboto font-semibold">
               {orderDetailData.voucher_code}
             </div>
             <div></div>
             {/* Discount */}
-            <div className="text-right text-xs text-green-500 font-roboto font-semibold pt-1">
+            <div className="text-right text-xs text-green-500 font-roboto font-semibold">
               {orderDetailData.discount}
             </div>
           </div>
 
           <hr className="border mb-1"></hr>
 
-          <div className="grid grid-cols-2 mb-2">
+          <div className="grid grid-cols-2 mb-2 gap-1">
             <div className="text-xs font-sora font-semibold">
-              Previous Total
+              Total
             </div>
             {/* Total */}
-            <div className="text-right text-xs font-roboto font-semibold pt-1">
+            <div className="text-right text-xs font-roboto font-semibold">
               {orderDetailData.total_paid_by_cust}
             </div>
 
@@ -171,13 +171,13 @@ const ModalOrderDetail = ({
               Additional Cost
             </div>
             {/* Total */}
-            <div className="text-right text-xs font-roboto font-semibold pt-1">
+            <div className="text-right text-xs font-roboto font-semibold">
               {orderDetailData.additional_cost}
             </div>
 
             <div className="text-xs font-sora font-semibold">New Total</div>
             {/* Total */}
-            <div className="text-right text-xs font-roboto font-semibold pt-1">
+            <div className="text-right text-xs font-roboto font-semibold">
               {orderData.transactions.new_total === 0
                 ? orderDetailData.total_paid_by_cust
                 : orderDetailData.new_total}
@@ -186,7 +186,7 @@ const ModalOrderDetail = ({
 
           <hr className="border mb-1"></hr>
 
-          <div className="grid grid-cols-2 mb-1">
+          <div className="grid grid-cols-2 mb-1 gap-1">
             <div className="text-xs font-sora font-semibold">Book Status</div>
             {/* Book Status */}
 
