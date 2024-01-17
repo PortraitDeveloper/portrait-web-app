@@ -42,7 +42,7 @@ export async function POST(request) {
     if (existingData) {
       const log = {
         created_at: currentTimeStamp,
-        route: "/api/data/book",
+        route: "/api/order/book",
         status: 200,
         message: "Order book data already exists.",
         data: existingData,
@@ -59,7 +59,7 @@ export async function POST(request) {
       if (!rawData) {
         const log = {
           created_at: currentTimeStamp,
-          route: "/api/data/book",
+          route: "/api/order/book",
           status: 404,
           message: "Raw data not found.",
         };
@@ -230,8 +230,8 @@ export async function POST(request) {
             checkout_url: checkoutUrl,
             payment_url: null,
             payment_status: "unpaid",
-            additional_cost: 0,
-            new_total: totalPaidByCust,
+            // additional_cost: 0,
+            // new_total: totalPaidByCust,
           },
         });
 
@@ -289,7 +289,7 @@ export async function POST(request) {
     // If the system or database server error then return an error log
     const log = {
       created_at: currentTimeStamp,
-      route: "/api/data/book",
+      route: "/api/order/book",
       status: 500,
       message: error.message,
     };
