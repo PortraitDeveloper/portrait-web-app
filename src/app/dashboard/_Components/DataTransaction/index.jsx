@@ -43,7 +43,8 @@ const DataTransaction = ({
                         {data.book_status}
                       </div>
                     )}
-                    {data.book_status === "booked" && (
+                    {(data.book_status === "booked" ||
+                      data.book_status === "done") && (
                       <div className="bg-green-50 border border-green-500 rounded-xl text-green-500 mb-2">
                         {data.book_status}
                       </div>

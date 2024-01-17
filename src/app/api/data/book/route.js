@@ -140,7 +140,8 @@ export async function PATCH(request) {
     if (
       orderBook.transactions.payment_status === "refund" ||
       orderBook.transactions.payment_status === "refund 50%" ||
-      orderBook.transactions.payment_status === "unpaid"
+      orderBook.transactions.payment_status === "unpaid" ||
+      orderBook.book_status === "done"
     ) {
       return NextResponse.json({
         created_at: currentTimeStamp,

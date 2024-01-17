@@ -230,6 +230,8 @@ export async function POST(request) {
             checkout_url: checkoutUrl,
             payment_url: null,
             payment_status: "unpaid",
+            additional_cost: 0,
+            new_total: totalPaidByCust,
           },
         });
 
