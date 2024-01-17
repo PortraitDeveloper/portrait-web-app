@@ -13,9 +13,8 @@ const ModalCustomerDetail = ({
   orderData,
   isVisible,
   closeModal,
-  finishModal,
 }) => {
-  const [toggle, setToggle] = useState(true);
+  const [toggle, setToggle] = useState(false);
 
   const closeHandler = (e) => {
     if (e.target.id === "container" || e === "closeIcon") {

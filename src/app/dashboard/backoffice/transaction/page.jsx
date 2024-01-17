@@ -405,11 +405,6 @@ export default function TransactionPage() {
           closeModal={() => {
             closeCustomerDetailHandler();
           }}
-          finishModal={(message, color) => {
-            setMessage(message);
-            setColor(color);
-            closeCustomerDetailHandler();
-          }}
         />
 
         <ModalRefund
