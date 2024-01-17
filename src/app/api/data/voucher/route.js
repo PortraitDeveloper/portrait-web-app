@@ -39,8 +39,8 @@ export async function POST(request) {
     const nominalDiscount = parseInt(nominal_discount);
 
     if (
-      nominalDiscount === 0 ||
-      percentageDiscount === 0 ||
+      nominalDiscount <= 0 ||
+      percentageDiscount <= 0 ||
       percentageDiscount > 99
     ) {
       return NextResponse.json({
@@ -144,8 +144,8 @@ export async function PATCH(request) {
     const nominalDiscount = parseInt(nominal_discount);
 
     if (
-      nominalDiscount === 0 ||
-      percentageDiscount === 0 ||
+      nominalDiscount <= 0 ||
+      percentageDiscount <= 0 ||
       percentageDiscount > 99
     ) {
       return NextResponse.json({

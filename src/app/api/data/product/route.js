@@ -17,13 +17,24 @@ export async function POST(request) {
     // Read the body data
     const { product_name, product_price, product_desc, branch_id } =
       await request.json();
-
+    
     if (!product_name || !product_price || branch_id === "null") {
       return NextResponse.json({
         created_at: currentTimeStamp,
         route: "/api/data/product",
         status: 400,
         message: "All fields are required to be filled in",
+      });
+    }
+
+    const productPrice = parseInt(product_price)
+
+    if (productPrice <= 0) {
+      return NextResponse.json({
+        created_at: currentTimeStamp,
+        route: "/api/data/product",
+        status: 400,
+        message: "Invalid product price",
       });
     }
 
@@ -55,7 +66,7 @@ export async function POST(request) {
       data: {
         product_id,
         product_name,
-        product_price: parseInt(product_price),
+        product_price: productPrice,
         product_desc,
         branches: {
           connect: {
@@ -109,13 +120,13 @@ export async function PATCH(request) {
 
     const productPrice = parseInt(product_price);
 
-    if (productPrice === 0) {
+    if (productPrice <= 0) {
       // Return a error log
       return NextResponse.json({
         created_at: currentTimeStamp,
         route: "/api/data/product",
         status: 400,
-        message: "The product price cannot be zero",
+        message: "Invalid product price",
       });
     }
 

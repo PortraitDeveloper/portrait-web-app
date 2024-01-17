@@ -26,13 +26,13 @@ export async function PATCH(request) {
 
     const itemPrice = parseInt(item_price);
 
-    if (itemPrice === 0) {
+    if (itemPrice <= 0) {
       // Return a error log
       return NextResponse.json({
         created_at: currentTimeStamp,
         route: "/api/data/additional",
         status: 400,
-        message: "Add-ons price cannot be zero",
+        message: "Invalid add-ons price",
       });
     }
 
