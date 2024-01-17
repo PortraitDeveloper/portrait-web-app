@@ -159,13 +159,17 @@ const ModalOrderDetail = ({
           <hr className="border mb-1"></hr>
 
           <div className="grid grid-cols-2 mb-2">
-            <div className="text-xs font-sora font-semibold">Previous Total</div>
+            <div className="text-xs font-sora font-semibold">
+              Previous Total
+            </div>
             {/* Total */}
             <div className="text-right text-xs font-roboto font-semibold pt-1">
               {orderDetailData.total_paid_by_cust}
             </div>
 
-            <div className="text-xs font-sora font-semibold">Additional Cost</div>
+            <div className="text-xs font-sora font-semibold">
+              Additional Cost
+            </div>
             {/* Total */}
             <div className="text-right text-xs font-roboto font-semibold pt-1">
               {orderDetailData.additional_cost}
@@ -174,7 +178,9 @@ const ModalOrderDetail = ({
             <div className="text-xs font-sora font-semibold">New Total</div>
             {/* Total */}
             <div className="text-right text-xs font-roboto font-semibold pt-1">
-              {orderDetailData.new_total}
+              {orderData.transactions.new_total === 0
+                ? orderDetailData.total_paid_by_cust
+                : orderDetailData.new_total}
             </div>
           </div>
 
@@ -188,7 +194,8 @@ const ModalOrderDetail = ({
               {orderData.book_status === "canceled" && (
                 <div className="text-red-500">{orderData.book_status}</div>
               )}
-              {(orderData.book_status === "booked" || orderData.book_status === "done") && (
+              {(orderData.book_status === "booked" ||
+                orderData.book_status === "done") && (
                 <div className="text-green-500">{orderData.book_status}</div>
               )}
               {orderData.book_status === "rescheduled" && (

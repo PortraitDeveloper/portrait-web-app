@@ -1,6 +1,7 @@
 import dateConversion from "./dateConversion";
 
 export default function dataConversion(payload) {
+  console.log(payload)
   // Name convertion
   const name = payload.customers.cust_name.split(" ");
   const first_name = name[0];
