@@ -29,7 +29,7 @@ const ReplaceExpiredDate = ({ expiredDate, getExpiredDate }) => {
         placeholderText="Tanggal Kadaluarsa Voucher"
         value={dateConvertion(replaceExpiredDate)}
         dateFormat="dd MMMM yyyy"
-        className="border border-black rounded-3xl px-3 py-2.5 w-72"
+        className="border border-black rounded-3xl px-3 py-2 w-72"
       />
     </>
   );
