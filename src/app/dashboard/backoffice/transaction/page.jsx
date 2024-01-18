@@ -66,6 +66,8 @@ export default function TransactionPage() {
   const [filterVisible, setFilterVisible] = useState(false);
 
   // Displays data in real time
+  const [bookId, setBookId] = useState(null);
+  const [bookCode, setBookCode] = useState(null);
   const [productId, setProductId] = useState(null);
   const [productBid, setProductBid] = useState(null);
   const [productName, setProductName] = useState(null);
@@ -397,6 +399,8 @@ export default function TransactionPage() {
               const productType = getProductType(productName);
               const _numberSoftfile = e.is_add_softfile ? 1 : 0;
 
+              setBookId(e.book_id);
+              setBookCode(e.book_code);
               setProductId(e.products.product_id);
               setProductBid(e.products.branch_id);
               setProductName(productName);
@@ -507,6 +511,8 @@ export default function TransactionPage() {
           productsData={productsData}
           addonsData={addonsData}
           vouchersData={vouchersData}
+          bookId={bookId}
+          bookCode={bookCode}
           productId={productId}
           productBid={productBid}
           productName={productName}

@@ -111,81 +111,88 @@ export async function GET(request) {
 export async function PATCH(request) {
   // Generate timestamp / current datetime
   const currentTimeStamp = getTimeStamp(timeDiff);
-  const { book_code } = await request.json();
+  const {
+    book_id,
+    book_code,
+    product_id,
+    number_of_add_person,
+    number_of_add_pet,
+    number_of_add_print5r,
+    is_add_softfile,
+    product_price,
+    additional_person_price,
+    additional_pet_price,
+    additional_print5r_price,
+    additional_softfile_price,
+    total_price,
+    total_paid_by_cust,
+    prev_total,
+    price_diff,
+  } = await request.json();
 
   try {
-    const orderBook = await prisma.orders_book.findUnique({
-      where: {
-        book_code: book_code,
-      },
+    const checkOrder = await prisma.orders_book.findUnique({
+      where: { book_id: book_id, book_code: book_code },
       include: {
         transactions: true,
-        customers: true,
+      },
+    });
+
+    if (
+      checkOrder.book_status === "cancel" ||
+      checkOrder.transactions.payment_status === "pending" ||
+      checkOrder.transactions.payment_status === "refund" ||
+      checkOrder.transactions.payment_status === "refund 50%"
+    ) {
+      return NextResponse.json({
+        created_at: currentTimeStamp,
+        route: "/api/data/book/",
+        status: 400,
+        message: `Pesanan ${book_code} tidak bisa diubah`,
+      });
+    }
+
+    await prisma.orders_book.update({
+      where: {
+        book_id: book_id,
+        book_code: book_code,
+      },
+      data: {
         products: {
-          include: {
-            branches: true,
+          connect: {
+            product_id: product_id,
+          },
+        },
+        number_of_add_person: parseInt(number_of_add_person),
+        number_of_add_pet: parseInt(number_of_add_pet),
+        number_of_add_print5r: parseInt(number_of_add_print5r),
+        is_add_softfile: is_add_softfile === 1 ? true : false,
+        transactions: {
+          update: {
+            where: {
+              book_code: book_code,
+            },
+            data: {
+              product_price: parseInt(product_price),
+              additional_person_price: parseInt(additional_person_price),
+              additional_pet_price: parseInt(additional_pet_price),
+              additional_print5r_price: parseInt(additional_print5r_price),
+              additional_softfile_price: parseInt(additional_softfile_price),
+              total_price: parseInt(total_price),
+              total_paid_by_cust: parseInt(total_paid_by_cust),
+              prev_total: parseInt(prev_total),
+              price_diff: parseInt(price_diff),
+            },
           },
         },
       },
     });
 
-    const bookingDate = moment(
-      `${orderBook.booking_date} ${orderBook.start_at}:00.000`
-    )
-      .tz("Asia/Jakarta")
-      .format();
-
-    const dateNow = moment().tz("Asia/Jakarta").format();
-
-    if (
-      orderBook.transactions.payment_status === "refund" ||
-      orderBook.transactions.payment_status === "refund 50%" ||
-      orderBook.transactions.payment_status === "unpaid" ||
-      orderBook.book_status === "done"
-    ) {
-      return NextResponse.json({
-        created_at: currentTimeStamp,
-        route: "/api/data/book",
-        status: 400,
-        message: `Booking ${orderBook.book_code} tidak bisa di refund`,
-      });
-    }
-
-    if (
-      bookingDate < dateNow &&
-      (orderBook.book_status === "booked" ||
-        orderBook.book_status === "rescheduled")
-    ) {
-      await updatePaymentStatus(book_code, "refund 50%");
-
-      return NextResponse.json({
-        created_at: currentTimeStamp,
-        route: "/api/data/book",
-        status: 200,
-        message: `Pesanan ${orderBook.book_code} telah di refund 50%`,
-        data: orderBook,
-      });
-    }
-
-    if (
-      orderBook.book_status === "booked" ||
-      orderBook.book_status === "rescheduled"
-    ) {
-      return NextResponse.json({
-        created_at: currentTimeStamp,
-        route: "/api/data/book",
-        status: 400,
-        message: `Customer harus membatalkan booking terlebih dahulu`,
-      });
-    }
-
-    await updatePaymentStatus(book_code, "refund");
-
     return NextResponse.json({
       created_at: currentTimeStamp,
       route: "/api/data/book/",
       status: 200,
-      message: `Pesanan ${book_code} telah di refund`,
+      message: `Pesanan ${book_code} berhasil diubah`,
     });
   } catch (error) {
     // If the system or database server error then return an error log
@@ -193,31 +200,11 @@ export async function PATCH(request) {
       created_at: currentTimeStamp,
       route: "/api/data/book",
       status: 500,
-      message: error.message,
+      message: error.message.trim(),
     };
     errorLog(log);
     return NextResponse.json(log);
   } finally {
     await prisma.$disconnect();
   }
-}
-
-async function updatePaymentStatus(bookCode, paymentStatus) {
-  await prisma.orders_book.update({
-    where: {
-      book_code: bookCode,
-    },
-    data: {
-      transactions: {
-        update: {
-          where: {
-            book_code: bookCode,
-          },
-          data: {
-            payment_status: paymentStatus,
-          },
-        },
-      },
-    },
-  });
 }

@@ -7,6 +7,7 @@ import ReplaceProduct from "../_ChildComponents/ReplaceProduct";
 import ReplaceQuantity from "../_ChildComponents/ReplaceQuantity";
 import ReplaceSoftfile from "../_ChildComponents/ReplaceSoftfile";
 import ButtonSubmit from "../_ChildComponents/ButtonSubmit";
+import ProcessSubmit from "../_ChildComponents/ProcessSubmit";
 import toRupiah from "@/utils/toRupiah";
 import calculateOrder from "@/utils/calculateOrder";
 
@@ -15,6 +16,8 @@ const ModalChangeOrder = ({
   productsData,
   addonsData,
   vouchersData,
+  bookId,
+  bookCode,
   productId,
   productBid,
   productName,
@@ -54,6 +57,12 @@ const ModalChangeOrder = ({
   closeModal,
   finishModal,
 }) => {
+  const [view, setView] = useState(true);
+  const [loading, setLoading] = useState(true);
+
+  let message = null;
+  let color = "green";
+
   const handleSelectedProduct = (e) => {
     const productPrice = e.product_price;
     const print5rPrice =
@@ -179,6 +188,44 @@ const ModalChangeOrder = ({
     getDiscount(result.discount);
     getTotal(result.total);
     getPriceDiff(result.priceDiff);
+  };
+
+  const submitHandler = async () => {
+    setLoading(false);
+    const body = {
+      book_id: bookId,
+      book_code: bookCode,
+      product_id: productId,
+      number_of_add_person: numberPerson,
+      number_of_add_pet: numberPet,
+      number_of_add_print5r: numberPrint5r,
+      is_add_softfile: numberSoftfile,
+      product_price: productPrice,
+      additional_person_price: personPrice,
+      additional_pet_price: petPrice,
+      additional_print5r_price: print5rPrice,
+      additional_softfile_price: softfilePrice,
+      total_price: subTotal,
+      total_paid_by_cust: total,
+      prev_total: prevTotal,
+      price_diff: priceDiff,
+    };
+
+    let response = await fetch("/api/data/book", {
+      method: "PATCH",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    });
+
+    response = await response.json();
+    message = response.message;
+    color = response.status === 400 ? "red" : color;
+
+    setLoading(true);
+    finishModal(message, color);
   };
 
   const closeHandler = (e) => {
@@ -343,7 +390,17 @@ const ModalChangeOrder = ({
             </div>
           </div>
         </div>
-        <ButtonSubmit label={"Change Order"} />
+        {loading && (
+          <div>
+            <ButtonSubmit label={"Confirm Edit"} getSubmit={submitHandler} />
+          </div>
+        )}
+
+        {!loading && (
+          <div>
+            <ProcessSubmit label={"Process..."} />
+          </div>
+        )}
       </div>
     </div>
   );

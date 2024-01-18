@@ -16,7 +16,7 @@ const ModalRefund = ({ isVisible, orderData, closeModal, finishModal }) => {
 
   const refundHandler = async () => {
     setLoading(false);
-    let response = await fetch("/api/data/book", {
+    let response = await fetch("/api/data/transaction", {
       method: "PATCH",
       headers: {
         Accept: "application/json",
