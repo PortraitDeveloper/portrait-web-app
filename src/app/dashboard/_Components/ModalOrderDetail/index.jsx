@@ -159,28 +159,26 @@ const ModalOrderDetail = ({
           <hr className="border mb-1"></hr>
 
           <div className="grid grid-cols-2 mb-2 gap-1">
-            <div className="text-xs font-sora font-semibold">
-              Total
-            </div>
+            <div className="text-xs font-sora font-semibold">Total</div>
             {/* Total */}
             <div className="text-right text-xs font-roboto font-semibold">
               {orderDetailData.total_paid_by_cust}
             </div>
 
             <div className="text-xs font-sora font-semibold">
-              Additional Cost
+              Previous Total
+            </div>
+            {/* Total */}
+            <div className="text-right text-xs font-roboto font-semibold">
+              {orderDetailData.new_total}
+            </div>
+
+            <div className="text-xs font-sora font-semibold">
+              Price Difference
             </div>
             {/* Total */}
             <div className="text-right text-xs font-roboto font-semibold">
               {orderDetailData.additional_cost}
-            </div>
-
-            <div className="text-xs font-sora font-semibold">New Total</div>
-            {/* Total */}
-            <div className="text-right text-xs font-roboto font-semibold">
-              {orderData.transactions.new_total === 0
-                ? orderDetailData.total_paid_by_cust
-                : orderDetailData.new_total}
             </div>
           </div>
 

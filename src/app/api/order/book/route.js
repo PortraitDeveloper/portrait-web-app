@@ -227,11 +227,11 @@ export async function POST(request) {
             voucher_code: voucherCode,
             is_voucher_applied: isVoucherApplied,
             total_paid_by_cust: totalPaidByCust,
+            prev_total: 0,
+            price_diff: totalPaidByCust,
             checkout_url: checkoutUrl,
             payment_url: null,
             payment_status: "unpaid",
-            // additional_cost: 0,
-            // new_total: totalPaidByCust,
           },
         });
 

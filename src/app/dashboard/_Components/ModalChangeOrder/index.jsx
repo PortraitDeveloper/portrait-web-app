@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @next/next/no-img-element */
+import { useState } from "react";
 import Title from "../_ChildComponents/Title";
 import CloseIcon from "../_ChildComponents/CloseIcon";
 import ReplaceProduct from "../_ChildComponents/ReplaceProduct";
@@ -7,6 +8,7 @@ import ReplaceQuantity from "../_ChildComponents/ReplaceQuantity";
 import ReplaceSoftfile from "../_ChildComponents/ReplaceSoftfile";
 import ButtonSubmit from "../_ChildComponents/ButtonSubmit";
 import toRupiah from "@/utils/toRupiah";
+import calculateOrder from "@/utils/calculateOrder";
 
 const ModalChangeOrder = ({
   isVisible,
@@ -42,16 +44,27 @@ const ModalChangeOrder = ({
   finishModal,
 }) => {
   const handleSelectedProduct = (e) => {
+    const productPrice_ = e.product_price;
     const print5rPrice_ =
       e.product_type === "Black and White"
         ? addonsData[2].item_price * numberPrint5r
         : addonsData[3].item_price * numberPrint5r;
+
     getProductId(e.product_id);
     getProductBid(e.branch_id);
     getProductName(e.product_name);
     getProductType(e.product_type);
     getProductPrice(e.product_price);
     getPrint5rPrice(print5rPrice_);
+
+    // const result = calculateOrder(
+    //   productPrice_,
+    //   personPrice,
+    //   petPrice,
+    //   print5rPrice_,
+    //   softfilePrice
+    // );
+    // setSubTotal(result);
   };
 
   const handlePerson = (e) => {
@@ -97,7 +110,7 @@ const ModalChangeOrder = ({
     >
       <div className="bg-white p-6 md:rounded-l-2xl flex flex-col justify-between">
         <div className="w-72">
-          <div className="flex justify-between items-center mb-5">
+          <div className="flex justify-between items-center mb-4">
             <Title title={"Change Order"} />
             <CloseIcon
               onClose={() => {
@@ -183,10 +196,10 @@ const ModalChangeOrder = ({
               <div>
                 <div className="text-sm">Soft-File</div>
                 <div className="text-xs font-semibold">
-                  {softfilePrice}
+                  {toRupiah(softfilePrice)}
                 </div>
               </div>
-              <div className="flex justify-end items-center">
+              <div className="flex justify-end items-center text-sm">
                 <ReplaceSoftfile
                   inputName={"softfileExist"}
                   placeHolder={""}
@@ -196,6 +209,50 @@ const ModalChangeOrder = ({
                   }}
                 />
               </div>
+            </div>
+          </div>
+
+          <hr className="border mb-2"></hr>
+
+          <div className="grid grid-cols-2 grid-rows-4 gap-1 mb-1">
+            <div className="text-xs font-sora font-semibold">Subtotal</div>
+            {/* Total Price */}
+            <div className="text-right text-xs font-roboto font-semibold ">
+              {toRupiah(0)}
+            </div>
+
+            <div className="text-xs font-sora font-semibold ">Kode Voucher</div>
+            {/* Voucher Code */}
+            <div className="text-right text-xs text-blue-900 font-roboto font-semibold">
+              {null}
+            </div>
+
+            <div></div>
+            {/* Discount */}
+            <div className="text-right text-xs text-green-500 font-roboto font-semibold">
+              {0}
+            </div>
+
+            <div className="text-xs font-sora font-semibold">Total</div>
+            {/* Total */}
+            <div className="text-right text-xs font-roboto font-semibold">
+              {0}
+            </div>
+
+            <div className="text-xs font-sora font-semibold">
+              Previous Total
+            </div>
+            {/* Total */}
+            <div className="text-right text-xs font-roboto font-semibold">
+              {0}
+            </div>
+
+            <div className="text-xs font-sora font-semibold">
+              Price Difference
+            </div>
+            {/* Total */}
+            <div className="text-right text-xs font-roboto font-semibold">
+              {0}
             </div>
           </div>
         </div>

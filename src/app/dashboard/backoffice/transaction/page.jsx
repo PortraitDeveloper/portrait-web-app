@@ -83,6 +83,13 @@ export default function TransactionPage() {
   const [numberSoftfile, setNumberSoftfile] = useState(null);
   const [softfilePrice, setSoftfilePrice] = useState(null);
 
+  const [subTotal, setSubTotal] = useState(null);
+  const [voucherCode, setVoucherCode] = useState(null);
+  const [discount, setDiscount] = useState(null);
+  const [total, setTotal] = useState(null);
+  const [prevTotal, setPrevTotal] = useState(null);
+  const [priceDiff, setPriceDiff] = useState(null);
+
   useEffect(() => {
     getCredentialsData();
     getBranchesData();
@@ -402,7 +409,7 @@ export default function TransactionPage() {
                 e.transactions.additional_print5r_price
               );
 
-              setNumberSoftfile(_numberSoftfile)
+              setNumberSoftfile(_numberSoftfile);
               setSoftfilePrice(e.transactions.additional_softfile_price);
               console.log(
                 "InitialSoftfilePrice:",
