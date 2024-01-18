@@ -14,6 +14,7 @@ const ModalChangeOrder = ({
   isVisible,
   productsData,
   addonsData,
+  vouchersData,
   productId,
   productBid,
   productName,
@@ -47,12 +48,15 @@ const ModalChangeOrder = ({
   getNumberSoftfile,
   getSoftfilePrice,
   getSubTotal,
+  getDiscount,
+  getTotal,
+  getPriceDiff,
   closeModal,
   finishModal,
 }) => {
   const handleSelectedProduct = (e) => {
-    const productPrice_ = e.product_price;
-    const print5rPrice_ =
+    const productPrice = e.product_price;
+    const print5rPrice =
       e.product_type === "Black and White"
         ? addonsData[2].item_price * numberPrint5r
         : addonsData[3].item_price * numberPrint5r;
@@ -62,30 +66,70 @@ const ModalChangeOrder = ({
     getProductName(e.product_name);
     getProductType(e.product_type);
     getProductPrice(e.product_price);
-    getPrint5rPrice(print5rPrice_);
+    getPrint5rPrice(print5rPrice);
 
     const result = calculateOrder(
-      productPrice_,
+      productPrice,
       personPrice,
       petPrice,
-      print5rPrice_,
+      print5rPrice,
       softfilePrice,
       voucherCode,
-      prevTotal,
+      vouchersData,
+      prevTotal
     );
-    getSubTotal(result);
+
+    getSubTotal(result.subTotal);
+    getSubTotal(result.subTotal);
+    getDiscount(result.discount);
+    getTotal(result.total);
+    getPriceDiff(result.priceDiff);
   };
 
   const handlePerson = (e) => {
     const personPrice = addonsData[0].item_price * e;
     getNumberPerson(e);
     getPersonPrice(personPrice);
+
+    const result = calculateOrder(
+      productPrice,
+      personPrice,
+      petPrice,
+      print5rPrice,
+      softfilePrice,
+      voucherCode,
+      vouchersData,
+      prevTotal
+    );
+
+    getSubTotal(result.subTotal);
+    getSubTotal(result.subTotal);
+    getDiscount(result.discount);
+    getTotal(result.total);
+    getPriceDiff(result.priceDiff);
   };
 
   const handlePet = (e) => {
     const petPrice = addonsData[1].item_price * e;
     getNumberPet(e);
     getPetPrice(petPrice);
+
+    const result = calculateOrder(
+      productPrice,
+      personPrice,
+      petPrice,
+      print5rPrice,
+      softfilePrice,
+      voucherCode,
+      vouchersData,
+      prevTotal
+    );
+
+    getSubTotal(result.subTotal);
+    getSubTotal(result.subTotal);
+    getDiscount(result.discount);
+    getTotal(result.total);
+    getPriceDiff(result.priceDiff);
   };
 
   const handlePrint5r = (e) => {
@@ -95,12 +139,46 @@ const ModalChangeOrder = ({
         : addonsData[3].item_price * e;
     getNumberPrint5r(e);
     getPrint5rPrice(print5rPrice);
+
+    const result = calculateOrder(
+      productPrice,
+      personPrice,
+      petPrice,
+      print5rPrice,
+      softfilePrice,
+      voucherCode,
+      vouchersData,
+      prevTotal
+    );
+
+    getSubTotal(result.subTotal);
+    getSubTotal(result.subTotal);
+    getDiscount(result.discount);
+    getTotal(result.total);
+    getPriceDiff(result.priceDiff);
   };
 
   const handleSoftfile = (e) => {
     const softfilePrice = addonsData[4].item_price * e;
     getNumberSoftfile(e);
     getSoftfilePrice(softfilePrice);
+
+    const result = calculateOrder(
+      productPrice,
+      personPrice,
+      petPrice,
+      print5rPrice,
+      softfilePrice,
+      voucherCode,
+      vouchersData,
+      prevTotal
+    );
+
+    getSubTotal(result.subTotal);
+    getSubTotal(result.subTotal);
+    getDiscount(result.discount);
+    getTotal(result.total);
+    getPriceDiff(result.priceDiff);
   };
 
   const closeHandler = (e) => {

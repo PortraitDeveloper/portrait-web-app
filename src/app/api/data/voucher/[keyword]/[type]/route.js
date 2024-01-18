@@ -21,7 +21,9 @@ export async function GET(request, { params: { keyword, type } }) {
     const vouchers =
       type === "percentage"
         ? await prisma.$queryRaw`SELECT * FROM vouchers WHERE voucher_code LIKE ${keyWord} AND percentage_discount IS NOT NULL ORDER BY expired_date ASC`
-        : await prisma.$queryRaw`SELECT * FROM vouchers WHERE voucher_code LIKE ${keyWord} AND nominal_discount IS NOT NULL ORDER BY expired_date ASC`;
+        : type === "nominal"
+        ? await prisma.$queryRaw`SELECT * FROM vouchers WHERE voucher_code LIKE ${keyWord} AND nominal_discount IS NOT NULL ORDER BY expired_date ASC`
+        : await prisma.$queryRaw`SELECT * FROM vouchers`;
 
     // Check whether vouchers data exists or not
     if (!vouchers || vouchers.length === 0) {

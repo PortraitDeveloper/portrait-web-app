@@ -28,10 +28,11 @@ import getProductType from "@/utils/getProductType";
 const pageTitle = "Transaction";
 
 export default function TransactionPage() {
-  const [credentialsData, setCredentialsData] = useState([]);
-  const [branchesData, setBranchesData] = useState([]);
-  const [productsData, setProductsData] = useState([]);
   const [addonsData, setAddonsData] = useState([]);
+  const [branchesData, setBranchesData] = useState([]);
+  const [credentialsData, setCredentialsData] = useState([]);
+  const [productsData, setProductsData] = useState([]);
+  const [vouchersData, setVouchersData] = useState([]);
 
   const [ordersData, setOrdersData] = useState([]);
   const [ordersDataSorted, setOrdersDataSorted] = useState({});
@@ -91,10 +92,11 @@ export default function TransactionPage() {
   const [priceDiff, setPriceDiff] = useState(null);
 
   useEffect(() => {
-    getCredentialsData();
-    getBranchesData();
     getAddonsData();
+    getBranchesData();
+    getCredentialsData();
     getProductsData();
+    getVouchersData();
   }, []);
 
   useEffect(() => {
@@ -108,8 +110,8 @@ export default function TransactionPage() {
     refundOrderVisible,
   ]);
 
-  const getCredentialsData = async () => {
-    let response = await fetch("/api/credential", {
+  const getAddonsData = async () => {
+    let response = await fetch(`/api/data/additional/null`, {
       method: "GET",
       headers: {
         Accept: "application/json",
@@ -118,7 +120,7 @@ export default function TransactionPage() {
     });
 
     response = await response.json();
-    setCredentialsData(response.data);
+    setAddonsData(response.data);
   };
 
   const getBranchesData = async () => {
@@ -134,8 +136,8 @@ export default function TransactionPage() {
     setBranchesData(response.data);
   };
 
-  const getAddonsData = async () => {
-    let response = await fetch(`/api/data/additional/null`, {
+  const getCredentialsData = async () => {
+    let response = await fetch("/api/credential", {
       method: "GET",
       headers: {
         Accept: "application/json",
@@ -144,7 +146,7 @@ export default function TransactionPage() {
     });
 
     response = await response.json();
-    setAddonsData(response.data);
+    setCredentialsData(response.data);
   };
 
   const getProductsData = async () => {
@@ -158,6 +160,20 @@ export default function TransactionPage() {
 
     response = await response.json();
     setProductsData(response.data);
+  };
+
+  const getVouchersData = async () => {
+    let response = await fetch("/api/data/voucher/null/null", {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    });
+
+    response = await response.json();
+    console.log("VouchersData:", response);
+    setVouchersData(response.data);
   };
 
   const getOrdersData = async () => {
@@ -422,7 +438,7 @@ export default function TransactionPage() {
                 e.transactions.total_price - e.transactions.total_paid_by_cust
               );
               setTotal(e.transactions.total_paid_by_cust);
-              setPrevTotal(e.transactions.prev_total);
+              setPrevTotal(e.transactions.total_paid_by_cust);
               setPriceDiff(e.transactions.price_diff);
 
               setChangeOrderVisible(true);
@@ -490,6 +506,7 @@ export default function TransactionPage() {
           isVisible={changeOrderVisible}
           productsData={productsData}
           addonsData={addonsData}
+          vouchersData={vouchersData}
           productId={productId}
           productBid={productBid}
           productName={productName}
@@ -555,6 +572,15 @@ export default function TransactionPage() {
           }}
           getSubTotal={(e) => {
             setSubTotal(e);
+          }}
+          getDiscount={(e) => {
+            setDiscount(e);
+          }}
+          getTotal={(e) => {
+            setTotal(e);
+          }}
+          getPriceDiff={(e) => {
+            setPriceDiff(e);
           }}
           closeModal={() => {
             closeChangeOrderHandler();
