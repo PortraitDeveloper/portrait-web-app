@@ -27,6 +27,12 @@ const ModalChangeOrder = ({
   print5rPrice,
   numberSoftfile,
   softfilePrice,
+  subTotal,
+  voucherCode,
+  discount,
+  total,
+  prevTotal,
+  priceDiff,
   getProductId,
   getProductBid,
   getProductName,
@@ -40,6 +46,7 @@ const ModalChangeOrder = ({
   getPrint5rPrice,
   getNumberSoftfile,
   getSoftfilePrice,
+  getSubTotal,
   closeModal,
   finishModal,
 }) => {
@@ -57,14 +64,16 @@ const ModalChangeOrder = ({
     getProductPrice(e.product_price);
     getPrint5rPrice(print5rPrice_);
 
-    // const result = calculateOrder(
-    //   productPrice_,
-    //   personPrice,
-    //   petPrice,
-    //   print5rPrice_,
-    //   softfilePrice
-    // );
-    // setSubTotal(result);
+    const result = calculateOrder(
+      productPrice_,
+      personPrice,
+      petPrice,
+      print5rPrice_,
+      softfilePrice,
+      voucherCode,
+      prevTotal,
+    );
+    getSubTotal(result);
   };
 
   const handlePerson = (e) => {
@@ -218,25 +227,25 @@ const ModalChangeOrder = ({
             <div className="text-xs font-sora font-semibold">Subtotal</div>
             {/* Total Price */}
             <div className="text-right text-xs font-roboto font-semibold ">
-              {toRupiah(0)}
+              {toRupiah(subTotal)}
             </div>
 
             <div className="text-xs font-sora font-semibold ">Kode Voucher</div>
             {/* Voucher Code */}
             <div className="text-right text-xs text-blue-900 font-roboto font-semibold">
-              {null}
+              {voucherCode}
             </div>
 
             <div></div>
             {/* Discount */}
             <div className="text-right text-xs text-green-500 font-roboto font-semibold">
-              {0}
+              {toRupiah(discount)}
             </div>
 
             <div className="text-xs font-sora font-semibold">Total</div>
             {/* Total */}
             <div className="text-right text-xs font-roboto font-semibold">
-              {0}
+              {toRupiah(total)}
             </div>
 
             <div className="text-xs font-sora font-semibold">
@@ -244,7 +253,7 @@ const ModalChangeOrder = ({
             </div>
             {/* Total */}
             <div className="text-right text-xs font-roboto font-semibold">
-              {0}
+              {toRupiah(prevTotal)}
             </div>
 
             <div className="text-xs font-sora font-semibold">
@@ -252,7 +261,7 @@ const ModalChangeOrder = ({
             </div>
             {/* Total */}
             <div className="text-right text-xs font-roboto font-semibold">
-              {0}
+              {toRupiah(priceDiff)}
             </div>
           </div>
         </div>

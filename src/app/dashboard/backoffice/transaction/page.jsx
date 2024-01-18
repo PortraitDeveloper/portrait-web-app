@@ -416,6 +416,15 @@ export default function TransactionPage() {
                 e.transactions.additional_softfile_price
               );
 
+              setSubTotal(e.transactions.total_price);
+              setVoucherCode(e.transactions.voucher_code);
+              setDiscount(
+                e.transactions.total_price - e.transactions.total_paid_by_cust
+              );
+              setTotal(e.transactions.total_paid_by_cust);
+              setPrevTotal(e.transactions.prev_total);
+              setPriceDiff(e.transactions.price_diff);
+
               setChangeOrderVisible(true);
             }}
             getCustomerDetail={(e) => {
@@ -494,6 +503,12 @@ export default function TransactionPage() {
           print5rPrice={print5rPrice}
           numberSoftfile={numberSoftfile}
           softfilePrice={softfilePrice}
+          subTotal={subTotal}
+          voucherCode={voucherCode}
+          discount={discount}
+          total={total}
+          prevTotal={prevTotal}
+          priceDiff={priceDiff}
           getProductId={(e) => {
             setProductId(e);
           }}
@@ -537,6 +552,9 @@ export default function TransactionPage() {
           getSoftfilePrice={(e) => {
             console.log("SoftfilePrice:", e);
             setSoftfilePrice(e);
+          }}
+          getSubTotal={(e) => {
+            setSubTotal(e);
           }}
           closeModal={() => {
             closeChangeOrderHandler();
