@@ -22,8 +22,9 @@ import ModalChangeOrder from "../../_Components/ModalChangeOrder";
 import ModalCustomerDetail from "../../_Components/ModalCustomerDetail";
 import ModalFilter from "../../_Components/ModalFilter";
 import ModalLoading from "../../_Components/ModalLoading";
-import dataConversion from "@/utils/dataConversion";
 import ModalRefund from "../../_Components/ModalRefund";
+import dataConversion from "@/utils/dataConversion";
+import getProductType from "@/utils/getProductType";
 const pageTitle = "Transaction";
 
 export default function TransactionPage() {
@@ -31,7 +32,6 @@ export default function TransactionPage() {
   const [branchesData, setBranchesData] = useState([]);
   const [productsData, setProductsData] = useState([]);
   const [addonsData, setAddonsData] = useState([]);
-  const [vouchersData, setVouchersData] = useState([]);
 
   const [ordersData, setOrdersData] = useState([]);
   const [ordersDataSorted, setOrdersDataSorted] = useState({});
@@ -64,27 +64,30 @@ export default function TransactionPage() {
   const [refundOrderVisible, setRefundOrderVisible] = useState(false);
   const [filterVisible, setFilterVisible] = useState(false);
 
+  // Displays data in real time
+  const [productId, setProductId] = useState(null);
+  const [productBid, setProductBid] = useState(null);
+  const [productName, setProductName] = useState(null);
+  const [productType, setProductType] = useState(null);
   const [productPrice, setProductPrice] = useState(null);
+
   const [numberPerson, setNumberPerson] = useState(null);
+  const [personPrice, setPersonPrice] = useState(null);
+
+  const [numberPet, setNumberPet] = useState(null);
+  const [petPrice, setPetPrice] = useState(null);
+
+  const [numberPrint5r, setNumberPrint5r] = useState(null);
+  const [print5rPrice, setPrint5rPrice] = useState(null);
+
+  const [numberSoftfile, setNumberSoftfile] = useState(null);
+  const [softfilePrice, setSoftfilePrice] = useState(null);
 
   useEffect(() => {
     getCredentialsData();
-  }, []);
-
-  useEffect(() => {
     getBranchesData();
-  }, []);
-
-  useEffect(() => {
-    getProductsData();
-  }, []);
-
-  useEffect(() => {
     getAddonsData();
-  }, []);
-
-  useEffect(() => {
-    getVouchersData();
+    getProductsData();
   }, []);
 
   useEffect(() => {
@@ -134,12 +137,11 @@ export default function TransactionPage() {
     });
 
     response = await response.json();
-    console.log("AddonsData:", response.data);
     setAddonsData(response.data);
   };
 
-  const getVouchersData = async () => {
-    let response = await fetch(`/api/data/branch`, {
+  const getProductsData = async () => {
+    let response = await fetch("/api/data/product/null/all", {
       method: "GET",
       headers: {
         Accept: "application/json",
@@ -148,8 +150,7 @@ export default function TransactionPage() {
     });
 
     response = await response.json();
-    console.log("VouchersData:", response.data);
-    setVouchersData(response.data);
+    setProductsData(response.data);
   };
 
   const getOrdersData = async () => {
@@ -171,7 +172,6 @@ export default function TransactionPage() {
       setMessage("Data tidak ditemukan");
     } else {
       const _ordersData = response.data;
-      console.log("OrdersData:", _ordersData);
       setOrdersData(_ordersData);
 
       const _totalTransactions = _ordersData.length;
@@ -202,20 +202,6 @@ export default function TransactionPage() {
       setDataAvailable(true);
       setLoading(true);
     }
-  };
-
-  const getProductsData = async () => {
-    let response = await fetch("/api/data/product/null/all", {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-    });
-
-    response = await response.json();
-    console.log("ProducsData:", response.data);
-    setProductsData(response.data);
   };
 
   const closeAccountHandler = () => {
@@ -384,9 +370,45 @@ export default function TransactionPage() {
               setOrderDetailVisible(true);
             }}
             getChangeOrder={(e) => {
+              const productName = e.products.product_name;
+              const productType = getProductType(productName);
+              const _numberSoftfile = e.is_add_softfile ? 1 : 0;
+
+              setProductId(e.products.product_id);
+              setProductBid(e.products.branch_id);
+              setProductName(productName);
+              setProductType(productType);
               setProductPrice(e.products.product_price);
+              console.log("InitialProductPrice:", e.products.product_price);
+
               setNumberPerson(e.number_of_add_person);
-              setOrderSelected(e);
+              setPersonPrice(e.transactions.additional_person_price);
+              console.log(
+                "InitialPersonPrice:",
+                e.transactions.additional_person_price
+              );
+
+              setNumberPet(e.number_of_add_pet);
+              setPetPrice(e.transactions.additional_pet_price);
+              console.log(
+                "InitialPetPrice:",
+                e.transactions.additional_pet_price
+              );
+
+              setNumberPrint5r(e.number_of_add_print5r);
+              setPrint5rPrice(e.transactions.additional_print5r_price);
+              console.log(
+                "InitialPrint5rPrice:",
+                e.transactions.additional_print5r_price
+              );
+
+              setNumberSoftfile(_numberSoftfile)
+              setSoftfilePrice(e.transactions.additional_softfile_price);
+              console.log(
+                "InitialSoftfilePrice:",
+                e.transactions.additional_softfile_price
+              );
+
               setChangeOrderVisible(true);
             }}
             getCustomerDetail={(e) => {
@@ -449,15 +471,65 @@ export default function TransactionPage() {
         />
 
         <ModalChangeOrder
-          orderData={orderSelected}
+          isVisible={changeOrderVisible}
           productsData={productsData}
+          addonsData={addonsData}
+          productId={productId}
+          productBid={productBid}
+          productName={productName}
+          productType={productType}
           productPrice={productPrice}
           numberPerson={numberPerson}
-          addonsData={addonsData}
-          vouchersData={vouchersData}
-          isVisible={changeOrderVisible}
+          personPrice={personPrice}
+          numberPet={numberPet}
+          petPrice={petPrice}
+          numberPrint5r={numberPrint5r}
+          print5rPrice={print5rPrice}
+          numberSoftfile={numberSoftfile}
+          softfilePrice={softfilePrice}
+          getProductId={(e) => {
+            setProductId(e);
+          }}
+          getProductBid={(e) => {
+            setProductBid(e);
+          }}
+          getProductName={(e) => {
+            setProductName(e);
+          }}
+          getProductType={(e) => {
+            setProductType(e);
+          }}
+          getProductPrice={(e) => {
+            console.log("ProductPrice:", e);
+            setProductPrice(e);
+          }}
           getNumberPerson={(e) => {
             setNumberPerson(e);
+          }}
+          getPersonPrice={(e) => {
+            console.log("PersonPrice:", e);
+            setPersonPrice(e);
+          }}
+          getNumberPet={(e) => {
+            setNumberPet(e);
+          }}
+          getPetPrice={(e) => {
+            console.log("PetPrice:", e);
+            setPetPrice(e);
+          }}
+          getNumberPrint5r={(e) => {
+            setNumberPrint5r(e);
+          }}
+          getPrint5rPrice={(e) => {
+            console.log("Print5rPrice:", e);
+            setPrint5rPrice(e);
+          }}
+          getNumberSoftfile={(e) => {
+            setNumberSoftfile(e);
+          }}
+          getSoftfilePrice={(e) => {
+            console.log("SoftfilePrice:", e);
+            setSoftfilePrice(e);
           }}
           closeModal={() => {
             closeChangeOrderHandler();

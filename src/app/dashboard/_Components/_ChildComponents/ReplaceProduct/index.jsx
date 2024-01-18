@@ -1,10 +1,14 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-const ReplaceProduct = ({ orderData, productsData, getSelectedProduct }) => {
+import getProductType from "@/utils/getProductType";
+
+const ReplaceProduct = ({
+  productBid,
+  productId,
+  productName,
+  productsData,
+  getSelectedProduct,
+}) => {
   const filteredProducts = productsData.filter(
-    (item) =>
-      item.product_name !== orderData.products.product_name &&
-      item.branch_id === orderData.products.branch_id &&
-      item.product_price === orderData.products.product_price
+    (item) => item.branch_id === productBid
   );
 
   const changeHandler = (e) => {
@@ -12,9 +16,13 @@ const ReplaceProduct = ({ orderData, productsData, getSelectedProduct }) => {
     const productFiltered = productsData.filter(
       (item) => item.product_id === productId
     );
+    const productName = productFiltered[0].product_name;
+    const productType = getProductType(productName);
     const productSelected = {
       product_id: productFiltered[0].product_id,
-      product_name: productFiltered[0].product_name,
+      branch_id: productFiltered[0].branch_id,
+      product_name: productName,
+      product_type: productType,
       product_price: productFiltered[0].product_price,
     };
     getSelectedProduct(productSelected);
@@ -24,13 +32,11 @@ const ReplaceProduct = ({ orderData, productsData, getSelectedProduct }) => {
     <select
       name="selectProduct"
       id="selectProduct"
-      className="border border-black rounded-3xl font-roboto px-3 py-2 w-full"
+      className="border border-black rounded-xl font-roboto px-3 py-2 w-full"
       required
       onChange={changeHandler}
     >
-      <option value={orderData.products.product_id}>
-        {orderData.products.product_name}
-      </option>
+      <option value={productId}>{productName}</option>
       {filteredProducts.map((data, index) => (
         <option key={index} value={data.product_id}>
           {data.product_name}

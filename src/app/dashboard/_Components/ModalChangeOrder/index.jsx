@@ -1,44 +1,84 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @next/next/no-img-element */
-"use client";
-import { useState, useEffect } from "react";
 import Title from "../_ChildComponents/Title";
 import CloseIcon from "../_ChildComponents/CloseIcon";
 import ReplaceProduct from "../_ChildComponents/ReplaceProduct";
 import ReplaceQuantity from "../_ChildComponents/ReplaceQuantity";
+import ReplaceSoftfile from "../_ChildComponents/ReplaceSoftfile";
 import ButtonSubmit from "../_ChildComponents/ButtonSubmit";
 import toRupiah from "@/utils/toRupiah";
 
 const ModalChangeOrder = ({
-  orderData,
+  isVisible,
   productsData,
+  addonsData,
+  productId,
+  productBid,
+  productName,
+  productType,
   productPrice,
   numberPerson,
-  addonsData,
-  vouchersData,
-  orderDetailData,
+  personPrice,
+  numberPet,
+  petPrice,
+  numberPrint5r,
+  print5rPrice,
+  numberSoftfile,
+  softfilePrice,
+  getProductId,
+  getProductBid,
+  getProductName,
+  getProductType,
+  getProductPrice,
   getNumberPerson,
-  isVisible,
+  getPersonPrice,
+  getNumberPet,
+  getPetPrice,
+  getNumberPrint5r,
+  getPrint5rPrice,
+  getNumberSoftfile,
+  getSoftfilePrice,
   closeModal,
   finishModal,
 }) => {
-  const [productId, setProductId] = useState(null);
-  const [productName, setProductName] = useState(null);
-  const [productPrice_, setProductPrice_] = useState(productPrice);
-  const [personPrice, setPersonPrice] = useState(null);
-  const [petPrice, setPetPrice] = useState(null);
-  const [print5RBWPrice, setPrint5RBWPrice] = useState(null);
-  const [print5RCPrice, setPrint5RCPrice] = useState(null);
-  const [softfilePrice, setSoftfilePrice] = useState(null);
-  const [voucherType, setVoucherType] = useState(null);
-  const [voucherDiscount, setVoucherDiscount] = useState(null);
+  const handleSelectedProduct = (e) => {
+    const print5rPrice_ =
+      e.product_type === "Black and White"
+        ? addonsData[2].item_price * numberPrint5r
+        : addonsData[3].item_price * numberPrint5r;
+    getProductId(e.product_id);
+    getProductBid(e.branch_id);
+    getProductName(e.product_name);
+    getProductType(e.product_type);
+    getProductPrice(e.product_price);
+    getPrint5rPrice(print5rPrice_);
+  };
 
-  // useEffect(() => {
-  //   setProductPrice(orderData.products.product_price)
-  // }, [isVisible]);
-
-  const handleNumberPerson = (e) => {
+  const handlePerson = (e) => {
+    const personPrice = addonsData[0].item_price * e;
     getNumberPerson(e);
+    getPersonPrice(personPrice);
+  };
+
+  const handlePet = (e) => {
+    const petPrice = addonsData[1].item_price * e;
+    getNumberPet(e);
+    getPetPrice(petPrice);
+  };
+
+  const handlePrint5r = (e) => {
+    const print5rPrice =
+      productType === "Black and White"
+        ? addonsData[2].item_price * e
+        : addonsData[3].item_price * e;
+    getNumberPrint5r(e);
+    getPrint5rPrice(print5rPrice);
+  };
+
+  const handleSoftfile = (e) => {
+    const softfilePrice = addonsData[4].item_price * e;
+    getNumberSoftfile(e);
+    getSoftfilePrice(softfilePrice);
   };
 
   const closeHandler = (e) => {
@@ -67,39 +107,37 @@ const ModalChangeOrder = ({
           </div>
 
           <div className="mb-4">
-            <div className="flex justify-start gap-2 items-center mb-1">
-              <p className="font-semibold">Paket </p>
-              <p className="font-semibold text-xs">{productPrice}</p>
+            <p className="font-semibold mb-1">Ubah Paket</p>
+            <div className="text-sm mb-1">
+              <ReplaceProduct
+                productBid={productBid}
+                productId={productId}
+                productName={productName}
+                productsData={productsData}
+                getSelectedProduct={(e) => {
+                  handleSelectedProduct(e);
+                }}
+              />
             </div>
-            <ReplaceProduct
-              orderData={orderData}
-              productsData={productsData}
-              getSelectedProduct={(e) => {
-                console.log(e);
-                setProductId(e.product_id);
-                setProductName(e.product_name);
-                const price = toRupiah(e.product_price);
-                setProductPrice(price);
-              }}
-            />
+            <p className="text-xs font-semibold">{toRupiah(productPrice)}</p>
           </div>
 
           <div className="mb-4">
-            <p className="font-semibold mb-1">Add-ons</p>
+            <p className="font-semibold mb-1">Ubah Add-ons</p>
             <div className="grid grid-cols-2 grid-rows-4 gap-3 ">
               <div>
                 <div className="text-sm">Orang Dewasa</div>
                 <div className="text-xs font-semibold">
-                  {toRupiah(addonsData[0].item_price * numberPerson)}
+                  {toRupiah(personPrice)}
                 </div>
               </div>
-              <div className="flex justify-end items-center">
+              <div className="flex justify-end items-center text-sm">
                 <ReplaceQuantity
                   inputName={"editQty"}
                   placeHolder={""}
-                  value={orderData.number_of_add_person}
+                  value={numberPerson}
                   getNumber={(e) => {
-                    handleNumberPerson(e);
+                    handlePerson(e);
                   }}
                 />
               </div>
@@ -107,33 +145,37 @@ const ModalChangeOrder = ({
               <div>
                 <div className="text-sm">Hewan Peliharaan</div>
                 <div className="text-xs font-semibold">
-                  {toRupiah(orderData.transactions.additional_pet_price)}
+                  {toRupiah(petPrice)}
                 </div>
               </div>
-              <div className="flex justify-end items-center">
+              <div className="flex justify-end items-center text-sm">
                 <ReplaceQuantity
                   inputName={"editQty"}
                   placeHolder={""}
-                  value={orderData.number_of_add_pet}
+                  value={numberPet}
                   getNumber={(e) => {
-                    console.log(e);
+                    handlePet(e);
                   }}
                 />
               </div>
 
               <div>
-                <div className="text-sm">Print5R</div>
+                <div className="text-sm">
+                  {productType === "Black and White"
+                    ? "Print5R (B&W)"
+                    : "Print5R (Color)"}
+                </div>
                 <div className="text-xs font-semibold">
-                  {toRupiah(orderData.transactions.additional_print5r_price)}
+                  {toRupiah(print5rPrice)}
                 </div>
               </div>
-              <div className="flex justify-end items-center">
+              <div className="flex justify-end items-center text-sm">
                 <ReplaceQuantity
                   inputName={"editQty"}
                   placeHolder={""}
-                  value={orderData.number_of_add_print5r}
+                  value={numberPrint5r}
                   getNumber={(e) => {
-                    console.log(e);
+                    handlePrint5r(e);
                   }}
                 />
               </div>
@@ -141,65 +183,23 @@ const ModalChangeOrder = ({
               <div>
                 <div className="text-sm">Soft-File</div>
                 <div className="text-xs font-semibold">
-                  {toRupiah(orderData.transactions.additional_softfile_price)}
+                  {softfilePrice}
                 </div>
               </div>
               <div className="flex justify-end items-center">
-                <ReplaceQuantity
-                  inputName={"editQty"}
+                <ReplaceSoftfile
+                  inputName={"softfileExist"}
                   placeHolder={""}
-                  value={orderData.number_of_add_print5r}
+                  value={numberSoftfile}
                   getNumber={(e) => {
-                    console.log(e);
+                    handleSoftfile(e);
                   }}
                 />
               </div>
             </div>
           </div>
-
-          <div className="grid grid-cols-2 grid-rows-3 gap-1 mb-4">
-            <div className="text-xs font-sora font-semibold">Subtotal</div>
-            {/* Total Price */}
-            <div className="text-right text-xs font-roboto font-semibold ">
-              {toRupiah(orderData.transactions.total_price)}
-            </div>
-
-            <div className="text-xs font-sora font-semibold ">Kode Voucher</div>
-            {/* Voucher Code */}
-            <div className="text-right text-xs text-blue-900 font-roboto font-semibold">
-              {orderData.transactions.voucher_code}
-            </div>
-            <div></div>
-            {/* Discount */}
-            <div className="text-right text-xs text-green-500 font-roboto font-semibold">
-              {/* {orderDetailData.discount} */}
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 mb-2 gap-1">
-            <div className="text-xs font-sora font-semibold">Total</div>
-            {/* Total */}
-            <div className="text-right text-xs font-roboto font-semibold">
-              {toRupiah(orderData.transactions.total_paid_by_cust)}
-            </div>
-
-            <div className="text-xs font-sora font-semibold">
-              Additional Cost
-            </div>
-            {/* Additional Cost */}
-            <div className="text-right text-xs font-roboto font-semibold">
-              Rp -
-            </div>
-
-            <div className="text-xs font-sora font-semibold">New Total</div>
-            {/* New Total */}
-            <div className="text-right text-xs font-roboto font-semibold">
-              Rp -
-            </div>
-          </div>
-
-          <ButtonSubmit label={"Change Order"} />
         </div>
+        <ButtonSubmit label={"Change Order"} />
       </div>
     </div>
   );

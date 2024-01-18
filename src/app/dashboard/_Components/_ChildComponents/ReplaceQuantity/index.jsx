@@ -15,7 +15,7 @@ const ReplaceQuantity = ({ inputName, placeHolder, value, getNumber }) => {
   };
 
   return (
-    <div className="flex justify-between items-center border border-black rounded-3xl px-3 py-2 w-20">
+    <div className="flex justify-between items-center border border-black rounded-xl px-3 py-2 w-20">
       <p>x</p>
       <input
         type="number"
