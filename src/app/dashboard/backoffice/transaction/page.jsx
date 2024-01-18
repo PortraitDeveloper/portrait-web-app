@@ -2,6 +2,8 @@
 "use client";
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import moment from "moment";
+import "moment-timezone";
 import SidebarContent from "../../_Components/SidebarContent";
 import OptionNavbar from "../../_Components/OptionNavbar";
 import Searchbar from "../../_Components/SearchBar";
@@ -11,6 +13,7 @@ import Message from "../../_Components/Message";
 import AddTransaction from "../../_Components/AddTransaction";
 import AddFilters from "../../_Components/AddFilters";
 import TotalOrders from "../../_Components/TotalOrders/page";
+import FilterDateRange from "../../_Components/FilterDateRange";
 import FilterBranch from "../../_Components/FilterBranch";
 import FilterBook from "../../_Components/FilterBook";
 import FilterPayment from "../../_Components/FilterPayment";
@@ -28,43 +31,6 @@ import getProductType from "@/utils/getProductType";
 const pageTitle = "Transaction";
 
 export default function TransactionPage() {
-  const [addonsData, setAddonsData] = useState([]);
-  const [branchesData, setBranchesData] = useState([]);
-  const [credentialsData, setCredentialsData] = useState([]);
-  const [productsData, setProductsData] = useState([]);
-  const [vouchersData, setVouchersData] = useState([]);
-
-  const [ordersData, setOrdersData] = useState([]);
-  const [ordersDataSorted, setOrdersDataSorted] = useState({});
-  const [orderSelected, setOrderSelected] = useState({});
-  const [orderDetailSelected, setOrderDetailSelected] = useState({});
-
-  const [totalTransaction, setTotalTransaction] = useState(0);
-  const [totalPaid, setTotalPaid] = useState(0);
-  const [totalUnpaid, setTotalUnpaid] = useState(0);
-  const [totalRefund, setTotalRefund] = useState(0);
-
-  const [keyword, setKeyword] = useState("null");
-  const [branchId, setBranchId] = useState("all");
-  const [book, setBook] = useState("all");
-  const [payment, setPayment] = useState("all");
-
-  const [perPage, setPerPage] = useState(3);
-  const [pageNumber, setPageNumber] = useState(1);
-  const [totalPage, setTotalPage] = useState(1);
-
-  const [loading, setLoading] = useState(false);
-  const [dataAvailable, setDataAvailable] = useState(false);
-  const [message, setMessage] = useState(null);
-  const [color, setColor] = useState("");
-
-  const [AccountVisible, setAccountVisible] = useState(false);
-  const [orderDetailVisible, setOrderDetailVisible] = useState(false);
-  const [changeOrderVisible, setChangeOrderVisible] = useState(false);
-  const [customerDetailVisible, setCustomerDetailVisible] = useState(false);
-  const [refundOrderVisible, setRefundOrderVisible] = useState(false);
-  const [filterVisible, setFilterVisible] = useState(false);
-
   // Displays data in real time
   const [bookId, setBookId] = useState(null);
   const [bookCode, setBookCode] = useState(null);
@@ -73,25 +39,72 @@ export default function TransactionPage() {
   const [productName, setProductName] = useState(null);
   const [productType, setProductType] = useState(null);
   const [productPrice, setProductPrice] = useState(null);
-
   const [numberPerson, setNumberPerson] = useState(null);
   const [personPrice, setPersonPrice] = useState(null);
-
   const [numberPet, setNumberPet] = useState(null);
   const [petPrice, setPetPrice] = useState(null);
-
   const [numberPrint5r, setNumberPrint5r] = useState(null);
   const [print5rPrice, setPrint5rPrice] = useState(null);
-
   const [numberSoftfile, setNumberSoftfile] = useState(null);
   const [softfilePrice, setSoftfilePrice] = useState(null);
-
   const [subTotal, setSubTotal] = useState(null);
   const [voucherCode, setVoucherCode] = useState(null);
   const [discount, setDiscount] = useState(null);
   const [total, setTotal] = useState(null);
   const [prevTotal, setPrevTotal] = useState(null);
   const [priceDiff, setPriceDiff] = useState(null);
+
+  // Data for references or lookup
+  const [addonsData, setAddonsData] = useState([]);
+  const [branchesData, setBranchesData] = useState([]);
+  const [credentialsData, setCredentialsData] = useState([]);
+  const [productsData, setProductsData] = useState([]);
+  const [vouchersData, setVouchersData] = useState([]);
+
+  // Order Data
+  const [ordersData, setOrdersData] = useState([]);
+  const [ordersDataSorted, setOrdersDataSorted] = useState({});
+  const [orderSelected, setOrderSelected] = useState({});
+  const [orderDetailSelected, setOrderDetailSelected] = useState({});
+
+  // Total Transactions
+  const [totalTransaction, setTotalTransaction] = useState(0);
+  const [totalPaid, setTotalPaid] = useState(0);
+  const [totalUnpaid, setTotalUnpaid] = useState(0);
+  const [totalRefund, setTotalRefund] = useState(0);
+
+  // Filter
+  const [keyword, setKeyword] = useState("null");
+  const [branchId, setBranchId] = useState("all");
+  const [book, setBook] = useState("all");
+  const [payment, setPayment] = useState("all");
+  const [dateRange, setDateRange] = useState([
+    {
+      startDate: new Date(),
+      endDate: new Date(),
+      key: "selection",
+    },
+  ]);
+
+  // Pagination
+  const [perPage, setPerPage] = useState(3);
+  const [pageNumber, setPageNumber] = useState(1);
+  const [totalPage, setTotalPage] = useState(1);
+
+  // Visibility
+  const [AccountVisible, setAccountVisible] = useState(false);
+  const [orderDetailVisible, setOrderDetailVisible] = useState(false);
+  const [changeOrderVisible, setChangeOrderVisible] = useState(false);
+  const [customerDetailVisible, setCustomerDetailVisible] = useState(false);
+  const [refundOrderVisible, setRefundOrderVisible] = useState(false);
+  const [filterDateVisible, setFilterDateVisible] = useState(false);
+  const [filterVisible, setFilterVisible] = useState(false);
+
+  // Others
+  const [loading, setLoading] = useState(false);
+  const [dataAvailable, setDataAvailable] = useState(false);
+  const [message, setMessage] = useState(null);
+  const [color, setColor] = useState("");
 
   useEffect(() => {
     getAddonsData();
@@ -179,6 +192,9 @@ export default function TransactionPage() {
   };
 
   const getOrdersData = async () => {
+    const start = moment(dateRange[0].startDate).tz("Asia/Jakarta").format();
+    const end = moment(dateRange[0].endDate).tz("Asia/Jakarta").format();
+
     let response = await fetch(`/api/data/book`, {
       method: "GET",
       headers: {
@@ -247,6 +263,10 @@ export default function TransactionPage() {
 
   const closeRefundHandler = () => {
     setRefundOrderVisible(false);
+  };
+
+  const closeFilterDateHandler = () => {
+    setFilterDateVisible(false);
   };
 
   const closeFilterHandler = () => {
@@ -333,9 +353,12 @@ export default function TransactionPage() {
         <div className="hidden sm:block ">
           <div className="flex justify-center lg:justify-between items-center mb-3">
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-              <div className="border border-blue-900 rounded-2xl text-blue-900 text-sm text-center p-2 w-48">
-                Periode
-              </div>
+              <FilterDateRange
+                getDateRanges={(ranges) => {
+                  console.log(ranges)
+                  setDateRange([ranges.selection]);
+                }}
+              />
 
               <FilterBranch
                 branchesData={branchesData}
