@@ -22,8 +22,6 @@ export async function GET(
     const bookStatus = book === "all" ? "" : book;
     let ordersBook;
 
-    console.log(payment)
-
     if (payment === "all") {
       ordersBook = await prisma.orders_book.findMany({
         include: {

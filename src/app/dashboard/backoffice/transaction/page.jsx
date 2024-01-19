@@ -198,14 +198,6 @@ export default function TransactionPage() {
       .tz("Asia/Jakarta")
       .format("YYYY-MM-DD");
 
-    // let response = await fetch(`/api/data/book`, {
-    //   method: "GET",
-    //   headers: {
-    //     Accept: "application/json",
-    //     "Content-Type": "application/json",
-    //   },
-    // });
-
     let response = await fetch(
       `/api/data/book/${keyword}/${branchId}/${book}/${payment}/${start}/${end}`,
       {
@@ -251,7 +243,9 @@ export default function TransactionPage() {
       setTotalUnpaid(_totalUnpaid.length);
 
       let _totalRefund = _transactions.filter(
-        (item) => item.payment_status === "refund"
+        (item) =>
+          item.payment_status === "refund" ||
+          item.payment_status === "partial_refund"
       );
       setTotalRefund(_totalRefund.length);
       setDataAvailable(true);
@@ -300,19 +294,6 @@ export default function TransactionPage() {
       </div>
 
       <div className="w-full p-3 md:p-3 lg:p-6">
-        {/* SHOW UP TPP-LOGO AND TITLE AT BREAKPOINT-SM: @media (min-width: 640px) */}
-        <div className="block sm:hidden mb-2">
-          <div className="flex justify-between items-center">
-            <PageTitle pageTitle={pageTitle} />
-            <Image
-              src="/portraitPlace.png"
-              alt="TPP Logo"
-              width={90}
-              height={90}
-            />
-          </div>
-        </div>
-
         <div className="flex justify-center items-center gap-3 mb-3">
           {/* SHOW UP OPTION-NAVBAR / DROPDOWN AT BREAKPOINT-MD: @media (min-width: 768px) */}
           <div className="block md:hidden">
@@ -347,6 +328,13 @@ export default function TransactionPage() {
                 }}
               />
             </div>
+            <AddTransaction />
+          </div>
+        </div>
+
+        <div className="block sm:hidden mb-3">
+          <div className="flex justify-between">
+            <PageTitle pageTitle={pageTitle} />
             <AddTransaction />
           </div>
         </div>
@@ -392,18 +380,36 @@ export default function TransactionPage() {
         </div>
 
         <div className="block sm:hidden mb-3">
-          <div className="flex justify-between items-center">
-            <AddFilters
-              openModal={() => {
-                setFilterVisible(true);
+          <div className="grid grid-cols-2 gap-3">
+            <FilterBook
+              getBookStatus={(e) => {
+                setBook(e);
               }}
             />
-            <AddTransaction />
+
+            <FilterPayment
+              getPaymentStatus={(e) => {
+                setPayment(e);
+              }}
+            />
+
+            <FilterDateRange
+              getDateRanges={(ranges) => {
+                setDateRange([ranges.selection]);
+              }}
+            />
+
+            <FilterBranch
+              branchesData={branchesData}
+              getBranchId={(e) => {
+                setBranchId(e);
+              }}
+            />
           </div>
         </div>
 
         {/* HIDE MESSAGE AT BREAKPOINT-LG: @media (min-width: 1024px) */}
-        <div className="block lg:hidden h-10 mb-2">
+        <div className="block lg:hidden h-10 sm:mb-2">
           <Message
             message={message}
             color={color}
@@ -652,14 +658,25 @@ export default function TransactionPage() {
         />
 
         <ModalFilter
-          orderData={orderSelected}
+          branchesData={branchesData}
+          getDateRanges={(ranges) => {
+            console.log("DateRange:", ranges);
+            setDateRange([ranges]);
+          }}
+          getBranchId={(e) => {
+            console.log("BranchID:", e);
+            setBranchId(e);
+          }}
+          getBookStatus={(e) => {
+            console.log("Book:", e);
+            setBook(e);
+          }}
+          getPaymentStatus={(e) => {
+            console.log("Payment:", e);
+            setPayment(e);
+          }}
           isVisible={filterVisible}
           closeModal={() => {
-            closeFilterHandler();
-          }}
-          finishModal={(message, color) => {
-            setMessage(message);
-            setColor(color);
             closeFilterHandler();
           }}
         />

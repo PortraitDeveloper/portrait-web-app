@@ -6,7 +6,7 @@ const FilterBook = ({ getBookStatus }) => {
 
   return (
     <select
-      className="px-3 py-2 rounded-xl border border-black text-sm font-sora w-48"
+      className="px-3 py-2 rounded-xl border border-black text-xs sm:text-sm font-sora w-full sm:w-48"
       onChange={changeHandler}
     >
       <option value="all">All Book Status</option>
