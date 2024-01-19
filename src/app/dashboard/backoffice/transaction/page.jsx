@@ -97,7 +97,6 @@ export default function TransactionPage() {
   const [changeOrderVisible, setChangeOrderVisible] = useState(false);
   const [customerDetailVisible, setCustomerDetailVisible] = useState(false);
   const [refundOrderVisible, setRefundOrderVisible] = useState(false);
-  const [filterDateVisible, setFilterDateVisible] = useState(false);
   const [filterVisible, setFilterVisible] = useState(false);
 
   // Others
@@ -117,10 +116,11 @@ export default function TransactionPage() {
   useEffect(() => {
     getOrdersData();
   }, [
-    branchId,
     keyword,
+    branchId,
     book,
     payment,
+    dateRange,
     changeOrderVisible,
     refundOrderVisible,
   ]);
@@ -194,6 +194,7 @@ export default function TransactionPage() {
   const getOrdersData = async () => {
     const start = moment(dateRange[0].startDate).tz("Asia/Jakarta").format();
     const end = moment(dateRange[0].endDate).tz("Asia/Jakarta").format();
+    console.log(start);
 
     let response = await fetch(`/api/data/book`, {
       method: "GET",
@@ -202,6 +203,17 @@ export default function TransactionPage() {
         "Content-Type": "application/json",
       },
     });
+
+    // let response = await fetch(
+    //   `/api/data/book/${keyword}/${branchId}/${book}/${payment}/${start}/${end}`,
+    //   {
+    //     method: "GET",
+    //     headers: {
+    //       Accept: "application/json",
+    //       "Content-Type": "application/json",
+    //     },
+    //   }
+    // );
 
     response = await response.json();
     setLoading(true);
@@ -263,10 +275,6 @@ export default function TransactionPage() {
 
   const closeRefundHandler = () => {
     setRefundOrderVisible(false);
-  };
-
-  const closeFilterDateHandler = () => {
-    setFilterDateVisible(false);
   };
 
   const closeFilterHandler = () => {
@@ -355,7 +363,7 @@ export default function TransactionPage() {
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
               <FilterDateRange
                 getDateRanges={(ranges) => {
-                  console.log(ranges)
+                  console.log(ranges);
                   setDateRange([ranges.selection]);
                 }}
               />
