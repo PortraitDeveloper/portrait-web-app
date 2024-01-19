@@ -126,10 +126,10 @@ const FilterDateRange = ({ getDateRanges }) => {
 
   const formattedStartDate = moment(dateRange[0].startDate)
     .tz("Asia/Jakarta")
-    .format("DD/MM/YY");
+    .format("DD-MM-YY");
   const formattedEndDate = moment(dateRange[0].endDate)
     .tz("Asia/Jakarta")
-    .format("DD/MM/YY");
+    .format("DD-MM-YY");
 
   return (
     <div className="inline-block relative" ref={dropdownRef}>

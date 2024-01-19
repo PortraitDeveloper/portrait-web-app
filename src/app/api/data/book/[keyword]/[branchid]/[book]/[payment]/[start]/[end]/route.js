@@ -17,71 +17,116 @@ export async function GET(
   const currentTimeStamp = getTimeStamp(timeDiff);
 
   try {
-    // const keyWord = keyword === "null" ? "%%" : "%" + keyword + "%";
-
     const keyWord = keyword === "null" ? "" : keyword;
     const branchId = branchid === "all" ? "" : branchid;
-    const bookStatus = book === "alll" ? "" : book;
-    const paymentStatus = payment === "alll" ? "" : payment;
+    const bookStatus = book === "all" ? "" : book;
+    let ordersBook;
 
-    const ordersBook = await prisma.orders_book.findMany({
-      include: {
-        transactions: true,
-        customers: true,
-        products: {
-          include: {
-            branches: true,
-          },
-        },
-      },
-      where: {
-        AND: [
-          {
-            book_code: {
-              contains: keyWord,
-              mode: "insensitive",
+    console.log(payment)
+
+    if (payment === "all") {
+      ordersBook = await prisma.orders_book.findMany({
+        include: {
+          transactions: true,
+          customers: true,
+          products: {
+            include: {
+              branches: true,
             },
           },
-          {
-            customers: {
-              cust_name: {
+        },
+        where: {
+          OR: [
+            {
+              book_code: {
                 contains: keyWord,
                 mode: "insensitive",
               },
             },
-          },
-          {
-            products: {
-              branch_id: {
-                contains: branchId,
-                mode: "insensitive",
+            {
+              customers: {
+                cust_name: {
+                  contains: keyWord,
+                  mode: "insensitive",
+                },
               },
             },
-          },
-
-          {
-            book_status: {
-              equals: bookStatus,
+          ],
+          products: {
+            branch_id: {
+              contains: branchId,
               mode: "insensitive",
             },
           },
-          {
-            transactions: {
-              payment_status: {
-                equals: paymentStatus,
+          book_status: {
+            contains: bookStatus,
+            mode: "insensitive",
+          },
+          transactions: {
+            payment_status: {
+              contains: "",
+              mode: "insensitive",
+            },
+          },
+          booking_date: {
+            gte: start,
+            lte: end,
+          },
+        },
+      });
+    }
+
+    if (payment !== "all") {
+      ordersBook = await prisma.orders_book.findMany({
+        include: {
+          transactions: true,
+          customers: true,
+          products: {
+            include: {
+              branches: true,
+            },
+          },
+        },
+        where: {
+          OR: [
+            {
+              book_code: {
+                contains: keyWord,
                 mode: "insensitive",
               },
             },
-          },
-          {
-            booking_date: {
-              gte: start,
-              lte: end,
+            {
+              customers: {
+                cust_name: {
+                  contains: keyWord,
+                  mode: "insensitive",
+                },
+              },
+            },
+          ],
+          products: {
+            branch_id: {
+              contains: branchId,
+              mode: "insensitive",
             },
           },
-        ],
-      },
-    });
+          book_status: {
+            contains: bookStatus,
+            mode: "insensitive",
+          },
+          transactions: {
+            payment_status: {
+              equals: payment,
+              mode: "insensitive",
+            },
+          },
+          booking_date: {
+            gte: start,
+            lte: end,
+          },
+        },
+      });
+    }
 
     // Check whether ordersBook data exists or not
     if (!ordersBook || ordersBook.length === 0) {

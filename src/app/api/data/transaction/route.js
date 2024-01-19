@@ -42,7 +42,7 @@ export async function PATCH(request) {
 
     if (
       orderBook.transactions.payment_status === "refund" ||
-      orderBook.transactions.payment_status === "refund 50%" ||
+      orderBook.transactions.payment_status === "partial_refund" ||
       orderBook.transactions.payment_status === "unpaid" ||
       orderBook.book_status === "done"
     ) {
@@ -59,13 +59,13 @@ export async function PATCH(request) {
       (orderBook.book_status === "booked" ||
         orderBook.book_status === "rescheduled")
     ) {
-      await updatePaymentStatus(book_code, "refund 50%");
+      await updatePaymentStatus(book_code, "partial_refund");
 
       return NextResponse.json({
         created_at: currentTimeStamp,
         route: "/api/data/transaction",
         status: 200,
-        message: `Pesanan ${orderBook.book_code} telah di refund 50%`,
+        message: `Pesanan ${orderBook.book_code} telah di refund sebagian`,
         data: orderBook,
       });
     }

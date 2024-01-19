@@ -187,33 +187,35 @@ export default function TransactionPage() {
     });
 
     response = await response.json();
-    console.log("VouchersData:", response);
     setVouchersData(response.data);
   };
 
   const getOrdersData = async () => {
-    const start = moment(dateRange[0].startDate).tz("Asia/Jakarta").format();
-    const end = moment(dateRange[0].endDate).tz("Asia/Jakarta").format();
-    console.log(start);
+    const start = moment(dateRange[0].startDate)
+      .tz("Asia/Jakarta")
+      .format("YYYY-MM-DD");
+    const end = moment(dateRange[0].endDate)
+      .tz("Asia/Jakarta")
+      .format("YYYY-MM-DD");
 
-    let response = await fetch(`/api/data/book`, {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-    });
+    // let response = await fetch(`/api/data/book`, {
+    //   method: "GET",
+    //   headers: {
+    //     Accept: "application/json",
+    //     "Content-Type": "application/json",
+    //   },
+    // });
 
-    // let response = await fetch(
-    //   `/api/data/book/${keyword}/${branchId}/${book}/${payment}/${start}/${end}`,
-    //   {
-    //     method: "GET",
-    //     headers: {
-    //       Accept: "application/json",
-    //       "Content-Type": "application/json",
-    //     },
-    //   }
-    // );
+    let response = await fetch(
+      `/api/data/book/${keyword}/${branchId}/${book}/${payment}/${start}/${end}`,
+      {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
     response = await response.json();
     setLoading(true);
@@ -363,7 +365,6 @@ export default function TransactionPage() {
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
               <FilterDateRange
                 getDateRanges={(ranges) => {
-                  console.log(ranges);
                   setDateRange([ranges.selection]);
                 }}
               />
