@@ -69,7 +69,7 @@ const FilterDateRange = ({ getDateRanges }) => {
       </div>
       {isOpen && (
         <div className="z-10 absolute">
-          <DateRange ranges={dateRange} onChange={handleSelect} />
+          <DateRange ranges={dateRange} onChange={handleSelect} months={2}/>
         </div>
       )}
     </div>

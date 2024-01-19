@@ -29,7 +29,7 @@ export async function GET(request, { params: { branchid, keyword } }) {
 
       return NextResponse.json({
         created_at: currentTimeStamp,
-        route: "/api/data/product/search/[branchid]/[keyword]",
+        route: "/api/data/product/[branchid]/[keyword]",
         status: 404,
         message: "Products data not found.",
       });
@@ -37,7 +37,7 @@ export async function GET(request, { params: { branchid, keyword } }) {
       // If products data found then return products data
       return NextResponse.json({
         created_at: currentTimeStamp,
-        route: "/api/data/product/search/[branchid]/[keyword]",
+        route: "/api/data/product/[branchid]/[keyword]",
         status: 200,
         message: "Products data found.",
         data: products,
@@ -47,7 +47,7 @@ export async function GET(request, { params: { branchid, keyword } }) {
     // If the system or database server error then return an error log
     const log = {
       created_at: currentTimeStamp,
-      route: "/api/data/product/search/[branchid]/[keyword]",
+      route: "/api/data/product/[branchid]/[keyword]",
       status: 500,
       message: error.message,
     };
