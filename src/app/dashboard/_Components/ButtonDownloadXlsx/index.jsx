@@ -64,7 +64,7 @@ const ButtonDownloadXlsx = ({
   return (
     <button
       onClick={handleDownload}
-      className="bg-blue-900 text-white rounded-2xl hover:bg-blue-700 px-3 py-2 w-full"
+      className="bg-blue-900 text-white rounded-2xl hover:bg-blue-700 text-sm font-semibold px-3 py-2 w-full"
     >
       Download
     </button>

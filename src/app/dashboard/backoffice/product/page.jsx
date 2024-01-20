@@ -20,29 +20,41 @@ import ModalLoading from "../../_Components/ModalLoading";
 const pageTitle = "Product";
 
 export default function ProductPage() {
-  const [credentialsData, setCredentialsData] = useState([]);
-  const [branchesData, setBranchesData] = useState([]);
-
+  // Product Data
   const [productsData, setProductsData] = useState([]);
   const [productsSorted, setProductsSorted] = useState({});
   const [productData, setProductData] = useState({});
 
+  // Reference Data
+  const [credentialsData, setCredentialsData] = useState([]);
+  const [branchesData, setBranchesData] = useState([]);
+
+  // Filter
   const [branchId, setBranchId] = useState("all");
   const [keyword, setKeyword] = useState("null");
 
+  // Pagination
   const [perPage, setPerPage] = useState(5);
   const [pageNumber, setPageNumber] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
 
-  const [loading, setLoading] = useState(false);
-  const [dataAvailable, setDataAvailable] = useState(false);
-  const [message, setMessage] = useState(null);
-  const [color, setColor] = useState("");
-
+  // Visibility
   const [AccountVisible, setAccountVisible] = useState(false);
   const [productAddVisible, setproductAddVisible] = useState(false);
   const [productEditVisible, setproductEditVisible] = useState(false);
   const [productDeleteVisible, setproductDeleteVisible] = useState(false);
+
+  // Others
+  const [loading, setLoading] = useState(false);
+  const [dataAvailable, setDataAvailable] = useState(false);
+  const [message, setMessage] = useState(null);
+  const [color, setColor] = useState("");
+  const [role, setRole] = useState(null);
+
+  useEffect(() => {
+    const _role = "backoffice";
+    setRole(_role);
+  }, []);
 
   useEffect(() => {
     getCredentialsData();
@@ -141,7 +153,7 @@ export default function ProductPage() {
       {/* HIDE SIDEBAR AT BREAKPOINT-MD: @media (min-width: 768px) */}
       <div className="hidden md:block shadow-xl shadow-gray-400">
         <div className="p-6">
-          <SidebarContent pageTitle={pageTitle} />
+          <SidebarContent role={role} pageTitle={pageTitle} />
         </div>
       </div>
 
@@ -172,6 +184,7 @@ export default function ProductPage() {
             }}
           />
           <OptionAccount
+            role={role}
             credentialsData={credentialsData}
             openModal={() => setAccountVisible(true)}
           />
@@ -180,18 +193,17 @@ export default function ProductPage() {
         {/* SHOW UP FILTER-BRANCH AND ADD-BUTTON AT BREAKPOINT-SM: @media (min-width: 640px) */}
         <div className="block sm:hidden mb-3 lg:mb-4">
           <div className="flex justify-between items-center">
+            <FilterBranch
+              branchesData={branchesData}
+              getBranchId={(e) => {
+                setBranchId(e);
+              }}
+            />
 
-              <FilterBranch
-                branchesData={branchesData}
-                getBranchId={(e) => {
-                  setBranchId(e);
-                }}
-              />
-      
-              <AddButton
-                title={pageTitle}
-                openModal={() => setproductAddVisible(true)}
-              />
+            <AddButton
+              title={pageTitle}
+              openModal={() => setproductAddVisible(true)}
+            />
           </div>
         </div>
 

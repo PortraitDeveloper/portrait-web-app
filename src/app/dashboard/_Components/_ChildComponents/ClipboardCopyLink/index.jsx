@@ -19,7 +19,7 @@ const ClipboardCopyLink = ({ copyLink, onFinish }) => {
 
   return (
     <button
-      className="bg-blue-900 rounded-3xl px-3 py-2 text-sm w-full text-white hover:bg-blue-700"
+      className="bg-blue-900 rounded-3xl px-3 py-2 text-sm font-semibold text-white w-full hover:bg-blue-700"
       onClick={handleCopyToClipboard}
     >
       Copy Payment Link

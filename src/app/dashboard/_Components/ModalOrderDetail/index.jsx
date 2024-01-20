@@ -137,7 +137,7 @@ const ModalOrderDetail = ({
 
           <hr className="border mb-1"></hr>
 
-          <div className="grid grid-cols-2 grid-rows-3 gap-1 mb-1">
+          <div className="grid grid-cols-2 grid-rows-3 gap-0.5 mb-1">
             <div className="text-xs font-sora font-semibold">Subtotal</div>
             {/* Total Price */}
             <div className="text-right text-xs font-roboto font-semibold ">
@@ -158,7 +158,7 @@ const ModalOrderDetail = ({
 
           <hr className="border mb-1"></hr>
 
-          <div className="grid grid-cols-2 mb-2 gap-1">
+          <div className="grid grid-cols-2 mb-2 gap-0.5">
             <div className="text-xs font-sora font-semibold">Total</div>
             {/* Total */}
             <div className="text-right text-xs font-roboto font-semibold">
@@ -192,49 +192,54 @@ const ModalOrderDetail = ({
 
           <hr className="border mb-1"></hr>
 
-          <div className="grid grid-cols-2 mb-1 gap-1">
-            <div className="text-xs font-sora font-semibold">Book Status</div>
+          <div className="grid grid-cols-2 mb-1 gap-0.5">
+            <div className="text-xs font-sora font-semibold">Status</div>
             {/* Book Status */}
 
             <div className="text-right text-xs font-roboto font-semibold">
-              {orderData.book_status === "canceled" && (
-                <div className="text-red-500">{orderData.book_status}</div>
-              )}
-              {(orderData.book_status === "booked" ||
-                orderData.book_status === "done") && (
-                <div className="text-green-500">{orderData.book_status}</div>
-              )}
-              {orderData.book_status === "rescheduled" && (
-                <div className="text-blue-500">{orderData.book_status}</div>
-              )}
-            </div>
-
-            <div className="text-xs font-sora font-semibold">
-              Payment Status
-            </div>
-            {/* Book Status */}
-            <div className="text-right text-xs font-roboto font-semibold">
-              {(orderData.transactions.payment_status === "refund" ||
-                orderData.transactions.payment_status === "partial_refund") && (
-                <div className="text-red-500">
-                  {orderData.transactions.payment_status}
+              <div className="flex justify-end items-center gap-1">
+                <div>
+                  {orderData.book_status === "canceled" && (
+                    <div className="text-red-500">{orderData.book_status}</div>
+                  )}
+                  {(orderData.book_status === "booked" ||
+                    orderData.book_status === "done") && (
+                    <div className="text-green-500">
+                      {orderData.book_status}
+                    </div>
+                  )}
+                  {orderData.book_status === "rescheduled" && (
+                    <div className="text-blue-500">{orderData.book_status}</div>
+                  )}
                 </div>
-              )}
-              {orderData.transactions.payment_status === "unpaid" && (
-                <div className="text-red-500">
-                  {orderData.transactions.payment_status}
+                <div>
+                  and
                 </div>
-              )}
-              {orderData.transactions.payment_status === "pending" && (
-                <div className="text-orange-500">
-                  {orderData.transactions.payment_status}
+                <div>
+                  {(orderData.transactions.payment_status === "refund" ||
+                    orderData.transactions.payment_status ===
+                      "partial_refund") && (
+                    <div className="text-red-500">
+                      {orderData.transactions.payment_status}
+                    </div>
+                  )}
+                  {orderData.transactions.payment_status === "unpaid" && (
+                    <div className="text-red-500">
+                      {orderData.transactions.payment_status}
+                    </div>
+                  )}
+                  {orderData.transactions.payment_status === "pending" && (
+                    <div className="text-orange-500">
+                      {orderData.transactions.payment_status}
+                    </div>
+                  )}
+                  {orderData.transactions.payment_status === "paid" && (
+                    <div className="text-green-500">
+                      {orderData.transactions.payment_status}
+                    </div>
+                  )}
                 </div>
-              )}
-              {orderData.transactions.payment_status === "paid" && (
-                <div className="text-green-500">
-                  {orderData.transactions.payment_status}
-                </div>
-              )}
+              </div>
             </div>
           </div>
         </div>

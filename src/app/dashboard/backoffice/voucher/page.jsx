@@ -20,29 +20,40 @@ import ModalLoading from "../../_Components/ModalLoading";
 const pageTitle = "Voucher";
 
 export default function VoucherPage() {
-  const [credentialsData, setCredentialsData] = useState([]);
-
+  // Voucher Data
   const [vouchersData, setVouchersData] = useState([]);
   const [vouchersSorted, setVouchersSorted] = useState({});
   const [voucherData, setVoucherData] = useState({});
 
-  const [keyword, setKeyword] = useState("null");
+  // Reference Data
+  const [credentialsData, setCredentialsData] = useState([]);
 
+  // Filter
+  const [keyword, setKeyword] = useState("null");
+  const [type, setType] = useState("percentage");
+
+  // Pagination
   const [perPage, setPerPage] = useState(5);
   const [pageNumber, setPageNumber] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
 
-  const [loading, setLoading] = useState(false);
-  const [dataAvailable, setDataAvailable] = useState(false);
-  const [message, setMessage] = useState(null);
-  const [color, setColor] = useState("");
-
+  // Visibility
   const [AccountVisible, setAccountVisible] = useState(false);
   const [voucherAddVisible, setVoucherAddVisible] = useState(false);
   const [voucherEditVisible, setVoucherEditVisible] = useState(false);
   const [voucherDeleteVisible, setVoucherDeleteVisible] = useState(false);
 
-  const [type, setType] = useState("percentage");
+  // Others
+  const [loading, setLoading] = useState(false);
+  const [dataAvailable, setDataAvailable] = useState(false);
+  const [message, setMessage] = useState(null);
+  const [color, setColor] = useState("");
+  const [role, setRole] = useState(null);
+
+  useEffect(() => {
+    const _role = "backoffice";
+    setRole(_role);
+  }, []);
 
   useEffect(() => {
     getCredentialsData();
@@ -124,7 +135,7 @@ export default function VoucherPage() {
       {/* HIDE SIDEBAR AT BREAKPOINT-MD: @media (min-width: 768px) */}
       <div className="hidden md:block shadow-xl shadow-gray-400">
         <div className="p-6">
-          <SidebarContent pageTitle={pageTitle} />
+          <SidebarContent role={role} pageTitle={pageTitle} />
         </div>
       </div>
 
@@ -158,6 +169,7 @@ export default function VoucherPage() {
             }}
           />
           <OptionAccount
+            role={role}
             credentialsData={credentialsData}
             openModal={() => setAccountVisible(true)}
           />

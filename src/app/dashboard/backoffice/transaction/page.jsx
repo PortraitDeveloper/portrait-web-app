@@ -53,20 +53,20 @@ export default function TransactionPage() {
   const [prevTotal, setPrevTotal] = useState(null);
   const [priceDiff, setPriceDiff] = useState(null);
 
-  // Data for references or lookup
-  const [addonsData, setAddonsData] = useState([]);
-  const [branchesData, setBranchesData] = useState([]);
-  const [credentialsData, setCredentialsData] = useState([]);
-  const [productsData, setProductsData] = useState([]);
-  const [vouchersData, setVouchersData] = useState([]);
-
   // Order Data
   const [ordersData, setOrdersData] = useState([]);
   const [ordersDataSorted, setOrdersDataSorted] = useState({});
   const [orderSelected, setOrderSelected] = useState({});
   const [orderDetailSelected, setOrderDetailSelected] = useState({});
 
-  // Total Transactions
+  // References Data
+  const [addonsData, setAddonsData] = useState([]);
+  const [branchesData, setBranchesData] = useState([]);
+  const [credentialsData, setCredentialsData] = useState([]);
+  const [productsData, setProductsData] = useState([]);
+  const [vouchersData, setVouchersData] = useState([]);
+
+  // Total Transactions Data
   const [totalTransaction, setTotalTransaction] = useState(0);
   const [totalPaid, setTotalPaid] = useState(0);
   const [totalUnpaid, setTotalUnpaid] = useState(0);
@@ -100,14 +100,14 @@ export default function TransactionPage() {
   const [filterVisible, setFilterVisible] = useState(false);
 
   // Others
-  const [role, setRole] = useState(null);
   const [loading, setLoading] = useState(false);
   const [dataAvailable, setDataAvailable] = useState(false);
   const [message, setMessage] = useState(null);
   const [color, setColor] = useState("");
+  const [role, setRole] = useState(null);
 
   useEffect(() => {
-    const _role = "operator";
+    const _role = "backoffice";
     setRole(_role);
   }, []);
 

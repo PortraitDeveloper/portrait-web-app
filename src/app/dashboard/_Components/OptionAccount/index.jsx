@@ -47,7 +47,7 @@ const OptionAccount = ({ role, openModalAccount, openModalDownload }) => {
         </button>
       </div>
       {isOpen && (
-        <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-xl shadow-xl bg-white ring-1 ring-black ring-opacity-5">
+        <div className="z-10 origin-top-right absolute right-0 mt-2 w-48 rounded-xl shadow-xl bg-white ring-1 ring-black ring-opacity-5">
           <div className="py-1">
             {role === "backoffice" && (
               <div>

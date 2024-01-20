@@ -16,25 +16,37 @@ import ModalLoading from "../../_Components/ModalLoading";
 const pageTitle = "Add-ons";
 
 export default function AdditionalPage() {
-  const [credentialsData, setCredentialsData] = useState([]);
-
+  // Add-ons Data
   const [additionalsData, setAdditionalsData] = useState([]);
   const [additionalsSorted, setAdditionalsSorted] = useState({});
   const [additionalData, setAdditionalData] = useState({});
 
+  // Reference Data
+  const [credentialsData, setCredentialsData] = useState([]);
+
+  // Filter
   const [keyword, setKeyword] = useState("null");
 
+  // Pagination
   const [perPage, setPerPage] = useState(5);
   const [pageNumber, setPageNumber] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
 
+  // Visibility
+  const [AccountVisible, setAccountVisible] = useState(false);
+  const [additionalEditVisible, setAdditionalEditVisible] = useState(false);
+
+  // Others
   const [loading, setLoading] = useState(false);
   const [dataAvailable, setDataAvailable] = useState(false);
   const [message, setMessage] = useState(null);
   const [color, setColor] = useState("");
+  const [role, setRole] = useState(null);
 
-  const [AccountVisible, setAccountVisible] = useState(false);
-  const [additionalEditVisible, setAdditionalEditVisible] = useState(false);
+  useEffect(() => {
+    const _role = "backoffice";
+    setRole(_role);
+  }, []);
 
   useEffect(() => {
     getCredentialsData();
@@ -102,7 +114,7 @@ export default function AdditionalPage() {
       {/* HIDE SIDEBAR AT BREAKPOINT-MD: @media (min-width: 768px) */}
       <div className="hidden md:block shadow-xl shadow-gray-400">
         <div className="p-6">
-          <SidebarContent pageTitle={pageTitle} />
+          <SidebarContent role={role} pageTitle={pageTitle} />
         </div>
       </div>
 
@@ -133,6 +145,7 @@ export default function AdditionalPage() {
             }}
           />
           <OptionAccount
+            role={role}
             credentialsData={credentialsData}
             openModal={() => setAccountVisible(true)}
           />
