@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
 
-const OptionAccount = ({ openModalAccount, openModalDownload }) => {
+const OptionAccount = ({ role, openModalAccount, openModalDownload }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const accountHandler = () => {
@@ -49,36 +49,41 @@ const OptionAccount = ({ openModalAccount, openModalDownload }) => {
       {isOpen && (
         <div className="origin-top-right absolute right-0 mt-2 w-48 rounded-xl shadow-xl bg-white ring-1 ring-black ring-opacity-5">
           <div className="py-1">
-          <button
-              onClick={accountHandler}
-              className="block px-4 py-2 text-sm text-gray-700 hover:font-bold"
-            >
-              <div className="flex justify-start items-center">
-                <Image
-                  src="/setting.png"
-                  alt="Logout Icon"
-                  width={24}
-                  height={24}
-                  className="mr-2"
-                />
-                <p>Account Setting</p>
+            {role === "backoffice" && (
+              <div>
+                <button
+                  onClick={accountHandler}
+                  className="block px-4 py-2 text-sm text-gray-700 hover:font-bold"
+                >
+                  <div className="flex justify-start items-center">
+                    <Image
+                      src="/setting.png"
+                      alt="Logout Icon"
+                      width={24}
+                      height={24}
+                      className="mr-2"
+                    />
+                    <p>Account Setting</p>
+                  </div>
+                </button>
+                <button
+                  onClick={downloadHandler}
+                  className="block px-4 py-2 text-sm text-gray-700 hover:font-bold"
+                >
+                  <div className="flex justify-start items-center">
+                    <Image
+                      src="/download.png"
+                      alt="Download Icon"
+                      width={24}
+                      height={24}
+                      className="mr-2"
+                    />
+                    <p>Download</p>
+                  </div>
+                </button>
               </div>
-            </button>
-            <button
-              onClick={downloadHandler}
-              className="block px-4 py-2 text-sm text-gray-700 hover:font-bold"
-            >
-              <div className="flex justify-start items-center">
-                <Image
-                  src="/download.png"
-                  alt="Download Icon"
-                  width={24}
-                  height={24}
-                  className="mr-2"
-                />
-                <p>Download</p>
-              </div>
-            </button>
+            )}
+
             <a
               href="#"
               className="block px-4 py-2 text-sm text-gray-700 hover:font-bold"

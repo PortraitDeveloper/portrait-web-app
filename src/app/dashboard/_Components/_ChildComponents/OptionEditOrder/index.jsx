@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 
 const OptionEditOrder = ({
+  role,
   data,
   onOrderDetail,
   onChangeOrder,
@@ -80,12 +81,14 @@ const OptionEditOrder = ({
             >
               <p>Customer Detail</p>
             </button>
-            <button
-              onClick={getRefund}
-              className="block px-4 py-2 text-sm text-red-500 hover:font-bold"
-            >
-              <p>Refund</p>
-            </button>
+            {role === "backoffice" && (
+              <button
+                onClick={getRefund}
+                className="block px-4 py-2 text-sm text-red-500 hover:font-bold"
+              >
+                <p>Refund</p>
+              </button>
+            )}
           </div>
         </div>
       )}

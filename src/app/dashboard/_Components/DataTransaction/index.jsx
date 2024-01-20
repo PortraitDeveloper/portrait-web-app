@@ -4,6 +4,7 @@ import OptionEditOrder from "../_ChildComponents/OptionEditOrder";
 import dateConversion from "@/utils/dateConversion";
 
 const DataTransaction = ({
+  role,
   ordersData,
   loading,
   dataAvailable,
@@ -56,7 +57,8 @@ const DataTransaction = ({
                     )}
 
                     {(data.transactions.payment_status === "refund" ||
-                      data.transactions.payment_status === "partial_refund") && (
+                      data.transactions.payment_status ===
+                        "partial_refund") && (
                       <div className="bg-red-50 border border-red-500 rounded-xl text-red-500">
                         {data.transactions.payment_status}
                       </div>
@@ -84,6 +86,7 @@ const DataTransaction = ({
                   <td className="py-2">
                     <div className="flex justify-center">
                       <OptionEditOrder
+                        role={role}
                         data={data}
                         onOrderDetail={(e) => {
                           getOrderDetail(e);

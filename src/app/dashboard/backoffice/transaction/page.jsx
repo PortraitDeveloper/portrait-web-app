@@ -10,7 +10,6 @@ import OptionAccount from "../../_Components/OptionAccount";
 import PageTitle from "../../_Components/PageTitle";
 import Message from "../../_Components/Message";
 import AddTransaction from "../../_Components/AddTransaction";
-import ButtonDownloadXlsx from "../../_Components/ButtonDownloadXlsx";
 import TotalOrders from "../../_Components/TotalOrders/page";
 import FilterDateRange from "../../_Components/FilterDateRange";
 import FilterBranch from "../../_Components/FilterBranch";
@@ -101,10 +100,16 @@ export default function TransactionPage() {
   const [filterVisible, setFilterVisible] = useState(false);
 
   // Others
+  const [role, setRole] = useState(null);
   const [loading, setLoading] = useState(false);
   const [dataAvailable, setDataAvailable] = useState(false);
   const [message, setMessage] = useState(null);
   const [color, setColor] = useState("");
+
+  useEffect(() => {
+    const _role = "operator";
+    setRole(_role);
+  }, []);
 
   useEffect(() => {
     getAddonsData();
@@ -294,7 +299,7 @@ export default function TransactionPage() {
       {/* HIDE SIDEBAR AT BREAKPOINT-MD: @media (min-width: 768px) */}
       <div className="hidden md:block shadow-lg shadow-gray-400">
         <div className="p-6">
-          <SidebarContent pageTitle={pageTitle} />
+          <SidebarContent pageTitle={pageTitle} role={role} />
         </div>
       </div>
 
@@ -312,6 +317,7 @@ export default function TransactionPage() {
             }}
           />
           <OptionAccount
+            role={role}
             openModalAccount={() => setModalAccountVisible(true)}
             openModalDownload={() => setModalDownloadVisible(true)}
           />
@@ -428,6 +434,7 @@ export default function TransactionPage() {
 
         <div className="flex flex-col justify-between border border-black rounded-3xl overflow-auto pb-4 h-1/2 md:h-2/3 lg:2/3 xl:h-3/5">
           <DataTransaction
+            role={role}
             ordersData={ordersDataSorted}
             loading={loading}
             dataAvailable={dataAvailable}
