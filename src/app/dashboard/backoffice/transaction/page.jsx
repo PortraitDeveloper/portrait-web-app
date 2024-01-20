@@ -113,9 +113,21 @@ export default function TransactionPage() {
 
   useEffect(() => {
     getAddonsData();
+  }, []);
+
+  useEffect(() => {
     getBranchesData();
+  }, []);
+
+  useEffect(() => {
     getCredentialsData();
+  }, []);
+
+  useEffect(() => {
     getProductsData();
+  }, []);
+
+  useEffect(() => {
     getVouchersData();
   }, []);
 
