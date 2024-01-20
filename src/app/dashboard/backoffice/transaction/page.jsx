@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { useState, useEffect } from "react";
-import Image from "next/image";
 import moment from "moment";
 import "moment-timezone";
 import SidebarContent from "../../_Components/SidebarContent";
@@ -11,7 +10,7 @@ import OptionAccount from "../../_Components/OptionAccount";
 import PageTitle from "../../_Components/PageTitle";
 import Message from "../../_Components/Message";
 import AddTransaction from "../../_Components/AddTransaction";
-import AddFilters from "../../_Components/AddFilters";
+import ButtonDownloadXlsx from "../../_Components/ButtonDownloadXlsx";
 import TotalOrders from "../../_Components/TotalOrders/page";
 import FilterDateRange from "../../_Components/FilterDateRange";
 import FilterBranch from "../../_Components/FilterBranch";
@@ -20,6 +19,7 @@ import FilterPayment from "../../_Components/FilterPayment";
 import DataTransaction from "../../_Components/DataTransaction";
 import PagePagination from "../../_Components/PagePagination";
 import ModalAccount from "../../_Components/ModalAccount";
+import ModalDownload from "../../_Components/ModalDownload";
 import ModalOrderDetail from "../../_Components/ModalOrderDetail";
 import ModalChangeOrder from "../../_Components/ModalChangeOrder";
 import ModalCustomerDetail from "../../_Components/ModalCustomerDetail";
@@ -92,7 +92,8 @@ export default function TransactionPage() {
   const [totalPage, setTotalPage] = useState(1);
 
   // Visibility
-  const [AccountVisible, setAccountVisible] = useState(false);
+  const [accountVisible, setModalAccountVisible] = useState(false);
+  const [downloadVisible, setModalDownloadVisible] = useState(false);
   const [orderDetailVisible, setOrderDetailVisible] = useState(false);
   const [changeOrderVisible, setChangeOrderVisible] = useState(false);
   const [customerDetailVisible, setCustomerDetailVisible] = useState(false);
@@ -254,7 +255,11 @@ export default function TransactionPage() {
   };
 
   const closeAccountHandler = () => {
-    setAccountVisible(false);
+    setModalAccountVisible(false);
+  };
+
+  const closeDownloadHandler = () => {
+    setModalDownloadVisible(false);
   };
 
   const closeOrderDetailHandler = () => {
@@ -307,8 +312,8 @@ export default function TransactionPage() {
             }}
           />
           <OptionAccount
-            credentialsData={credentialsData}
-            openModal={() => setAccountVisible(true)}
+            openModalAccount={() => setModalAccountVisible(true)}
+            openModalDownload={() => setModalDownloadVisible(true)}
           />
         </div>
 
@@ -518,7 +523,7 @@ export default function TransactionPage() {
         </div>
 
         <ModalAccount
-          isVisible={AccountVisible}
+          isVisible={accountVisible}
           credentialsData={credentialsData}
           closeModal={() => {
             closeAccountHandler();
@@ -527,6 +532,18 @@ export default function TransactionPage() {
             setMessage(message);
             setColor(color);
             closeAccountHandler();
+          }}
+        />
+
+        <ModalDownload
+          isVisible={downloadVisible}
+          closeModal={() => {
+            closeDownloadHandler();
+          }}
+          finishModal={(message, color) => {
+            setMessage(message);
+            setColor(color);
+            closeDownloadHandler();
           }}
         />
 

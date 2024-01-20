@@ -13,7 +13,7 @@ const InputDiscount = ({ inputName, unit, placeHolder, getDiscount }) => {
           name={inputName}
           placeholder={placeHolder}
           outline="none"
-          className="border border-black rounded-3xl px-3 py-2.5"
+          className="border border-black rounded-3xl px-3 py-2"
           onChange={changeHandler}
         />
         <p className="text-xl">{unit}</p>

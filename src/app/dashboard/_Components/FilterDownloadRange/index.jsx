@@ -7,7 +7,7 @@ import { DateRange } from "react-date-range";
 import "react-date-range/dist/styles.css"; // Import styles
 import "react-date-range/dist/theme/default.css"; // Import theme
 
-const FilterDateRange = ({ getDateRanges }) => {
+const FilterDownloadRange = ({ getDateRanges }) => {
   const [dateRange, setDateRange] = useState([
     {
       startDate: new Date(),
@@ -17,6 +17,7 @@ const FilterDateRange = ({ getDateRanges }) => {
   ]);
 
   const [isOpen, setIsOpen] = useState(false);
+  const [isView, setIsView] = useState(false);
   const dropdownRef = useRef(null);
 
   const toggleDropdown = () => {
@@ -48,6 +49,7 @@ const FilterDateRange = ({ getDateRanges }) => {
   const handleSelect = (ranges) => {
     setDateRange([ranges.selection]);
     getDateRanges(ranges);
+    setIsView(true);
   };
 
   const formattedStartDate = moment(dateRange[0].startDate)
@@ -60,20 +62,28 @@ const FilterDateRange = ({ getDateRanges }) => {
   return (
     <div className="inline-block relative" ref={dropdownRef}>
       <div
-        className="cursor-pointer border border-blue-900 rounded-2xl text-blue-900 text-xs sm:text-sm hover:bg-slate-100 px-3 py-2 w-full sm:w-48"
+        className="cursor-pointer border border-blue-900 rounded-2xl text-blue-900 hover:bg-slate-100 px-3 py-2 w-72"
         onClick={toggleDropdown}
       >
-        <p>
-          {formattedStartDate} to {formattedEndDate}
-        </p>
+        {isView && (
+          <p>
+            {formattedStartDate} to {formattedEndDate}
+          </p>
+        )}
+
+        {!isView && (
+          <p>
+            Pilih Periode
+          </p>
+        )}
       </div>
       {isOpen && (
         <div className="z-10 absolute">
-          <DateRange ranges={dateRange} onChange={handleSelect} months={1}/>
+          <DateRange ranges={dateRange} onChange={handleSelect} months={1} />
         </div>
       )}
     </div>
   );
 };
 
-export default FilterDateRange;
+export default FilterDownloadRange;

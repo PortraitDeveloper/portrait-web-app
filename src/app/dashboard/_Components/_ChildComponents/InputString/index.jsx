@@ -11,7 +11,7 @@ const InputString = ({ inputName, placeHolder, getString }) => {
       name={inputName}
       placeholder={placeHolder}
       outline="none"
-      className="border border-black rounded-3xl px-3 py-2.5 w-72"
+      className="border border-black rounded-3xl px-3 py-2 w-full"
       onChange={changeHandler}
     />
   );

@@ -31,8 +31,10 @@ const ButtonDownloadXlsx = ({
   getMessage,
 }) => {
   const handleDownload = async () => {
-    console.log("StartDate:", startDate);
-    console.log("EndDate:", endDate);
+    if(!fileName || !startDate || !endDate) {
+      getMessage("Periode dan nama file wajib diisi")
+      return
+    }
 
     let response = await fetch(
       `/api/data/download/summary/${startDate}/${endDate}`,
@@ -62,7 +64,7 @@ const ButtonDownloadXlsx = ({
   return (
     <button
       onClick={handleDownload}
-      className="bg-blue-900 text-white px-3 py-2 rounded-2xl hover:bg-blue-700 w-full"
+      className="bg-blue-900 text-white rounded-2xl hover:bg-blue-700 px-3 py-2 w-full"
     >
       Download
     </button>
