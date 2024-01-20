@@ -244,7 +244,7 @@ const ModalChangeOrder = ({
     >
       <div className="bg-white p-6 md:rounded-l-2xl flex flex-col justify-between">
         <div className="w-72">
-          <div className="flex justify-between items-center mb-4">
+          <div className="flex justify-between items-center mb-3">
             <Title title={"Change Order"} />
             <CloseIcon
               onClose={() => {
@@ -253,7 +253,7 @@ const ModalChangeOrder = ({
             />
           </div>
 
-          <div className="mb-4">
+          <div className="mb-3">
             <p className="font-semibold mb-1">Ubah Paket</p>
             <div className="text-sm mb-1">
               <ReplaceProduct
@@ -269,11 +269,11 @@ const ModalChangeOrder = ({
             <p className="text-xs font-semibold">{toRupiah(productPrice)}</p>
           </div>
 
-          <div className="mb-4">
+          <div className="mb-3">
             <p className="font-semibold mb-1">Ubah Add-ons</p>
             <div className="grid grid-cols-2 grid-rows-4 gap-3 ">
               <div>
-                <div className="text-sm">Orang Dewasa</div>
+                <div className="text-xs">Orang Dewasa</div>
                 <div className="text-xs font-semibold">
                   {toRupiah(personPrice)}
                 </div>
@@ -290,7 +290,7 @@ const ModalChangeOrder = ({
               </div>
 
               <div>
-                <div className="text-sm">Hewan Peliharaan</div>
+                <div className="text-xs">Hewan Peliharaan</div>
                 <div className="text-xs font-semibold">
                   {toRupiah(petPrice)}
                 </div>
@@ -307,7 +307,7 @@ const ModalChangeOrder = ({
               </div>
 
               <div>
-                <div className="text-sm">
+                <div className="text-xs">
                   {productType === "Black and White"
                     ? "Print5R (B&W)"
                     : "Print5R (Color)"}
@@ -328,7 +328,7 @@ const ModalChangeOrder = ({
               </div>
 
               <div>
-                <div className="text-sm">Soft-File</div>
+                <div className="text-xs">Soft-File</div>
                 <div className="text-xs font-semibold">
                   {toRupiah(softfilePrice)}
                 </div>
@@ -346,7 +346,7 @@ const ModalChangeOrder = ({
             </div>
           </div>
 
-          <hr className="border mb-2"></hr>
+          <hr className="border mb-1"></hr>
 
           <div className="grid grid-cols-2 grid-rows-4 gap-1 mb-1">
             <div className="text-xs font-sora font-semibold">Subtotal</div>

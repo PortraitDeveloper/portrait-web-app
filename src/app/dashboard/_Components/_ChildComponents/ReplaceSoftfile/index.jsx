@@ -35,7 +35,7 @@ const ReplaceSoftfile = ({ value, getNumber }) => {
         <select
           name="selectProduct"
           id="selectProduct"
-          className="border border-black rounded-xl font-roboto px-3 py-2 w-20"
+          className="border border-black rounded-xl font-roboto px-3 py-1 w-20"
           required
           onChange={changeHandler}
         >
