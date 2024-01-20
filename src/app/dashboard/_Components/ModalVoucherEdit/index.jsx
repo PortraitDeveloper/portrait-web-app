@@ -4,7 +4,8 @@ import Title from "../_ChildComponents/Title";
 import CloseIcon from "../_ChildComponents/CloseIcon";
 import LabelVoucher from "../_ChildComponents/LabelVoucher";
 import ReplaceDiscountType from "../_ChildComponents/ReplaceDiscountType";
-import ReplaceDiscount from "../_ChildComponents/ReplaceDiscount";
+import ReplacePercentage from "../_ChildComponents/ReplacePercentage";
+import ReplaceNominal from "../_ChildComponents/ReplaceNominal";
 import ReplaceDate from "../_ChildComponents/ReplaceDate";
 import ErrorMessage from "../_ChildComponents/ErrorMessage";
 import ButtonSubmit from "../_ChildComponents/ButtonSubmit";
@@ -105,34 +106,36 @@ const ModalVoucherEdit = ({
               />
             </div>
 
-            <div className="mb-3">
-              <ReplaceDiscountType
-                voucherType={type}
-                getType={(e) => {
-                  setVoucherType(e);
-                }}
-              />
-            </div>
+            <div className="flex justify-between items-center gap-2 mb-4">
+              <div>
+                <ReplaceDiscountType
+                  voucherType={type}
+                  getType={(e) => {
+                    setVoucherType(e);
+                  }}
+                />
+              </div>
 
-            <div className="mb-3">
-              {voucherType === "percentage" && (
-                <ReplaceDiscount
-                  placeHolder={"Contoh : 20%"}
-                  unit={"%"}
-                  getDiscount={(e) => {
-                    setPercentageDiscount(e);
-                  }}
-                />
-              )}
-              {voucherType === "nominal" && (
-                <ReplaceDiscount
-                  placeHolder={"Contoh : 20000 IDR"}
-                  unit={"IDR"}
-                  getDiscount={(e) => {
-                    setNominalDiscount(e);
-                  }}
-                />
-              )}
+              <div>
+                {voucherType === "percentage" && (
+                  <ReplacePercentage
+                    placeHolder={""}
+                    unit={"%"}
+                    getDiscount={(e) => {
+                      setPercentageDiscount(e);
+                    }}
+                  />
+                )}
+                {voucherType === "nominal" && (
+                  <ReplaceNominal
+                    placeHolder={""}
+                    unit={"Rp"}
+                    getDiscount={(e) => {
+                      setNominalDiscount(e);
+                    }}
+                  />
+                )}
+              </div>
             </div>
 
             <div className="mb-3">

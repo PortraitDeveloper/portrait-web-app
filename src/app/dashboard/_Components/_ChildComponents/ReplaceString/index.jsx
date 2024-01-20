@@ -22,7 +22,7 @@ const ReplaceString = ({ inputName, placeHolder, value, getString }) => {
       placeholder={placeHolder}
       value={replaceValue}
       outline="none"
-      className="border border-black rounded-3xl px-3 py-2.5 w-72"
+      className="border border-black rounded-3xl px-3 py-2 w-72"
       onChange={changeHandler}
     />
   );

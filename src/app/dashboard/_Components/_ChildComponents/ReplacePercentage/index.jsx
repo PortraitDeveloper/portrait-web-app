@@ -1,7 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { useState, useEffect } from "react";
-
-const ReplaceDiscount = ({
+const ReplacePercentage = ({
   placeHolder,
   unit,
   getDiscount,
@@ -12,19 +9,19 @@ const ReplaceDiscount = ({
   };
 
   return (
-    <div className="w-72">
+    <div className="border border-black rounded-3xl px-3 py-1.5 w-36">
       <div className="flex justify-between items-center">
         <input
           type="number"
           placeholder={placeHolder}
           outline="none"
-          className="border border-black rounded-3xl px-3 py-2.5"
+          className="outline-none w-full mr-3"
           onChange={changeHandler}
         />
-        <p className="text-xl">{unit}</p>
+        <p>{unit}</p>
       </div>
     </div>
   );
 };
 
-export default ReplaceDiscount;
+export default ReplacePercentage;
