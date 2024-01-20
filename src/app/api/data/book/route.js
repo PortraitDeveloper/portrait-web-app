@@ -67,47 +67,6 @@ const timeDiff = 7;
 //   }
 // }
 
-export async function GET(request) {
-  // Generate timestamp / current datetime
-  const currentTimeStamp = getTimeStamp(timeDiff);
-
-  try {
-    // Read all product data
-    const ordersBook = await prisma.orders_book.findMany({
-      include: {
-        transactions: true,
-        customers: true,
-        products: {
-          include: {
-            branches: true,
-          },
-        },
-      },
-    });
-
-    // Return all product data
-    return NextResponse.json({
-      created_at: currentTimeStamp,
-      route: "/api/data/book",
-      status: 200,
-      message: "Orders book data found.",
-      data: ordersBook,
-    });
-  } catch (error) {
-    // If the system or database server error then return an error log
-    const log = {
-      created_at: currentTimeStamp,
-      route: "/api/data/book",
-      status: 500,
-      message: error.message,
-    };
-    errorLog(log);
-    return NextResponse.json(log);
-  } finally {
-    await prisma.$disconnect();
-  }
-}
-
 export async function PATCH(request) {
   // Generate timestamp / current datetime
   const currentTimeStamp = getTimeStamp(timeDiff);
@@ -138,11 +97,14 @@ export async function PATCH(request) {
       },
     });
 
+    const book = checkOrder.book_status;
+    const payment = checkOrder.transactions.payment_status;
+
     if (
-      checkOrder.book_status === "cancel" ||
-      checkOrder.transactions.payment_status === "pending" ||
-      checkOrder.transactions.payment_status === "refund" ||
-      checkOrder.transactions.payment_status === "refund 50%"
+      book === "canceled" ||
+      payment === "pending" ||
+      payment === "refund" ||
+      payment === "partial_refund"
     ) {
       return NextResponse.json({
         created_at: currentTimeStamp,
