@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import moment from "moment";
 import "moment-timezone";
 import Title from "../_ChildComponents/Title";
@@ -65,7 +65,9 @@ const ModalDownload = ({ isVisible, closeModal, finishModal }) => {
             inputName="filename"
             placeHolder="Masukan nama file"
             getString={(e) => {
-              const createdAt = moment().format("YYYY-MM-DD_hh-mm_");
+              const createdAt = moment()
+                .tz("Asia/Jakarta")
+                .format("YYYY-MM-DD_hh-mm_");
               const fileName = createdAt + e;
               console.log(fileName);
               setFilename(fileName);

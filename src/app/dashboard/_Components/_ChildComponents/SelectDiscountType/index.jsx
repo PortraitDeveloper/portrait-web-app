@@ -8,7 +8,7 @@ const SelectDiscountType = ({ getDiscountType }) => {
     <select
       name="discountType"
       id="discountType"
-      className="border border-black rounded-3xl font-roboto px-3 py-2 w-72"
+      className="border border-black rounded-3xl font-roboto px-3 py-2 w-full"
       required
       onChange={changeHandler}
     >

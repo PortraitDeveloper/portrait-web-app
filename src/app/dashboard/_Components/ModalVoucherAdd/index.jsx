@@ -3,7 +3,8 @@ import Title from "../_ChildComponents/Title";
 import CloseIcon from "../_ChildComponents/CloseIcon";
 import InputString from "../_ChildComponents/InputString";
 import SelectDiscountType from "../_ChildComponents/SelectDiscountType";
-import InputDiscount from "../_ChildComponents/InputDiscount";
+import InputPercentage from "../_ChildComponents/InputPercentage";
+import InputNominal from "../_ChildComponents/InputNominal";
 import InputDate from "../_ChildComponents/InputDate";
 import ErrorMessage from "../_ChildComponents/ErrorMessage";
 import ButtonSubmit from "../_ChildComponents/ButtonSubmit";
@@ -78,7 +79,7 @@ const ModalVoucherAdd = ({ isVisible, closeModal, finishModal }) => {
       >
         <div className="bg-white p-6 md:rounded-l-2xl flex flex-col justify-between">
           <div>
-            <div className="flex justify-between items-center mb-5">
+            <div className="flex justify-between items-center mb-6">
               <Title title={"Add voucher"} />
               <CloseIcon
                 onClose={() => {
@@ -88,7 +89,7 @@ const ModalVoucherAdd = ({ isVisible, closeModal, finishModal }) => {
               />
             </div>
 
-            <div className="mb-3">
+            <div className="mb-4">
               <InputString
                 inputName="voucher"
                 placeHolder={"Kode Voucher"}
@@ -98,37 +99,39 @@ const ModalVoucherAdd = ({ isVisible, closeModal, finishModal }) => {
               />
             </div>
 
-            <div className="mb-3">
-              <SelectDiscountType
-                getDiscountType={(e) => {
-                  setVoucherType(e);
-                }}
-              />
-            </div>
-
-            <div className="mb-3">
-              {voucherType === "percentage" ? (
-                <InputDiscount
-                  inputName="percentageDiscount"
-                  unit="%"
-                  placeHolder={"Contoh : 20%"}
-                  getDiscount={(e) => {
-                    setPercentageDiscount(e);
+            <div className="flex justify-between items-center gap-2 mb-4">
+              <div>
+                <SelectDiscountType
+                  getDiscountType={(e) => {
+                    setVoucherType(e);
                   }}
                 />
-              ) : (
-                <InputDiscount
-                  inputName="nominalDiscount"
-                  unit="IDR"
-                  placeHolder={"Contoh : 20000 IDR"}
-                  getDiscount={(e) => {
-                    setNominalDiscount(e);
-                  }}
-                />
-              )}
+              </div>
+
+              <div>
+                {voucherType === "percentage" ? (
+                  <InputPercentage
+                    inputName="percentageDiscount"
+                    unit="%"
+                    placeHolder={""}
+                    getDiscount={(e) => {
+                      setPercentageDiscount(e);
+                    }}
+                  />
+                ) : (
+                  <InputNominal
+                    inputName="nominalDiscount"
+                    unit="Rp"
+                    placeHolder={""}
+                    getDiscount={(e) => {
+                      setNominalDiscount(e);
+                    }}
+                  />
+                )}
+              </div>
             </div>
 
-            <div className="mb-3">
+            <div className="mb-4">
               <InputDate
                 getDate={(e) => {
                   setVoucherExpired(e);

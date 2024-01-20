@@ -60,7 +60,7 @@ const FilterDateRange = ({ getDateRanges }) => {
   return (
     <div className="inline-block relative" ref={dropdownRef}>
       <div
-        className="cursor-pointer border border-blue-900 rounded-2xl text-blue-900 text-xs sm:text-sm hover:bg-slate-100 px-3 py-2 w-full sm:w-48"
+        className="cursor-pointer border border-blue-900 rounded-2xl text-blue-900 text-xs sm:text-sm px-3 py-2 w-full sm:w-48"
         onClick={toggleDropdown}
       >
         <p>

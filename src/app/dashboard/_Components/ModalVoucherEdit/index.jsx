@@ -88,7 +88,7 @@ const ModalVoucherEdit = ({
       >
         <div className="bg-white p-6 md:rounded-l-2xl flex flex-col justify-between">
           <div>
-            <div className="flex justify-between items-center mb-5">
+            <div className="flex justify-between items-center mb-6">
               <Title title="Edit voucher" />
               <CloseIcon
                 onClose={() => {
