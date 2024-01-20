@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
 
-const OptionAccount = ({ role, openModalAccount, openModalDownload }) => {
+const OptionAccount = ({ role, page, openModalAccount, openModalDownload }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const accountHandler = () => {
@@ -59,28 +59,30 @@ const OptionAccount = ({ role, openModalAccount, openModalDownload }) => {
                     <Image
                       src="/setting.png"
                       alt="Logout Icon"
-                      width={24}
-                      height={24}
+                      width={16}
+                      height={16}
                       className="mr-2"
                     />
                     <p>Account Setting</p>
                   </div>
                 </button>
-                <button
-                  onClick={downloadHandler}
-                  className="block px-4 py-2 text-sm text-gray-700 hover:font-bold"
-                >
-                  <div className="flex justify-start items-center">
-                    <Image
-                      src="/download.png"
-                      alt="Download Icon"
-                      width={24}
-                      height={24}
-                      className="mr-2"
-                    />
-                    <p>Download</p>
-                  </div>
-                </button>
+                {page === "Transaction" && (
+                  <button
+                    onClick={downloadHandler}
+                    className="block px-4 py-2 text-sm text-gray-700 hover:font-bold"
+                  >
+                    <div className="flex justify-start items-center">
+                      <Image
+                        src="/download.png"
+                        alt="Download Icon"
+                        width={16}
+                        height={16}
+                        className="mr-2"
+                      />
+                      <p>Download</p>
+                    </div>
+                  </button>
+                )}
               </div>
             )}
 
@@ -92,8 +94,8 @@ const OptionAccount = ({ role, openModalAccount, openModalDownload }) => {
                 <Image
                   src="/signout.png"
                   alt="Logout Icon"
-                  width={24}
-                  height={24}
+                  width={16}
+                  height={16}
                   className="mr-2"
                 />
                 Sign Out

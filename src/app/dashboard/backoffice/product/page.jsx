@@ -185,8 +185,9 @@ export default function ProductPage() {
           />
           <OptionAccount
             role={role}
-            credentialsData={credentialsData}
-            openModal={() => setAccountVisible(true)}
+            page={pageTitle}
+            openModalAccount={() => setModalAccountVisible(true)}
+            openModalDownload={() => setModalDownloadVisible(true)}
           />
         </div>
 

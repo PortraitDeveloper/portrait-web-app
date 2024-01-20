@@ -318,6 +318,7 @@ export default function TransactionPage() {
           />
           <OptionAccount
             role={role}
+            page={pageTitle}
             openModalAccount={() => setModalAccountVisible(true)}
             openModalDownload={() => setModalDownloadVisible(true)}
           />
