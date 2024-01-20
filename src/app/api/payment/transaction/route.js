@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import getTimeStamp from "@/utils/getTimeStamp";
 import midtransClient from "midtrans-client";
+import getTimeStamp from "@/utils/getTimeStamp";
 import prisma from "@/utils/prisma";
 import errorLog from "@/utils/errorLog";
 
@@ -29,7 +29,7 @@ export async function POST(request) {
         created_at: currentTimeStamp,
         route: "/api/payment/notification",
         status: 500,
-        message: error.message,
+        message: error.message.trim(),
       };
       errorLog(log);
       return NextResponse.json(log);
@@ -89,7 +89,7 @@ export async function POST(request) {
       created_at: currentTimeStamp,
       route: "/api/payment/transaction",
       status: 500,
-      message: error.message,
+      message: error.message.trim(),
     };
     errorLog(log);
     return NextResponse.json(log);

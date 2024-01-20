@@ -49,7 +49,7 @@ export async function GET(request, { params: { branchid, keyword } }) {
       created_at: currentTimeStamp,
       route: "/api/data/product/[branchid]/[keyword]",
       status: 500,
-      message: error.message,
+      message: error.message.trim(),
     };
     errorLog(log);
     return NextResponse.json(log);

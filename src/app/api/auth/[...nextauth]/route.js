@@ -57,9 +57,9 @@ const authHandler = NextAuth({
             created_at: currentTimeStamp,
             route: "/api/auth",
             status: 401,
-            message: error,
+            message: error.trim(),
           };
-          errorLog(log);
+          errorLog(log)
           throw new Error(error);
         }
       },

@@ -154,7 +154,7 @@ export async function GET(
       route:
         "/api/data/book/[keyword]/[branchid]/[book]/[payment]/[start]/[end]",
       status: 500,
-      message: error.message,
+      message: error.message.trim(),
     };
     errorLog(log);
     return NextResponse.json(log);

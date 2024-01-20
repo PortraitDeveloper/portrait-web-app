@@ -31,7 +31,7 @@ export async function GET(request) {
       created_at: currentTimeStamp,
       route: "/api/data/branch",
       status: 500,
-      message: error.message,
+      message: error.message.trim(),
     };
     errorLog(log);
     return NextResponse.json(log);

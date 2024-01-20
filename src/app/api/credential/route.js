@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import prisma from "@/utils/prisma";
 import bcrypt from "bcrypt";
+import prisma from "@/utils/prisma";
 import getTimeStamp from "@/utils/getTimeStamp";
 import errorLog from "@/utils/errorLog";
 
@@ -35,7 +35,7 @@ export async function GET(request) {
       created_at: currentTimeStamp,
       route: "/api/credential",
       status: 500,
-      message: error.message,
+      message: error.message.trim(),
     };
     errorLog(log);
     return NextResponse.json(log);
@@ -126,7 +126,7 @@ export async function PATCH(request) {
       created_at: currentTimeStamp,
       route: "/api/credential",
       status: 500,
-      message: error.message,
+      message: error.message.trim(),
     };
     errorLog(log);
     return NextResponse.json(log);

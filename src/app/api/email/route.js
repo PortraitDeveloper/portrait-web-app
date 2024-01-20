@@ -100,7 +100,6 @@ export async function POST(request) {
 
     // Send email and get response
     const generateEmail = await transporter.sendMail(mailOptions);
-    console.log("Email sent:", generateEmail.response);
 
     // Return success log and email response
     return NextResponse.json({
@@ -115,9 +114,9 @@ export async function POST(request) {
       created_at: currentTimeStamp,
       route: "/api/email",
       status: 500,
-      message: error.message,
+      message: error.message.trim(),
     };
-    errorLog(log);
+    errorLog(log)
     return NextResponse.json(log);
   }
 }

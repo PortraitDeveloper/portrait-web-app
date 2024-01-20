@@ -113,6 +113,7 @@ export default function CheckoutPage() {
       const log = {
         created_at: currentTimeStamp,
         route: "/checkout",
+        line: 112,
         message: error.message,
       };
       console.error(log);
@@ -190,6 +191,7 @@ export default function CheckoutPage() {
         const log = {
           created_at: currentTimeStamp,
           route: "/checkout",
+          line: 190,
           message: "Something went wrong, failed to fetch data to midtrans.",
         };
         console.error(log);
@@ -202,6 +204,7 @@ export default function CheckoutPage() {
       const log = {
         created_at: currentTimeStamp,
         route: "/checkout",
+        line: 203,
         message: error.message,
       };
       console.error(log);
@@ -247,6 +250,7 @@ export default function CheckoutPage() {
         const log = {
           created_at: currentTimeStamp,
           route: "/checkout",
+          line: 249,
           message: "Something went wrong, email could not be sent.",
         };
         console.error(log);
@@ -257,6 +261,7 @@ export default function CheckoutPage() {
       const log = {
         created_at: currentTimeStamp,
         route: "/checkout",
+        line: 260,
         message: error.message,
       };
       console.error(log);

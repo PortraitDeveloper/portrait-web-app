@@ -291,7 +291,7 @@ export async function POST(request) {
       created_at: currentTimeStamp,
       route: "/api/order/book",
       status: 500,
-      message: error.message,
+      message: error.message.trim(),
     };
     errorLog(log);
     return NextResponse.json(log);

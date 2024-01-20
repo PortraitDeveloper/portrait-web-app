@@ -31,7 +31,7 @@ export async function POST(request) {
         created_at: currentTimeStamp,
         route: "/api/payment/notification",
         status: 500,
-        message: error.message,
+        message: error.message.trim(),
       };
       errorLog(log);
       return NextResponse.json(log);
@@ -73,7 +73,6 @@ export async function POST(request) {
           };
 
           updateTransaction(order_id, log.message);
-          console.log(log);
           return NextResponse.json(log);
         }
       } else if (transaction_status == "settlement") {
@@ -85,7 +84,6 @@ export async function POST(request) {
         };
 
         updateTransaction(order_id, log.message);
-        console.log(log);
         return NextResponse.json(log);
       } else if (
         transaction_status == "cancel" ||
@@ -100,7 +98,6 @@ export async function POST(request) {
         };
 
         updateTransaction(order_id, log.message);
-        console.log(log);
         return NextResponse.json(log);
       } else if (transaction_status == "pending") {
         const log = {
@@ -111,7 +108,6 @@ export async function POST(request) {
         };
 
         updateTransaction(order_id, log.message);
-        console.log(log);
         return NextResponse.json(log);
       }
     } else {
@@ -130,7 +126,7 @@ export async function POST(request) {
       created_at: currentTimeStamp,
       route: "/api/payment/notification",
       status: 500,
-      message: error.message,
+      message: error.message.trim(),
     };
     errorLog(log);
     return NextResponse.json(log);

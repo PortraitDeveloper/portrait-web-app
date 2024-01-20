@@ -104,7 +104,7 @@ export async function POST(request) {
       created_at: currentTimeStamp,
       route: "/api/data/voucher",
       status: 500,
-      message: error.message,
+      message: error.message.trim(),
     };
     errorLog(log);
     return NextResponse.json(log);
@@ -210,7 +210,7 @@ export async function PATCH(request) {
       created_at: currentTimeStamp,
       route: "/api/data/voucher",
       status: 500,
-      message: error.message,
+      message: error.message.trim(),
     };
     errorLog(log);
     return NextResponse.json(log);
@@ -245,7 +245,7 @@ export async function DELETE(request) {
       created_at: currentTimeStamp,
       route: "/api/data/voucher",
       status: 500,
-      message: error.message,
+      message: error.message.trim(),
     };
     errorLog(log);
     return NextResponse.json(log);

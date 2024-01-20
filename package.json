@@ -26,12 +26,10 @@
     "react-date-range": "^2.0.0-alpha.4",
     "react-datepicker": "^4.25.0",
     "react-dom": "^18",
-    "sharp": "^0.33.2",
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "autoprefixer": "^10.0.1",
-    "daisyui": "^4.4.19",
     "eslint": "8.50.0",
     "eslint-config-next": "13.5.3",
     "postcss": "^8",

@@ -75,7 +75,7 @@ export async function GET(request, { params: { start, end } }) {
       created_at: currentTimeStamp,
       route: "/api/data/download/summary/[start]/[end]",
       status: 500,
-      message: error.message,
+      message: error.message.trim(),
     };
     errorLog(log);
     return NextResponse.json(log);

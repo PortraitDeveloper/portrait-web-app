@@ -96,7 +96,7 @@ export async function PATCH(request) {
       created_at: currentTimeStamp,
       route: "/api/data/transaction",
       status: 500,
-      message: error.message,
+      message: error.message.trim(),
     };
     errorLog(log);
     return NextResponse.json(log);
@@ -107,7 +107,7 @@ export async function PATCH(request) {
 
 async function updatePaymentStatus(bookCode, paymentStatus) {
   const currentTimeStamp = getTimeStamp(timeDiff);
-  
+
   await prisma.orders_book.update({
     where: {
       book_code: bookCode,

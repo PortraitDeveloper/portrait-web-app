@@ -70,7 +70,7 @@ export async function PATCH(request) {
       created_at: currentTimeStamp,
       route: "/api/order/reschedule",
       status: 500,
-      message: error.message,
+      message: error.message.trim(),
     };
     errorLog(log);
     return NextResponse.json(log);

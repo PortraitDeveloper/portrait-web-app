@@ -58,7 +58,7 @@ const timeDiff = 7;
 //       created_at: currentTimeStamp,
 //       route: "/api/data/book",
 //       status: 500,
-//       message: error.message,
+//       message: error.message.trim(),
 //     };
 //     errorLog(log);
 //     return NextResponse.json(log);
