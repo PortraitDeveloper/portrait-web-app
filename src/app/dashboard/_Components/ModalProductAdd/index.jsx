@@ -51,7 +51,10 @@ const ModalProductAdd = ({
 
   const submitHandler = async () => {
     setLoading(false);
-    let _productName = productName + " " + productType;
+    let _productName =
+      !productType || productType === ""
+        ? productName
+        : productName + " " + productType;
     const body = {
       product_name: _productName,
       branch_id: branchId,
@@ -74,7 +77,8 @@ const ModalProductAdd = ({
     if (response.status === 400) {
       setErrorMessage(response.message);
     } else {
-      _productName = _productName + "  " + thousandConversion(productPrice);
+      _productName =
+        _productName + " ".repeat(2) + thousandConversion(productPrice);
       setProductName(_productName);
       setProductId(response.data.product_id);
       setView(false);
@@ -194,7 +198,10 @@ const ModalProductAdd = ({
               />
             </div>
 
-            <ButtonLink label={"Go to YCBM"} url={process.env.NEXT_PUBLIC_PRODUCT_FORM_URL} />
+            <ButtonLink
+              label={"Go to YCBM"}
+              url={process.env.NEXT_PUBLIC_PRODUCT_FORM_URL}
+            />
           </div>
         </div>
       )}

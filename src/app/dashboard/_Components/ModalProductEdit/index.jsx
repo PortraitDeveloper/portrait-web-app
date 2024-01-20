@@ -77,7 +77,7 @@ const ModalProductEdit = ({
         message = `Product dengan ID ${_productId} berhasil diubah`;
         finishModal(message, color);
       } else {
-        _productName = _productName + "  " + thousandConversion(productPrice);
+        _productName = _productName + " ".repeat(2) + thousandConversion(productPrice);
         setProductName(_productName);
         setView(false);
       }

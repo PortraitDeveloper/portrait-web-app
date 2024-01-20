@@ -2,6 +2,12 @@ import { useState } from "react";
 import Image from "next/image";
 import ButtonCancel from "../_ChildComponents/ButtonCancel";
 import ButtonDelete from "../_ChildComponents/ButtonDelete";
+import Title from "../_ChildComponents/Title";
+import CloseIcon from "../_ChildComponents/CloseIcon";
+import Label from "../_ChildComponents/Label";
+import ButtonLink from "../_ChildComponents/ButtonLink";
+import Intruction from "../_ChildComponents/Intruction";
+import thousandConversion from "@/utils/thousandConversion";
 
 const ModalProductDelete = ({
   isVisible,
@@ -9,6 +15,7 @@ const ModalProductDelete = ({
   closeModal,
   finishModal,
 }) => {
+  const [view, setView] = useState(true);
   const [loading, setLoading] = useState(true);
   let message = null;
   let color = "red";
@@ -37,8 +44,7 @@ const ModalProductDelete = ({
       message = `Gagal menghapus product ${productData.productName}`;
       finishModal(message, color);
     } else {
-      message = `Product dengan ID ${productData.productId} telah dihapus`;
-      finishModal(message, color);
+      setView(false);
     }
   };
 
@@ -46,7 +52,7 @@ const ModalProductDelete = ({
 
   return (
     <>
-      {loading && (
+      {loading && view && (
         <div
           className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center"
           id="container"
@@ -67,9 +73,7 @@ const ModalProductDelete = ({
                 Apakah kamu yakin
               </div>
               <div className="text-sm">Ingin menghapus produk</div>
-              <div className="text-sm font-bold">
-                {productData.productName}
-              </div>
+              <div className="text-sm font-bold">{productData.productName}</div>
             </div>
 
             <div className="flex justify-center gap-3">
@@ -92,6 +96,45 @@ const ModalProductDelete = ({
         >
           <div className="bg-white p-6 rounded-2xl text-center">
             <p>Process...</p>
+          </div>
+        </div>
+      )}
+
+      {!view && (
+        <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center">
+          <div className="bg-white p-6 rounded-2xl">
+            <div className="flex justify-between items-center mb-2">
+              <Title title={"Copy Product Name"} />
+              <CloseIcon
+                onClose={() => {
+                  setView(true);
+                  message = `Product dengan ID ${productData.productId} telah dihapus`;
+                  finishModal(message, color);
+                }}
+              />
+            </div>
+
+            <div className="mb-5 w-72">
+              <Label
+                id={""}
+                name={`${productData.productName}${" ".repeat(
+                  2
+                )}${thousandConversion(productData.productPrice)}`}
+              />
+            </div>
+
+            <div className="mb-5 w-72">
+              <Intruction
+                message={
+                  "Cari nama produk berikut di halaman formulir YCBM kemudian hapus"
+                }
+              />
+            </div>
+
+            <ButtonLink
+              label={"Go to YCBM"}
+              url={process.env.NEXT_PUBLIC_PRODUCT_FORM_URL}
+            />
           </div>
         </div>
       )}
