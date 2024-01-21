@@ -13,6 +13,10 @@ export async function POST(request) {
   // Generate timestamp / current datetime
   const currentTimeStamp = getTimeStamp(timeDiff);
 
+  // Define host's email and password from environment variable
+  const user = process.env.EMAIL_HOST;
+  const pass = process.env.EMAIL_APP_PASS;
+
   // Define email template file location
   const fileName = "emailTemplate.html";
   const filePath = path.join(process.cwd(), "public", fileName);
@@ -44,11 +48,7 @@ export async function POST(request) {
       payment_url,
     } = await request.json();
 
-    // Define host's email and password from environment variable
-    const user = process.env.EMAIL_HOST;
-    const pass = process.env.EMAIL_APP_PASS;
-
-    // Read html file 
+    // Read html file
     const source = (await fs.readFile(filePath, "utf8")).toString();
 
     // Replace and insert orderBook parameter to html file
@@ -116,7 +116,7 @@ export async function POST(request) {
       status: 500,
       message: error.message.trim(),
     };
-    errorLog(log)
+    errorLog(log);
     return NextResponse.json(log);
   }
 }

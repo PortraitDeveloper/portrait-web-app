@@ -11,6 +11,10 @@ export async function POST(request) {
   // Generate timestamp / current datetime
   const currentTimeStamp = getTimeStamp(timeDiff);
 
+  // Set midtrans key
+  const server_key = process.env.NEXT_PUBLIC_SERVER_KEY;
+  const client_key = process.env.NEXT_PUBLIC_CLIENT_KEY;
+
   // Function for update a transaction data
   const updateTransaction = async (order_id, paymentUrl) => {
     try {
@@ -53,8 +57,8 @@ export async function POST(request) {
     const snap = new midtransClient.Snap({
       isProduction: false, // Sandbox
       // isProduction: true, // Production
-      serverKey: process.env.NEXT_PUBLIC_SERVER_KEY_DEV,
-      clientKey: process.env.NEXT_PUBLIC_CLIENT_KEY_DEV,
+      serverKey: server_key,
+      clientKey: client_key,
     });
 
     // Parameter config

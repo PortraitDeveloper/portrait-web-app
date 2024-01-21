@@ -7,11 +7,12 @@ import errorLog from "@/utils/errorLog";
 // Set Time Zone from UTC to WIB or Asia/Jakarta Timezone where time difference is 7
 const timeDiff = 7;
 
-const server_key = process.env.NEXT_PUBLIC_SERVER_KEY_DEV;
-
 export async function POST(request) {
   // Generate timestamp / current datetime
   const currentTimeStamp = getTimeStamp(timeDiff);
+
+  // Set midtrans key
+  const server_key = process.env.NEXT_PUBLIC_SERVER_KEY;
 
   // Function for update a transaction data
   const updateTransaction = async (order_id, paymentStatus) => {

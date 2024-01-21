@@ -17,7 +17,7 @@ const timeDiff = 7;
 const timeOut = 15;
 
 // Set redirect URL
-const redirectUrl = "https://msha.ke/bookingstudio";
+const redirectUrl = process.env.NEXT_PUBLIC_HOME_URL;
 
 export default function CheckoutPage() {
   // Read book ID parameter

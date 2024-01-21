@@ -6,14 +6,10 @@ import Label from "../_ChildComponents/Label";
 import ClipboardWhatsappLink from "../_ChildComponents/ClipboardWhatsappLink";
 import ClipboardEmailLink from "../_ChildComponents/ClipboardEmailLink";
 import ButtonLink from "../_ChildComponents/ButtonLink";
-const emailUrl = process.env.NEXT_PUBLIC_EMAIL_URL;
-const waUrl = process.env.NEXT_PUBLIC_WA_URL;
 
-const ModalCustomerDetail = ({
-  orderData,
-  isVisible,
-  closeModal,
-}) => {
+const ModalCustomerDetail = ({ orderData, isVisible, closeModal }) => {
+  const emailUrl = process.env.NEXT_PUBLIC_EMAIL_URL;
+  const waUrl = process.env.NEXT_PUBLIC_WA_URL;
   const [toggle, setToggle] = useState(false);
 
   const closeHandler = (e) => {

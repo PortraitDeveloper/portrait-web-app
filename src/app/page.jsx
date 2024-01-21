@@ -5,8 +5,9 @@ import { useEffect } from "react";
 
 export default function Home() {
   const router = useRouter();
+  const redirectUrl = process.env.NEXT_PUBLIC_HOME_URL;
 
   useEffect(() => {
-    router.push("https://msha.ke/bookingstudio");
+    router.push(redirectUrl);
   }, []);
 }

@@ -14,14 +14,13 @@ import ButtonLink from "../_ChildComponents/ButtonLink";
 import Intruction from "../_ChildComponents/Intruction";
 import thousandConversion from "@/utils/thousandConversion";
 
-const url = process.env.NEXT_PUBLIC_FORM_URL;
-
 const ModalAdditionalEdit = ({
   isVisible,
   additionalData,
   closeModal,
   finishModal,
 }) => {
+  const url = process.env.NEXT_PUBLIC_FORM_URL;
   const [additionalPrice, setAdditionalPrice] = useState(null);
   const [additionalDesc, setAdditionalDesc] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");

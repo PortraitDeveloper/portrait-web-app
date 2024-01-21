@@ -13,14 +13,13 @@ import ButtonLink from "../_ChildComponents/ButtonLink";
 import Intruction from "../_ChildComponents/Intruction";
 import thousandConversion from "@/utils/thousandConversion";
 
-const url = process.env.NEXT_PUBLIC_PRODUCT_FORM_URL;
-
 const ModalProductEdit = ({
   isVisible,
   productData,
   closeModal,
   finishModal,
 }) => {
+  const url = process.env.NEXT_PUBLIC_PRODUCT_FORM_URL;
   const [productName, setProductName] = useState(null);
   const [productPrice, setProductPrice] = useState(null);
   const [productDesc, setProductDesc] = useState(null);
@@ -77,7 +76,8 @@ const ModalProductEdit = ({
         message = `Product dengan ID ${_productId} berhasil diubah`;
         finishModal(message, color);
       } else {
-        _productName = _productName + " ".repeat(2) + thousandConversion(productPrice);
+        _productName =
+          _productName + " ".repeat(2) + thousandConversion(productPrice);
         setProductName(_productName);
         setView(false);
       }

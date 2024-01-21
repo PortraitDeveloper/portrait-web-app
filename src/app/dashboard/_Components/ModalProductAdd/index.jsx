@@ -20,6 +20,7 @@ const ModalProductAdd = ({
   closeModal,
   finishModal,
 }) => {
+  const url = process.env.NEXT_PUBLIC_PRODUCT_FORM_URL;
   const [branchId, setBranchId] = useState("null");
   const [productId, setProductId] = useState("");
   const [productName, setProductName] = useState("");
@@ -200,7 +201,7 @@ const ModalProductAdd = ({
 
             <ButtonLink
               label={"Go to YCBM"}
-              url={process.env.NEXT_PUBLIC_PRODUCT_FORM_URL}
+              url={url}
             />
           </div>
         </div>

@@ -15,6 +15,7 @@ const ModalProductDelete = ({
   closeModal,
   finishModal,
 }) => {
+  const url = process.env.NEXT_PUBLIC_PRODUCT_FORM_URL;
   const [view, setView] = useState(true);
   const [loading, setLoading] = useState(true);
   let message = null;
@@ -131,10 +132,7 @@ const ModalProductDelete = ({
               />
             </div>
 
-            <ButtonLink
-              label={"Go to YCBM"}
-              url={process.env.NEXT_PUBLIC_PRODUCT_FORM_URL}
-            />
+            <ButtonLink label={"Go to YCBM"} url={url} />
           </div>
         </div>
       )}
