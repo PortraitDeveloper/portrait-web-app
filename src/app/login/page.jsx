@@ -6,11 +6,11 @@ import { useRouter } from "next/navigation";
 
 export default function LoginPageTest() {
   const router = useRouter();
-
   const [showPassword, setShowPassword] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
@@ -23,9 +23,11 @@ export default function LoginPageTest() {
     setUsername("");
     setPassword("");
     setError("");
+    setLoading(false);
   };
 
   const handleLogin = async (e) => {
+    setLoading(true);
     e.preventDefault();
     signIn("credentials", {
       username,
@@ -35,9 +37,10 @@ export default function LoginPageTest() {
       .then((res) => {
         if (res.error) {
           setError(JSON.parse(res.error).message);
+          setLoading(false);
         } else {
+          router.push("/access");
           clearInputs();
-          router.push("/dashboard/transaction");
         }
       })
       .catch((e) => console.error(e));
@@ -94,14 +97,23 @@ export default function LoginPageTest() {
         </div>
 
         {/* Submit Button */}
-        <div className="mb-2">
-          <button
-            className="bg-blue-900 text-sm text-white font-sora hover:bg-blue-700 rounded-xl h-11 w-80"
-            type="submit"
-          >
-            Masuk
-          </button>
-        </div>
+        {!loading && (
+          <div className="mb-2">
+            <button
+              className="bg-blue-900 text-sm text-white font-sora hover:bg-blue-700 rounded-xl h-11 w-80"
+              type="submit"
+            >
+              Masuk
+            </button>
+          </div>
+        )}
+
+        {/* Process Submit */}
+        {loading && (
+          <div className="flex justify-center items-center bg-blue-900 text-sm text-center text-white font-sora hover:bg-blue-700 rounded-xl h-11 w-80 mb-2">
+            Process...
+          </div>
+        )}
 
         {error && <p className="text-red-500 font-bold text-center">{error}</p>}
       </form>

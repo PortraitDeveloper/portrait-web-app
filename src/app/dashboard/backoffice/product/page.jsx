@@ -1,6 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import SidebarContent from "../../_Components/SidebarContent";
 import OptionNavbar from "../../_Components/OptionNavbar";
@@ -20,6 +22,9 @@ import ModalLoading from "../../_Components/ModalLoading";
 const pageTitle = "Product";
 
 export default function ProductPage() {
+  const router = useRouter();
+  const { data: session } = useSession();
+
   // Product Data
   const [productsData, setProductsData] = useState([]);
   const [productsSorted, setProductsSorted] = useState({});
@@ -51,10 +56,25 @@ export default function ProductPage() {
   const [color, setColor] = useState("");
   const [role, setRole] = useState(null);
 
-  useEffect(() => {
-    const _role = "backoffice";
+  const checkRole = () => {
+    const _role = session?.user.role;
     setRole(_role);
-  }, []);
+    if (_role !== "backoffice") {
+      router.push("/dashboard/operator/transaction");
+    }
+  };
+
+  useEffect(() => {
+    checkRole();
+    getProductsData();
+  }, [
+    branchId,
+    keyword,
+    productAddVisible,
+    productEditVisible,
+    productDeleteVisible,
+    session,
+  ]);
 
   useEffect(() => {
     getCredentialsData();
@@ -64,15 +84,29 @@ export default function ProductPage() {
     getBranchesData();
   }, []);
 
-  useEffect(() => {
-    getProductsData();
-  }, [
-    branchId,
-    keyword,
-    productAddVisible,
-    productEditVisible,
-    productDeleteVisible,
-  ]);
+  const getProductsData = async () => {
+    let response = await fetch(`/api/data/product/${keyword}/${branchId}`, {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    });
+
+    response = await response.json();
+
+    if (response.status === 404) {
+      setDataAvailable(false);
+      setColor("red");
+      setMessage("Data tidak ditemukan");
+    } else {
+      const _totalPage = Math.ceil(response.data.length / perPage);
+      setTotalPage(_totalPage);
+      setProductsData(response.data);
+      setDataAvailable(true);
+      setLoading(true);
+    }
+  };
 
   const getCredentialsData = async () => {
     let response = await fetch("/api/credential", {
@@ -98,31 +132,6 @@ export default function ProductPage() {
 
     response = await response.json();
     setBranchesData(response.data);
-  };
-
-  const getProductsData = async () => {
-    let response = await fetch(`/api/data/product/${keyword}/${branchId}`, {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-    });
-
-    response = await response.json();
-
-    if (response.status === 404) {
-      setDataAvailable(false);
-      setLoading(true);
-      setColor("red");
-      setMessage("Data tidak ditemukan");
-    } else {
-      const _totalPage = Math.ceil(response.data.length / perPage);
-      setTotalPage(_totalPage);
-      setProductsData(response.data);
-      setDataAvailable(true);
-      setLoading(true);
-    }
   };
 
   const closeAccountHandler = () => {

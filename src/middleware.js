@@ -2,8 +2,11 @@ export { default } from "next-auth/middleware";
 
 export const config = {
   matcher: [
-    "/dashboard/transaction",
-    "/dashboard/product",
-    "/dashboard/prototype",
+    "/access",
+    "/dashboard/backoffice/transaction",
+    "/dashboard/backoffice/product",
+    "/dashboard/backoffice/additional",
+    "/dashboard/backoffice/voucher",
+    "/dashboard/operator/transaction",
   ],
 };

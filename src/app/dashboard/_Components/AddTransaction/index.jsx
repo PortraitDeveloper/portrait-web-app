@@ -1,5 +1,5 @@
 import Link from "next/link";
-const url = "https://msha.ke/bookingstudio";
+const url = process.env.NEXT_PUBLIC_HOME_URL;
 
 const AddTransaction = () => {
   return (

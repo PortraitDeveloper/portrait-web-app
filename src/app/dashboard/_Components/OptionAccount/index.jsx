@@ -2,6 +2,7 @@
 /* eslint-disable @next/next/no-img-element */
 import Image from "next/image";
 import { useState, useEffect } from "react";
+import { signOut } from "next-auth/react";
 
 const OptionAccount = ({ role, page, openModalAccount, openModalDownload }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -86,8 +87,8 @@ const OptionAccount = ({ role, page, openModalAccount, openModalDownload }) => {
               </div>
             )}
 
-            <a
-              href="#"
+            <button
+              onClick={signOut}
               className="block px-4 py-2 text-sm text-gray-700 hover:font-bold"
             >
               <div className="flex justify-start items-center text-red-500">
@@ -100,7 +101,7 @@ const OptionAccount = ({ role, page, openModalAccount, openModalDownload }) => {
                 />
                 Sign Out
               </div>
-            </a>
+            </button>
           </div>
         </div>
       )}

@@ -1,6 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import SidebarContent from "../../_Components/SidebarContent";
 import OptionNavbar from "../../_Components/OptionNavbar";
@@ -16,6 +18,9 @@ import ModalLoading from "../../_Components/ModalLoading";
 const pageTitle = "Add-ons";
 
 export default function AdditionalPage() {
+  const router = useRouter();
+  const { data: session } = useSession();
+
   // Add-ons Data
   const [additionalsData, setAdditionalsData] = useState([]);
   const [additionalsSorted, setAdditionalsSorted] = useState({});
@@ -43,31 +48,22 @@ export default function AdditionalPage() {
   const [color, setColor] = useState("");
   const [role, setRole] = useState(null);
 
-  useEffect(() => {
-    const _role = "backoffice";
+  const checkRole = () => {
+    const _role = session?.user.role;
     setRole(_role);
-  }, []);
+    if (_role !== "backoffice") {
+      router.push("/dashboard/operator/transaction");
+    }
+  };
+
+  useEffect(() => {
+    checkRole();
+    getAdditionalsData();
+  }, [keyword, additionalEditVisible, session]);
 
   useEffect(() => {
     getCredentialsData();
   }, []);
-
-  useEffect(() => {
-    getAdditionalsData();
-  }, [keyword, additionalEditVisible]);
-
-  const getCredentialsData = async () => {
-    let response = await fetch("/api/credential", {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-    });
-
-    response = await response.json();
-    setCredentialsData(response.data);
-  };
 
   const getAdditionalsData = async () => {
     let response = await fetch(`/api/data/additional/${keyword}`, {
@@ -82,7 +78,6 @@ export default function AdditionalPage() {
 
     if (response.status === 404) {
       setDataAvailable(false);
-      setLoading(true);
       setColor("red");
       setMessage("Data tidak ditemukan");
     } else {
@@ -92,6 +87,19 @@ export default function AdditionalPage() {
       setDataAvailable(true);
       setLoading(true);
     }
+  };
+
+  const getCredentialsData = async () => {
+    let response = await fetch("/api/credential", {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    });
+
+    response = await response.json();
+    setCredentialsData(response.data);
   };
 
   const closeAccountHandler = () => {

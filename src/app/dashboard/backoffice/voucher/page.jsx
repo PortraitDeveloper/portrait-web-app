@@ -1,6 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import SidebarContent from "../../_Components/SidebarContent";
 import OptionNavbar from "../../_Components/OptionNavbar";
@@ -20,6 +22,9 @@ import ModalLoading from "../../_Components/ModalLoading";
 const pageTitle = "Voucher";
 
 export default function VoucherPage() {
+  const router = useRouter();
+  const { data: session } = useSession();
+
   // Voucher Data
   const [vouchersData, setVouchersData] = useState([]);
   const [vouchersSorted, setVouchersSorted] = useState({});
@@ -48,18 +53,18 @@ export default function VoucherPage() {
   const [dataAvailable, setDataAvailable] = useState(false);
   const [message, setMessage] = useState(null);
   const [color, setColor] = useState("");
-  const [role, setRole] = useState(null);
+  const [role, setRole] = useState("");
 
-  useEffect(() => {
-    const _role = "backoffice";
+  const checkRole = () => {
+    const _role = session?.user.role;
     setRole(_role);
-  }, []);
+    if (_role !== "backoffice") {
+      router.push("/dashboard/operator/transaction");
+    }
+  };
 
   useEffect(() => {
-    getCredentialsData();
-  }, []);
-
-  useEffect(() => {
+    checkRole();
     getVouchersData();
   }, [
     keyword,
@@ -67,20 +72,12 @@ export default function VoucherPage() {
     voucherAddVisible,
     voucherEditVisible,
     voucherDeleteVisible,
+    session,
   ]);
 
-  const getCredentialsData = async () => {
-    let response = await fetch("/api/credential", {
-      method: "GET",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-    });
-
-    response = await response.json();
-    setCredentialsData(response.data);
-  };
+  useEffect(() => {
+    getCredentialsData();
+  }, []);
 
   const getVouchersData = async () => {
     let response = await fetch(`/api/data/voucher/${keyword}/${type}`, {
@@ -95,7 +92,6 @@ export default function VoucherPage() {
 
     if (response.status === 404) {
       setDataAvailable(false);
-      setLoading(true);
       setColor("red");
       setMessage("Data tidak ditemukan");
     } else {
@@ -105,6 +101,19 @@ export default function VoucherPage() {
       setDataAvailable(true);
       setLoading(true);
     }
+  };
+
+  const getCredentialsData = async () => {
+    let response = await fetch("/api/credential", {
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    });
+
+    response = await response.json();
+    setCredentialsData(response.data);
   };
 
   const closeAccountHandler = () => {

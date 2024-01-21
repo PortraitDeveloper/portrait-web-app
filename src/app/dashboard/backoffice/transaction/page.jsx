@@ -1,6 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import moment from "moment";
 import "moment-timezone";
 import SidebarContent from "../../_Components/SidebarContent";
@@ -30,6 +32,9 @@ import getProductType from "@/utils/getProductType";
 const pageTitle = "Transaction";
 
 export default function TransactionPage() {
+  const router = useRouter();
+  const { data: session } = useSession();
+
   // Displays data in real time
   const [bookId, setBookId] = useState(null);
   const [bookCode, setBookCode] = useState(null);
@@ -104,12 +109,29 @@ export default function TransactionPage() {
   const [dataAvailable, setDataAvailable] = useState(false);
   const [message, setMessage] = useState(null);
   const [color, setColor] = useState("");
-  const [role, setRole] = useState(null);
+  const [role, setRole] = useState("");
+
+  const checkRole = () => {
+    const _role = session?.user.role;
+    setRole(_role);
+    if (_role !== "backoffice") {
+      router.push("/dashboard/operator/transaction");
+    }
+  };
 
   useEffect(() => {
-    const _role = "backoffice";
-    setRole(_role);
-  }, []);
+    checkRole();
+    getOrdersData();
+  }, [
+    keyword,
+    branchId,
+    book,
+    payment,
+    dateRange,
+    changeOrderVisible,
+    refundOrderVisible,
+    session,
+  ]);
 
   useEffect(() => {
     getAddonsData();
@@ -131,17 +153,66 @@ export default function TransactionPage() {
     getVouchersData();
   }, []);
 
-  useEffect(() => {
-    getOrdersData();
-  }, [
-    keyword,
-    branchId,
-    book,
-    payment,
-    dateRange,
-    changeOrderVisible,
-    refundOrderVisible,
-  ]);
+  const getOrdersData = async () => {
+    const start = moment(dateRange[0].startDate)
+      .tz("Asia/Jakarta")
+      .format("YYYY-MM-DD");
+    const end = moment(dateRange[0].endDate)
+      .tz("Asia/Jakarta")
+      .format("YYYY-MM-DD");
+
+    let response = await fetch(
+      `/api/data/book/${keyword}/${branchId}/${book}/${payment}/${start}/${end}`,
+      {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    response = await response.json();
+
+    if (response.status === 404) {
+      setDataAvailable(false);
+      setColor("red");
+      setMessage("Data tidak ditemukan");
+    } else {
+      const _ordersData = response.data;
+      setOrdersData(_ordersData);
+
+      const _totalTransactions = _ordersData.length;
+      setTotalTransaction(_totalTransactions);
+
+      const _totalPage = Math.ceil(_totalTransactions / perPage);
+      setTotalPage(_totalPage);
+
+      let _transactions = [];
+      for (let i = 0; i < _totalTransactions; i++) {
+        _transactions.push(_ordersData[i].transactions);
+      }
+
+      let _totalPaid = _transactions.filter(
+        (item) => item.payment_status === "paid"
+      );
+      setTotalPaid(_totalPaid.length);
+
+      let _totalUnpaid = _transactions.filter(
+        (item) => item.payment_status === "unpaid"
+      );
+      setTotalUnpaid(_totalUnpaid.length);
+
+      let _totalRefund = _transactions.filter(
+        (item) =>
+          item.payment_status === "refund" ||
+          item.payment_status === "partial_refund"
+      );
+      setTotalRefund(_totalRefund.length);
+      setDataAvailable(true);
+      setLoading(true);
+    }
+  };
 
   const getAddonsData = async () => {
     let response = await fetch(`/api/data/additional/null`, {
@@ -206,69 +277,6 @@ export default function TransactionPage() {
 
     response = await response.json();
     setVouchersData(response.data);
-  };
-
-  const getOrdersData = async () => {
-    const start = moment(dateRange[0].startDate)
-      .tz("Asia/Jakarta")
-      .format("YYYY-MM-DD");
-    const end = moment(dateRange[0].endDate)
-      .tz("Asia/Jakarta")
-      .format("YYYY-MM-DD");
-
-    let response = await fetch(
-      `/api/data/book/${keyword}/${branchId}/${book}/${payment}/${start}/${end}`,
-      {
-        method: "GET",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-      }
-    );
-
-    response = await response.json();
-    setLoading(true);
-
-    if (response.status === 404) {
-      setDataAvailable(false);
-      setLoading(true);
-      setColor("red");
-      setMessage("Data tidak ditemukan");
-    } else {
-      const _ordersData = response.data;
-      setOrdersData(_ordersData);
-
-      const _totalTransactions = _ordersData.length;
-      setTotalTransaction(_totalTransactions);
-
-      const _totalPage = Math.ceil(_totalTransactions / perPage);
-      setTotalPage(_totalPage);
-
-      let _transactions = [];
-      for (let i = 0; i < _totalTransactions; i++) {
-        _transactions.push(_ordersData[i].transactions);
-      }
-
-      let _totalPaid = _transactions.filter(
-        (item) => item.payment_status === "paid"
-      );
-      setTotalPaid(_totalPaid.length);
-
-      let _totalUnpaid = _transactions.filter(
-        (item) => item.payment_status === "unpaid"
-      );
-      setTotalUnpaid(_totalUnpaid.length);
-
-      let _totalRefund = _transactions.filter(
-        (item) =>
-          item.payment_status === "refund" ||
-          item.payment_status === "partial_refund"
-      );
-      setTotalRefund(_totalRefund.length);
-      setDataAvailable(true);
-      setLoading(true);
-    }
   };
 
   const closeAccountHandler = () => {
