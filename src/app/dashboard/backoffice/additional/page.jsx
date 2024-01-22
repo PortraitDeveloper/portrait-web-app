@@ -46,11 +46,16 @@ export default function AdditionalPage() {
   const [dataAvailable, setDataAvailable] = useState(false);
   const [message, setMessage] = useState(null);
   const [color, setColor] = useState("");
+
+  // Session
   const [role, setRole] = useState(null);
+  const [accessToken, setAccessToken] = useState("");
 
   const checkRole = () => {
     const _role = session?.user.role;
     setRole(_role);
+    setAccessToken(session?.user.accessToken);
+
     if (_role !== "backoffice") {
       router.push("/dashboard/operator/transaction");
     }
@@ -71,6 +76,7 @@ export default function AdditionalPage() {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
+        Authorization: accessToken,
       },
     });
 
@@ -95,6 +101,7 @@ export default function AdditionalPage() {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
+        Authorization: accessToken,
       },
     });
 
@@ -228,6 +235,7 @@ export default function AdditionalPage() {
         </div>
 
         <ModalAccount
+          accessToken={accessToken}
           isVisible={AccountVisible}
           credentialsData={credentialsData}
           closeModal={() => {
@@ -241,6 +249,7 @@ export default function AdditionalPage() {
         />
 
         <ModalAdditionalEdit
+          accessToken={accessToken}
           isVisible={additionalEditVisible}
           additionalData={additionalData}
           closeModal={() => {

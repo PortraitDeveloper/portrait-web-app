@@ -24,7 +24,6 @@ import ModalDownload from "../../_Components/ModalDownload";
 import ModalOrderDetail from "../../_Components/ModalOrderDetail";
 import ModalChangeOrder from "../../_Components/ModalChangeOrder";
 import ModalCustomerDetail from "../../_Components/ModalCustomerDetail";
-import ModalFilter from "../../_Components/ModalFilter";
 import ModalLoading from "../../_Components/ModalLoading";
 import ModalRefund from "../../_Components/ModalRefund";
 import dataConversion from "@/utils/dataConversion";
@@ -102,18 +101,22 @@ export default function TransactionPage() {
   const [changeOrderVisible, setChangeOrderVisible] = useState(false);
   const [customerDetailVisible, setCustomerDetailVisible] = useState(false);
   const [refundOrderVisible, setRefundOrderVisible] = useState(false);
-  const [filterVisible, setFilterVisible] = useState(false);
 
   // Others
   const [loading, setLoading] = useState(false);
   const [dataAvailable, setDataAvailable] = useState(false);
   const [message, setMessage] = useState(null);
   const [color, setColor] = useState("");
+
+  // Session
   const [role, setRole] = useState("");
+  const [accessToken, setAccessToken] = useState("");
 
   const checkRole = () => {
     const _role = session?.user.role;
     setRole(_role);
+    setAccessToken(session?.user.accessToken);
+
     if (_role !== "backoffice") {
       router.push("/dashboard/operator/transaction");
     }
@@ -168,6 +171,7 @@ export default function TransactionPage() {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
+          Authorization: accessToken,
         },
       }
     );
@@ -220,6 +224,7 @@ export default function TransactionPage() {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
+        Authorization: accessToken,
       },
     });
 
@@ -233,6 +238,7 @@ export default function TransactionPage() {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
+        Authorization: accessToken,
       },
     });
 
@@ -246,6 +252,7 @@ export default function TransactionPage() {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
+        Authorization: accessToken,
       },
     });
 
@@ -259,6 +266,7 @@ export default function TransactionPage() {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
+        Authorization: accessToken,
       },
     });
 
@@ -272,6 +280,7 @@ export default function TransactionPage() {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
+        Authorization: accessToken,
       },
     });
 
@@ -301,10 +310,6 @@ export default function TransactionPage() {
 
   const closeRefundHandler = () => {
     setRefundOrderVisible(false);
-  };
-
-  const closeFilterHandler = () => {
-    setFilterVisible(false);
   };
 
   const hideMessageHandler = () => {
@@ -477,36 +482,14 @@ export default function TransactionPage() {
               setProductName(productName);
               setProductType(productType);
               setProductPrice(e.products.product_price);
-              console.log("InitialProductPrice:", e.products.product_price);
-
               setNumberPerson(e.number_of_add_person);
               setPersonPrice(e.transactions.additional_person_price);
-              console.log(
-                "InitialPersonPrice:",
-                e.transactions.additional_person_price
-              );
-
               setNumberPet(e.number_of_add_pet);
               setPetPrice(e.transactions.additional_pet_price);
-              console.log(
-                "InitialPetPrice:",
-                e.transactions.additional_pet_price
-              );
-
               setNumberPrint5r(e.number_of_add_print5r);
               setPrint5rPrice(e.transactions.additional_print5r_price);
-              console.log(
-                "InitialPrint5rPrice:",
-                e.transactions.additional_print5r_price
-              );
-
               setNumberSoftfile(_numberSoftfile);
               setSoftfilePrice(e.transactions.additional_softfile_price);
-              console.log(
-                "InitialSoftfilePrice:",
-                e.transactions.additional_softfile_price
-              );
-
               setSubTotal(e.transactions.total_price);
               setVoucherCode(e.transactions.voucher_code);
               setDiscount(
@@ -551,6 +534,7 @@ export default function TransactionPage() {
         </div>
 
         <ModalAccount
+          accessToken={accessToken}
           isVisible={accountVisible}
           credentialsData={credentialsData}
           closeModal={() => {
@@ -564,6 +548,7 @@ export default function TransactionPage() {
         />
 
         <ModalDownload
+          accessToken={accessToken}
           isVisible={downloadVisible}
           closeModal={() => {
             closeDownloadHandler();
@@ -590,6 +575,7 @@ export default function TransactionPage() {
         />
 
         <ModalChangeOrder
+          accessToken={accessToken}
           isVisible={changeOrderVisible}
           productsData={productsData}
           addonsData={addonsData}
@@ -628,35 +614,30 @@ export default function TransactionPage() {
             setProductType(e);
           }}
           getProductPrice={(e) => {
-            console.log("ProductPrice:", e);
             setProductPrice(e);
           }}
           getNumberPerson={(e) => {
             setNumberPerson(e);
           }}
           getPersonPrice={(e) => {
-            console.log("PersonPrice:", e);
             setPersonPrice(e);
           }}
           getNumberPet={(e) => {
             setNumberPet(e);
           }}
           getPetPrice={(e) => {
-            console.log("PetPrice:", e);
             setPetPrice(e);
           }}
           getNumberPrint5r={(e) => {
             setNumberPrint5r(e);
           }}
           getPrint5rPrice={(e) => {
-            console.log("Print5rPrice:", e);
             setPrint5rPrice(e);
           }}
           getNumberSoftfile={(e) => {
             setNumberSoftfile(e);
           }}
           getSoftfilePrice={(e) => {
-            console.log("SoftfilePrice:", e);
             setSoftfilePrice(e);
           }}
           getSubTotal={(e) => {
@@ -690,6 +671,7 @@ export default function TransactionPage() {
         />
 
         <ModalRefund
+          accessToken={accessToken}
           orderData={orderSelected}
           isVisible={refundOrderVisible}
           closeModal={() => {
@@ -699,30 +681,6 @@ export default function TransactionPage() {
             setMessage(message);
             setColor(color);
             closeRefundHandler();
-          }}
-        />
-
-        <ModalFilter
-          branchesData={branchesData}
-          getDateRanges={(ranges) => {
-            console.log("DateRange:", ranges);
-            setDateRange([ranges]);
-          }}
-          getBranchId={(e) => {
-            console.log("BranchID:", e);
-            setBranchId(e);
-          }}
-          getBookStatus={(e) => {
-            console.log("Book:", e);
-            setBook(e);
-          }}
-          getPaymentStatus={(e) => {
-            console.log("Payment:", e);
-            setPayment(e);
-          }}
-          isVisible={filterVisible}
-          closeModal={() => {
-            closeFilterHandler();
           }}
         />
       </div>

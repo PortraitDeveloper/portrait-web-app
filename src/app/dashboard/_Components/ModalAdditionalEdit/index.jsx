@@ -15,6 +15,7 @@ import Intruction from "../_ChildComponents/Intruction";
 import thousandConversion from "@/utils/thousandConversion";
 
 const ModalAdditionalEdit = ({
+  accessToken,
   isVisible,
   additionalData,
   closeModal,
@@ -61,6 +62,7 @@ const ModalAdditionalEdit = ({
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
+        Authorization: accessToken,
       },
       body: JSON.stringify(body),
     });

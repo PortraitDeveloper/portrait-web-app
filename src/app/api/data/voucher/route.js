@@ -14,6 +14,23 @@ export async function POST(request) {
   const currentTimeStamp = getTimeStamp(timeDiff);
 
   try {
+    // Authorization
+    const accessToken = request.headers.get("Authorization");
+
+    if (!accessToken) {
+      const log = {
+        created_at: currentTimeStamp,
+        route: "/api/data/voucher",
+        status: 401,
+        message: "Suspicious request, not authorized to create",
+      };
+      errorLog(log);
+      return NextResponse.json(
+        { message: "You are not authorized to create this data" },
+        { status: 401 }
+      );
+    }
+
     // Read the body data
     const {
       voucher_code,
@@ -118,6 +135,23 @@ export async function PATCH(request) {
   const currentTimeStamp = getTimeStamp(timeDiff);
 
   try {
+    // Authorization
+    const accessToken = request.headers.get("Authorization");
+
+    if (!accessToken) {
+      const log = {
+        created_at: currentTimeStamp,
+        route: "/api/data/voucher",
+        status: 401,
+        message: "Suspicious request, not authorized to alter",
+      };
+      errorLog(log);
+      return NextResponse.json(
+        { message: "You are not authorized to alter this data" },
+        { status: 401 }
+      );
+    }
+
     // Read the body data
     const {
       voucher_code,
@@ -224,6 +258,23 @@ export async function DELETE(request) {
   const currentTimeStamp = getTimeStamp(timeDiff);
 
   try {
+    // Authorization
+    const accessToken = request.headers.get("Authorization");
+
+    if (!accessToken) {
+      const log = {
+        created_at: currentTimeStamp,
+        route: "/api/data/product",
+        status: 401,
+        message: "Suspicious request, not authorized to delete",
+      };
+      errorLog(log);
+      return NextResponse.json(
+        { message: "You are not authorized to delete this data" },
+        { status: 401 }
+      );
+    }
+
     // Read the body data
     const { voucher_code } = await request.json();
 

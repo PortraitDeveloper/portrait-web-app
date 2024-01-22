@@ -15,6 +15,24 @@ export async function GET(request) {
   const currentTimeStamp = getTimeStamp(timeDiff);
 
   try {
+    // Authorization
+    const accessToken = request.headers.get("Authorization");
+
+    if (!accessToken) {
+      const log = {
+        created_at: currentTimeStamp,
+        route:
+          "/api/data/credential",
+        status: 401,
+        message: "Suspicious request, not authorized to get data",
+      };
+      errorLog(log);
+      return NextResponse.json(
+        { message: "You are not authorized to get this data" },
+        { status: 401 }
+      );
+    }
+
     // Read all credentials data
     const credentials = await prisma.user.findMany({
       orderBy: {
@@ -24,7 +42,7 @@ export async function GET(request) {
 
     return NextResponse.json({
       created_at: currentTimeStamp,
-      route: "/api/credential",
+      route: "/api/data/credential",
       status: 200,
       message: "Item data found",
       data: credentials,
@@ -33,7 +51,7 @@ export async function GET(request) {
     // If the system or database server error then return an error log
     const log = {
       created_at: currentTimeStamp,
-      route: "/api/credential",
+      route: "/api/data/credential",
       status: 500,
       message: error.message.trim(),
     };
@@ -49,6 +67,23 @@ export async function PATCH(request) {
   const currentTimeStamp = getTimeStamp(timeDiff);
 
   try {
+     // Authorization
+     const accessToken = request.headers.get("Authorization");
+
+     if (!accessToken) {
+       const log = {
+         created_at: currentTimeStamp,
+         route: "/api/data/credential",
+         status: 401,
+         message: "Suspicious request, not authorized to alter",
+       };
+       errorLog(log);
+       return NextResponse.json(
+         { message: "You are not authorized to alter this data" },
+         { status: 401 }
+       );
+     }
+
     // Read the request body
     const { user_id, old_password, new_password, confirm_password } =
       await request.json();
@@ -58,7 +93,7 @@ export async function PATCH(request) {
       // Return error message
       return NextResponse.json({
         created_at: currentTimeStamp,
-        route: "/api/credential",
+        route: "/api/data/credential",
         status: 401,
         message: "All fields must be filled in",
       });
@@ -76,7 +111,7 @@ export async function PATCH(request) {
     if (!isValid) {
       return NextResponse.json({
         created_at: currentTimeStamp,
-        route: "/api/credential",
+        route: "/api/data/credential",
         status: 401,
         message: "Invalid old password",
       });
@@ -87,7 +122,7 @@ export async function PATCH(request) {
       // Return error message
       return NextResponse.json({
         created_at: currentTimeStamp,
-        route: "/api/credential",
+        route: "/api/data/credential",
         status: 401,
         message: "The new password cannot be the same",
       });
@@ -98,7 +133,7 @@ export async function PATCH(request) {
       // Return error message
       return NextResponse.json({
         created_at: currentTimeStamp,
-        route: "/api/credential",
+        route: "/api/data/credential",
         status: 401,
         message: "Confirm password are not the same",
       });
@@ -116,7 +151,7 @@ export async function PATCH(request) {
     // Return a success log
     return NextResponse.json({
       created_at: currentTimeStamp,
-      route: "/api/credential",
+      route: "/api/data/credential",
       status: 200,
       message: "Account setting have been saved",
     });
@@ -124,7 +159,7 @@ export async function PATCH(request) {
     // If the system or database server error then return an error log
     const log = {
       created_at: currentTimeStamp,
-      route: "/api/credential",
+      route: "/api/data/credential",
       status: 500,
       message: error.message.trim(),
     };

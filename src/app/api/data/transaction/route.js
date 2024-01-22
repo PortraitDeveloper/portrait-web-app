@@ -14,9 +14,27 @@ const timeDiff = 7;
 export async function PATCH(request) {
   // Generate timestamp / current datetime
   const currentTimeStamp = getTimeStamp(timeDiff);
-  const { book_code } = await request.json();
 
   try {
+    // Authorization
+    const accessToken = request.headers.get("Authorization");
+
+    if (!accessToken) {
+      const log = {
+        created_at: currentTimeStamp,
+        route: "/api/data/transaction",
+        status: 401,
+        message: "Suspicious request, not authorized to alter data",
+      };
+      errorLog(log);
+      return NextResponse.json(
+        { message: "You are not authorized to alter this data" },
+        { status: 401 }
+      );
+    }
+
+    const { book_code } = await request.json();
+
     const orderBook = await prisma.orders_book.findUnique({
       where: {
         book_code: book_code,

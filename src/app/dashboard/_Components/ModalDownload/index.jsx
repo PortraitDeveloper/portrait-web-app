@@ -8,7 +8,7 @@ import FilterDownloadRange from "../FilterDownloadRange";
 import InputString from "../_ChildComponents/InputString";
 import ButtonDownloadXlsx from "../ButtonDownloadXlsx";
 
-const ModalDownload = ({ isVisible, closeModal, finishModal }) => {
+const ModalDownload = ({ accessToken, isVisible, closeModal, finishModal }) => {
   let color = "green";
   const [message, setMessage] = useState(null);
   const [filename, setFilename] = useState(null);
@@ -81,6 +81,7 @@ const ModalDownload = ({ isVisible, closeModal, finishModal }) => {
 
         <div>
           <ButtonDownloadXlsx
+            accessToken={accessToken}
             startDate={moment(dateRange[0].startDate)
               .tz("Asia/Jakarta")
               .format("YYYY-MM-DD")}

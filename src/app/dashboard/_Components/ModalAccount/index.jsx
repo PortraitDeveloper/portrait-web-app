@@ -8,6 +8,7 @@ import ButtonSubmit from "../_ChildComponents/ButtonSubmit";
 import ProcessSubmit from "../_ChildComponents/ProcessSubmit";
 
 const ModalAccount = ({
+  accessToken,
   isVisible,
   credentialsData,
   closeModal,
@@ -46,11 +47,12 @@ const ModalAccount = ({
       confirm_password: confirmPassword,
     };
 
-    let response = await fetch("/api/credential", {
+    let response = await fetch("/api/data/credential", {
       method: "PATCH",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
+        Authorization: accessToken,
       },
       body: JSON.stringify(body),
     });

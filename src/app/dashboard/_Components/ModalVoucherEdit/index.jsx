@@ -12,6 +12,7 @@ import ButtonSubmit from "../_ChildComponents/ButtonSubmit";
 import ProcessSubmit from "../_ChildComponents/ProcessSubmit";
 
 const ModalVoucherEdit = ({
+  accessToken,
   isVisible,
   type,
   voucherData,
@@ -60,6 +61,7 @@ const ModalVoucherEdit = ({
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
+        Authorization: accessToken,
       },
       body: JSON.stringify(body),
     });

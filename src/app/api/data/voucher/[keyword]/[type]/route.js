@@ -14,6 +14,24 @@ export async function GET(request, { params: { keyword, type } }) {
   const currentTimeStamp = getTimeStamp(timeDiff);
 
   try {
+    // Authorization
+    const accessToken = request.headers.get("Authorization");
+
+    if (!accessToken) {
+      const log = {
+        created_at: currentTimeStamp,
+        route:
+          "/api/data/voucher/[keyword]/[type]",
+        status: 401,
+        message: "Suspicious request, not authorized to get data",
+      };
+      errorLog(log);
+      return NextResponse.json(
+        { message: "You are not authorized to get this data" },
+        { status: 401 }
+      );
+    }
+
     // Read parameters
     const keyWord = keyword === "null" ? "%%" : "%" + keyword + "%";
 

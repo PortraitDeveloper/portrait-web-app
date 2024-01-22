@@ -53,11 +53,16 @@ export default function VoucherPage() {
   const [dataAvailable, setDataAvailable] = useState(false);
   const [message, setMessage] = useState(null);
   const [color, setColor] = useState("");
+
+  // Session
   const [role, setRole] = useState("");
+  const [accessToken, setAccessToken] = useState("");
 
   const checkRole = () => {
     const _role = session?.user.role;
     setRole(_role);
+    setAccessToken(session?.user.accessToken);
+
     if (_role !== "backoffice") {
       router.push("/dashboard/operator/transaction");
     }
@@ -85,6 +90,7 @@ export default function VoucherPage() {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
+        Authorization: accessToken,
       },
     });
 
@@ -109,6 +115,7 @@ export default function VoucherPage() {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
+        Authorization: accessToken,
       },
     });
 
@@ -286,6 +293,7 @@ export default function VoucherPage() {
         </div>
 
         <ModalAccount
+          accessToken={accessToken}
           isVisible={AccountVisible}
           credentialsData={credentialsData}
           closeModal={() => {
@@ -299,6 +307,7 @@ export default function VoucherPage() {
         />
 
         <ModalVoucherAdd
+          accessToken={accessToken}
           isVisible={voucherAddVisible}
           closeModal={() => {
             closeVoucherHandler();
@@ -311,6 +320,7 @@ export default function VoucherPage() {
         />
 
         <ModalVoucherEdit
+          accessToken={accessToken}
           isVisible={voucherEditVisible}
           type={type}
           voucherData={voucherData}
@@ -325,6 +335,7 @@ export default function VoucherPage() {
         />
 
         <ModalVoucherDelete
+          accessToken={accessToken}
           isVisible={voucherDeleteVisible}
           voucherData={voucherData}
           closeModal={() => {

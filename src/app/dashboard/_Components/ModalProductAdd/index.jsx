@@ -15,6 +15,7 @@ import Intruction from "../_ChildComponents/Intruction";
 import thousandConversion from "@/utils/thousandConversion";
 
 const ModalProductAdd = ({
+  accessToken,
   isVisible,
   branchesData,
   closeModal,
@@ -68,6 +69,7 @@ const ModalProductAdd = ({
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
+        Authorization: accessToken,
       },
       body: JSON.stringify(body),
     });
@@ -199,10 +201,7 @@ const ModalProductAdd = ({
               />
             </div>
 
-            <ButtonLink
-              label={"Go to YCBM"}
-              url={url}
-            />
+            <ButtonLink label={"Go to YCBM"} url={url} />
           </div>
         </div>
       )}

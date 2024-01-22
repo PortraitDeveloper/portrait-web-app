@@ -17,6 +17,24 @@ export async function GET(
   const currentTimeStamp = getTimeStamp(timeDiff);
 
   try {
+    // Authorization
+    const accessToken = request.headers.get("Authorization");
+
+    if (!accessToken) {
+      const log = {
+        created_at: currentTimeStamp,
+        route:
+          "/api/data/book/[keyword]/[branchid]/[book]/[payment]/[start]/[end]",
+        status: 401,
+        message: "Suspicious request, not authorized to get data",
+      };
+      errorLog(log);
+      return NextResponse.json(
+        { message: "You are not authorized to get this data" },
+        { status: 401 }
+      );
+    }
+
     const keyWord = keyword === "null" ? "" : keyword;
     const branchId = branchid === "all" ? "" : branchid;
     const bookStatus = book === "all" ? "" : book;

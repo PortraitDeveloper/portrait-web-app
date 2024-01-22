@@ -12,6 +12,7 @@ import toRupiah from "@/utils/toRupiah";
 import calculateOrder from "@/utils/calculateOrder";
 
 const ModalChangeOrder = ({
+  accessToken,
   isVisible,
   productsData,
   addonsData,
@@ -216,6 +217,7 @@ const ModalChangeOrder = ({
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
+        Authorization: accessToken,
       },
       body: JSON.stringify(body),
     });

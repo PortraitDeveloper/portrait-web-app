@@ -10,6 +10,7 @@ import Intruction from "../_ChildComponents/Intruction";
 import thousandConversion from "@/utils/thousandConversion";
 
 const ModalProductDelete = ({
+  accessToken,
   isVisible,
   productData,
   closeModal,
@@ -34,6 +35,7 @@ const ModalProductDelete = ({
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
+        Authorization: accessToken,
       },
       body: JSON.stringify({ product_id: productData.productId }),
     });

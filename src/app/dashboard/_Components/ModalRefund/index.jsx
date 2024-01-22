@@ -3,7 +3,13 @@ import Image from "next/image";
 import ButtonCancel from "../_ChildComponents/ButtonCancel";
 import ButtonDelete from "../_ChildComponents/ButtonDelete";
 
-const ModalRefund = ({ isVisible, orderData, closeModal, finishModal }) => {
+const ModalRefund = ({
+  accessToken,
+  isVisible,
+  orderData,
+  closeModal,
+  finishModal,
+}) => {
   const [loading, setLoading] = useState(true);
   let message = null;
   let color = "red";
@@ -21,6 +27,7 @@ const ModalRefund = ({ isVisible, orderData, closeModal, finishModal }) => {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
+        Authorization: accessToken,
       },
       body: JSON.stringify({ book_code: orderData.book_code }),
     });

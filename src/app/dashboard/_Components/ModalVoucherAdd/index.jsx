@@ -10,7 +10,12 @@ import ErrorMessage from "../_ChildComponents/ErrorMessage";
 import ButtonSubmit from "../_ChildComponents/ButtonSubmit";
 import ProcessSubmit from "../_ChildComponents/ProcessSubmit";
 
-const ModalVoucherAdd = ({ isVisible, closeModal, finishModal }) => {
+const ModalVoucherAdd = ({
+  accessToken,
+  isVisible,
+  closeModal,
+  finishModal,
+}) => {
   const [voucherCode, setVoucherCode] = useState("");
   const [voucherType, setVoucherType] = useState("percentage");
   const [percentageDiscount, setPercentageDiscount] = useState(null);
@@ -52,6 +57,7 @@ const ModalVoucherAdd = ({ isVisible, closeModal, finishModal }) => {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
+        Authorization: accessToken,
       },
       body: JSON.stringify(body),
     });

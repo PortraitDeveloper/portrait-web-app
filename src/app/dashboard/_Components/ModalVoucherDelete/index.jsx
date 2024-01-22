@@ -4,6 +4,7 @@ import ButtonCancel from "../_ChildComponents/ButtonCancel";
 import ButtonDelete from "../_ChildComponents/ButtonDelete";
 
 const ModalVoucherDelete = ({
+  accessToken,
   isVisible,
   voucherData,
   closeModal,
@@ -26,6 +27,7 @@ const ModalVoucherDelete = ({
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
+        Authorization: accessToken,
       },
       body: JSON.stringify({ voucher_code: voucherData.voucherCode }),
     });
@@ -67,9 +69,7 @@ const ModalVoucherDelete = ({
                 Apakah kamu yakin
               </div>
               <div className="text-sm">Ingin menghapus voucher</div>
-              <div className="text-sm font-bold">
-                {voucherData.voucherCode}
-              </div>
+              <div className="text-sm font-bold">{voucherData.voucherCode}</div>
             </div>
 
             <div className="flex justify-center gap-3">

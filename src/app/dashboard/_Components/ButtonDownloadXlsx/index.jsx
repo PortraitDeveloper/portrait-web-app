@@ -24,6 +24,7 @@ const downloadExcel = (data, fileName, sheetName) => {
 };
 
 const ButtonDownloadXlsx = ({
+  accessToken,
   startDate,
   endDate,
   fileName = "example.xlsx",
@@ -31,9 +32,9 @@ const ButtonDownloadXlsx = ({
   getMessage,
 }) => {
   const handleDownload = async () => {
-    if(!fileName || !startDate || !endDate) {
-      getMessage("Periode dan nama file wajib diisi")
-      return
+    if (!fileName || !startDate || !endDate) {
+      getMessage("Periode dan nama file wajib diisi");
+      return;
     }
 
     let response = await fetch(
@@ -43,6 +44,7 @@ const ButtonDownloadXlsx = ({
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
+          Authorization: accessToken,
         },
       }
     );

@@ -14,10 +14,28 @@ export async function POST(request) {
   const currentTimeStamp = getTimeStamp(timeDiff);
 
   try {
+    // Authorization
+    const accessToken = request.headers.get("Authorization");
+
+    if (!accessToken) {
+      const log = {
+        created_at: currentTimeStamp,
+        route:
+          "/api/data/product",
+        status: 401,
+        message: "Suspicious request, not authorized to create data",
+      };
+      errorLog(log);
+      return NextResponse.json(
+        { message: "You are not authorized to create this data" },
+        { status: 401 }
+      );
+    }
+
     // Read the body data
     const { product_name, product_price, product_desc, branch_id } =
       await request.json();
-    
+
     if (!product_name || !product_price || branch_id === "null") {
       return NextResponse.json({
         created_at: currentTimeStamp,
@@ -27,7 +45,7 @@ export async function POST(request) {
       });
     }
 
-    const productPrice = parseInt(product_price)
+    const productPrice = parseInt(product_price);
 
     if (productPrice <= 0) {
       return NextResponse.json({
@@ -104,6 +122,24 @@ export async function PATCH(request) {
   const currentTimeStamp = getTimeStamp(timeDiff);
 
   try {
+    // Authorization
+    const accessToken = request.headers.get("Authorization");
+
+    if (!accessToken) {
+      const log = {
+        created_at: currentTimeStamp,
+        route:
+          "/api/data/product",
+        status: 401,
+        message: "Suspicious request, not authorized to alter data",
+      };
+      errorLog(log);
+      return NextResponse.json(
+        { message: "You are not authorized to alter this data" },
+        { status: 401 }
+      );
+    }
+
     // Read the body data
     const { product_id, product_name, product_price, product_desc, branch_id } =
       await request.json();
@@ -184,6 +220,24 @@ export async function DELETE(request) {
   const currentTimeStamp = getTimeStamp(timeDiff);
 
   try {
+    // Authorization
+    const accessToken = request.headers.get("Authorization");
+
+    if (!accessToken) {
+      const log = {
+        created_at: currentTimeStamp,
+        route:
+          "/api/data/product",
+        status: 401,
+        message: "Suspicious request, not authorized to delete data",
+      };
+      errorLog(log);
+      return NextResponse.json(
+        { message: "You are not authorized to delete this data" },
+        { status: 401 }
+      );
+    }
+
     // Read the body data
     const { product_id } = await request.json();
 

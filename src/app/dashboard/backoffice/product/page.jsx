@@ -54,11 +54,16 @@ export default function ProductPage() {
   const [dataAvailable, setDataAvailable] = useState(false);
   const [message, setMessage] = useState(null);
   const [color, setColor] = useState("");
+
+  // Session
   const [role, setRole] = useState(null);
+  const [accessToken, setAccessToken] = useState("");
 
   const checkRole = () => {
     const _role = session?.user.role;
     setRole(_role);
+    setAccessToken(session?.user.accessToken);
+
     if (_role !== "backoffice") {
       router.push("/dashboard/operator/transaction");
     }
@@ -90,6 +95,7 @@ export default function ProductPage() {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
+        Authorization: accessToken,
       },
     });
 
@@ -114,6 +120,7 @@ export default function ProductPage() {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
+        Authorization: accessToken,
       },
     });
 
@@ -127,6 +134,7 @@ export default function ProductPage() {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
+        Authorization: accessToken,
       },
     });
 
@@ -303,6 +311,7 @@ export default function ProductPage() {
         </div>
 
         <ModalAccount
+          accessToken={accessToken}
           isVisible={AccountVisible}
           credentialsData={credentialsData}
           closeModal={() => {
@@ -316,6 +325,7 @@ export default function ProductPage() {
         />
 
         <ModalProductAdd
+          accessToken={accessToken}
           isVisible={productAddVisible}
           branchesData={branchesData}
           closeModal={() => {
@@ -329,6 +339,7 @@ export default function ProductPage() {
         />
 
         <ModalProductEdit
+          accessToken={accessToken}
           isVisible={productEditVisible}
           productData={productData}
           closeModal={() => {
@@ -342,6 +353,7 @@ export default function ProductPage() {
         />
 
         <ModalProductDelete
+          accessToken={accessToken}
           isVisible={productDeleteVisible}
           productData={productData}
           closeModal={() => {
