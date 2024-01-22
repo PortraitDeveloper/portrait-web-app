@@ -22,28 +22,12 @@ export default function Checkout({
         <h1 className="text-xl font-sora font-bold mb-4">Ringkasan Pesanan</h1>
 
         {/* Warning-1 */}
-        <div
-          role="alert"
-          className="alert bg-blue-50 border border-blue-900 text-blue-900 text-xs font-roboto font-bold p-1 mb-4"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            className="stroke-current shrink-0 w-6 h-6 mx-auto"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-            ></path>
-          </svg>
-          <span>
+        <div className="rounded-2xl flex justify-center items-center bg-blue-50 border border-blue-900 text-blue-900 text-xs font-roboto font-bold px-3 py-2 mb-4">
+          <div>
             Mohon Maaf, kamu sudah tidak dapat mengubah pesanan, karena
             pesananmu sudah dalam proses! Tetapi tenang saja, jika ingin
             mengubah pesanan dapat dilakukan saat hari kedatangan.
-          </span>
+          </div>
         </div>
 
         {/* Booking Detail */}
@@ -68,7 +52,7 @@ export default function Checkout({
             </div>
             <div className="text-xs pl-2 xs:block hidden">
               <div className="flex justify-end">
-                <span className="bg-blue-900 rounded-xl text-white text-xs flex justify-center items-center px-2 py-1">
+                <span className="bg-blue-900 rounded-xl text-white text-xs flex justify-center items-center p-2">
                   <img
                     src="/clock.png"
                     alt="Clock Icon"
@@ -203,29 +187,9 @@ export default function Checkout({
         </div>
 
         {/* Warning-2 */}
-        <div
-          role="alert"
-          className="alert bg-red-50 border border-red-600 text-xs text-red-600 font-roboto p-1 mb-4"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            className="stroke-current shrink-0 w-6 h-6 mx-auto"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-            ></path>
-          </svg>
-          <span>
-            <div className="grid grid-cols-2 text-xs font-roboto font-bold">
-              <div className="text-left">Segera lakukan pembayaran sebelum</div>
-              <div className="text-right">{`${countdown.minutes} Menit ${countdown.seconds} Detik`}</div>
-            </div>
-          </span>
+        <div className="rounded-2xl flex justify-between items-center bg-red-50 border border-red-600 text-xs text-red-600 font-bold font-roboto px-3 py-2 mb-4">
+          <div>Segera lakukan pembayaran sebelum</div>
+          <div>{`${countdown.minutes} Menit ${countdown.seconds} Detik`}</div>
         </div>
 
         {/* Submit Button */}
