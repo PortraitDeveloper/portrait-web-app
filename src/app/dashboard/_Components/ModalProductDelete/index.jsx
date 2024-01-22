@@ -107,7 +107,7 @@ const ModalProductDelete = ({
         <div className="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm flex justify-center items-center">
           <div className="bg-white p-6 rounded-2xl">
             <div className="flex justify-between items-center mb-2">
-              <Title title={"Copy Product Name"} />
+              <Title title={"Delete Product Name"} />
               <CloseIcon
                 onClose={() => {
                   setView(true);
