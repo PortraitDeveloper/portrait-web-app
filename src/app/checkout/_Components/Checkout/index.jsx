@@ -67,7 +67,7 @@ export default function Checkout({
           <div className="xs:hidden"></div>
           <div className="xs:hidden text-xs">
             <div className="flex justify-end">
-              <span className="bg-blue-900 rounded-md text-white text-xs flex justify-center item-center px-2 py-1">
+              <span className="bg-blue-900 rounded-xl text-white text-xs flex justify-center item-center px-2 py-1">
                 <img
                   src="/clock.png"
                   alt="Clock Icon"
@@ -195,7 +195,7 @@ export default function Checkout({
         {/* Submit Button */}
         <div className="flex justify-center items-center">
           <button
-            className="bg-blue-900 text-sm font-bold text-white font-poppins hover:bg-blue-700 rounded-xl w-full md:w-120 h-10"
+            className="bg-blue-900 text-sm font-bold text-white font-poppins hover:bg-blue-700 rounded-2xl w-full md:w-120 h-10"
             onClick={getHandleTransaction}
           >
             Pilih Pembayaran
