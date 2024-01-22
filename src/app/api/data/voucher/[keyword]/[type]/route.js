@@ -20,10 +20,9 @@ export async function GET(request, { params: { keyword, type } }) {
     if (!accessToken) {
       const log = {
         created_at: currentTimeStamp,
-        route:
-          "/api/data/voucher/[keyword]/[type]",
+        route: "/api/data/voucher/[keyword]/[type]",
         status: 401,
-        message: "Suspicious request, not authorized to get data",
+        message: "Suspicious request, not authorized to get data".trim(),
       };
       errorLog(log);
       return NextResponse.json(
@@ -32,16 +31,55 @@ export async function GET(request, { params: { keyword, type } }) {
       );
     }
 
+    // const keyWord = keyword === "null" ? "%%" : "%" + keyword + "%";
+
+    // const vouchers =
+    //   type === "percentage"
+    //     ? await prisma.$queryRaw`SELECT * FROM vouchers WHERE voucher_code LIKE ${keyWord} AND percentage_discount IS NOT NULL ORDER BY expired_date ASC`
+    //     : type === "nominal"
+    //     ? await prisma.$queryRaw`SELECT * FROM vouchers WHERE voucher_code LIKE ${keyWord} AND nominal_discount IS NOT NULL ORDER BY expired_date ASC`
+    //     : await prisma.$queryRaw`SELECT * FROM vouchers`;
+
     // Read parameters
-    const keyWord = keyword === "null" ? "%%" : "%" + keyword + "%";
+    const keyWord = keyword === "null" ? "" : keyword;
 
     // Search vouchers data
     const vouchers =
       type === "percentage"
-        ? await prisma.$queryRaw`SELECT * FROM vouchers WHERE voucher_code LIKE ${keyWord} AND percentage_discount IS NOT NULL ORDER BY expired_date ASC`
+        ? await prisma.vouchers.findMany({
+            where: {
+              voucher_code: {
+                contains: keyWord,
+                mode: "insensitive",
+              },
+              percentage_discount: {
+                not: null,
+              },
+            },
+            orderBy: {
+              expired_date: "asc",
+            },
+          })
         : type === "nominal"
-        ? await prisma.$queryRaw`SELECT * FROM vouchers WHERE voucher_code LIKE ${keyWord} AND nominal_discount IS NOT NULL ORDER BY expired_date ASC`
-        : await prisma.$queryRaw`SELECT * FROM vouchers`;
+        ? await prisma.vouchers.findMany({
+            where: {
+              voucher_code: {
+                contains: keyWord,
+                mode: "insensitive",
+              },
+              nominal_discount: {
+                not: null,
+              },
+            },
+            orderBy: {
+              expired_date: "asc",
+            },
+          })
+        : await prisma.vouchers.findMany({
+            orderBy: {
+              expired_date: "asc",
+            },
+          });
 
     // Check whether vouchers data exists or not
     if (!vouchers || vouchers.length === 0) {

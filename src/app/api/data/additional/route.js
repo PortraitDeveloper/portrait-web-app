@@ -19,7 +19,7 @@ export async function PATCH(request) {
         created_at: currentTimeStamp,
         route: "/api/data/additional",
         status: 401,
-        message: "Suspicious request, not authorized to alter data",
+        message: "Suspicious request, not authorized to alter data".trim(),
       };
       errorLog(log);
       return NextResponse.json(

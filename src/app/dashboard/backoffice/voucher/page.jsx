@@ -23,7 +23,11 @@ const pageTitle = "Voucher";
 
 export default function VoucherPage() {
   const router = useRouter();
+
+  // Session
   const { data: session } = useSession();
+  const role = session?.user.role;
+  const accessToken = session?.user.accessToken;
 
   // Voucher Data
   const [vouchersData, setVouchersData] = useState([]);
@@ -54,22 +58,14 @@ export default function VoucherPage() {
   const [message, setMessage] = useState(null);
   const [color, setColor] = useState("");
 
-  // Session
-  const [role, setRole] = useState("");
-  const [accessToken, setAccessToken] = useState("");
-
-  const checkRole = () => {
-    const _role = session?.user.role;
-    setRole(_role);
-    setAccessToken(session?.user.accessToken);
-
-    if (_role !== "backoffice") {
+  const checkSession = () => {
+    if (accessToken && role !== "backoffice") {
       router.push("/dashboard/operator/transaction");
     }
   };
 
   useEffect(() => {
-    checkRole();
+    checkSession();
     getVouchersData();
   }, [
     keyword,
@@ -81,6 +77,7 @@ export default function VoucherPage() {
   ]);
 
   useEffect(() => {
+    checkSession();
     getCredentialsData();
   }, []);
 

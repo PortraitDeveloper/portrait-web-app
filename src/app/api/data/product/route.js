@@ -20,10 +20,9 @@ export async function POST(request) {
     if (!accessToken) {
       const log = {
         created_at: currentTimeStamp,
-        route:
-          "/api/data/product",
+        route: "/api/data/product",
         status: 401,
-        message: "Suspicious request, not authorized to create data",
+        message: "Suspicious request, not authorized to create data".trim(),
       };
       errorLog(log);
       return NextResponse.json(
@@ -128,10 +127,9 @@ export async function PATCH(request) {
     if (!accessToken) {
       const log = {
         created_at: currentTimeStamp,
-        route:
-          "/api/data/product",
+        route: "/api/data/product",
         status: 401,
-        message: "Suspicious request, not authorized to alter data",
+        message: "Suspicious request, not authorized to alter data".trim(),
       };
       errorLog(log);
       return NextResponse.json(
@@ -226,10 +224,9 @@ export async function DELETE(request) {
     if (!accessToken) {
       const log = {
         created_at: currentTimeStamp,
-        route:
-          "/api/data/product",
+        route: "/api/data/product",
         status: 401,
-        message: "Suspicious request, not authorized to delete data",
+        message: "Suspicious request, not authorized to delete data".trim(),
       };
       errorLog(log);
       return NextResponse.json(

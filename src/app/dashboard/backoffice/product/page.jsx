@@ -23,7 +23,11 @@ const pageTitle = "Product";
 
 export default function ProductPage() {
   const router = useRouter();
+
+  // Session
   const { data: session } = useSession();
+  const role = session?.user.role;
+  const accessToken = session?.user.accessToken;
 
   // Product Data
   const [productsData, setProductsData] = useState([]);
@@ -55,22 +59,14 @@ export default function ProductPage() {
   const [message, setMessage] = useState(null);
   const [color, setColor] = useState("");
 
-  // Session
-  const [role, setRole] = useState(null);
-  const [accessToken, setAccessToken] = useState("");
-
-  const checkRole = () => {
-    const _role = session?.user.role;
-    setRole(_role);
-    setAccessToken(session?.user.accessToken);
-
-    if (_role !== "backoffice") {
+  const checkSession = () => {
+    if (accessToken && role !== "backoffice") {
       router.push("/dashboard/operator/transaction");
     }
   };
 
   useEffect(() => {
-    checkRole();
+    checkSession();
     getProductsData();
   }, [
     branchId,
@@ -82,10 +78,12 @@ export default function ProductPage() {
   ]);
 
   useEffect(() => {
+    checkSession();
     getCredentialsData();
   }, []);
 
   useEffect(() => {
+    checkSession();
     getBranchesData();
   }, []);
 

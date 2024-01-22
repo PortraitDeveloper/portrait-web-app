@@ -20,10 +20,9 @@ export async function GET(request, { params: { keyword } }) {
     if (!accessToken) {
       const log = {
         created_at: currentTimeStamp,
-        route:
-          "/api/data/additional/keyword",
+        route: "/api/data/additional/keyword",
         status: 401,
-        message: "Suspicious request, not authorized to get",
+        message: "Suspicious request, not authorized to get".trim(),
       };
       errorLog(log);
       return NextResponse.json(
@@ -32,12 +31,22 @@ export async function GET(request, { params: { keyword } }) {
       );
     }
 
+    // const keyWord = keyword === "null" ? "%%" : "%" + keyword + "%";
+    // const additionals =
+    //   await prisma.$queryRaw`SELECT * FROM additionals WHERE item_name LIKE ${keyWord} ORDER BY CAST(SUBSTRING(item_id, 4) AS INTEGER) ASC`;
+
     // Read parameters
-    const keyWord = keyword === "null" ? "%%" : "%" + keyword + "%";
+    const keyWord = keyword === "null" ? "" : keyword;
 
     // Search additionals data
-    const additionals =
-      await prisma.$queryRaw`SELECT * FROM additionals WHERE item_name LIKE ${keyWord} ORDER BY CAST(SUBSTRING(item_id, 4) AS INTEGER) ASC`;
+    const additionals = await prisma.additionals.findMany({
+      where: {
+        item_name: {
+          contains: keyWord,
+          mode: "insensitive",
+        },
+      },
+    });
 
     // Check whether additionals data exists or not
     if (!additionals || additionals.length === 0) {

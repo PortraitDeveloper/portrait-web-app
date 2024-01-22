@@ -31,7 +31,11 @@ const pageTitle = "Transaction";
 
 export default function TransactionPage() {
   const router = useRouter();
+
+  // Session
   const { data: session } = useSession();
+  const role = session?.user.role;
+  const accessToken = session?.user.accessToken;
 
   // Displays data in real time
   const [bookId, setBookId] = useState(null);
@@ -107,22 +111,14 @@ export default function TransactionPage() {
   const [message, setMessage] = useState(null);
   const [color, setColor] = useState("");
 
-  // Session
-  const [role, setRole] = useState("");
-  const [accessToken, setAccessToken] = useState("");
-
-  const checkRole = () => {
-    const _role = session?.user.role;
-    setRole(_role);
-    setAccessToken(session?.user.accessToken);
-
-    if (_role !== "operator") {
+  const checkSession = () => {
+    if (accessToken && role !== "operator") {
       router.push("/dashboard/backoffice/transaction");
     }
   };
 
   useEffect(() => {
-    checkRole();
+    checkSession();
     getOrdersData();
   }, [
     keyword,
@@ -136,22 +132,27 @@ export default function TransactionPage() {
   ]);
 
   useEffect(() => {
+    checkSession();
     getAddonsData();
   }, []);
 
   useEffect(() => {
+    checkSession();
     getBranchesData();
   }, []);
 
   useEffect(() => {
+    checkSession();
     getCredentialsData();
   }, []);
 
   useEffect(() => {
+    checkSession();
     getProductsData();
   }, []);
 
   useEffect(() => {
+    checkSession();
     getVouchersData();
   }, []);
 

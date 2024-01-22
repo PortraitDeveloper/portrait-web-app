@@ -64,7 +64,7 @@ const ModalCustomerDetail = ({ orderData, isVisible, closeModal }) => {
         </div>
 
         <div>
-          {toggle && <ButtonLink label={"SendEmail"} url={emailUrl} />}
+          {toggle && <ButtonLink label={"Send Email"} url={emailUrl} />}
           {!toggle && (
             <ButtonLink
               label={"Chat on WhatsApp"}

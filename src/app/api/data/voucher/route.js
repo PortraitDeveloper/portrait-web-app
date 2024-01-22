@@ -22,7 +22,7 @@ export async function POST(request) {
         created_at: currentTimeStamp,
         route: "/api/data/voucher",
         status: 401,
-        message: "Suspicious request, not authorized to create",
+        message: "Suspicious request, not authorized to create".trim(),
       };
       errorLog(log);
       return NextResponse.json(
@@ -143,7 +143,7 @@ export async function PATCH(request) {
         created_at: currentTimeStamp,
         route: "/api/data/voucher",
         status: 401,
-        message: "Suspicious request, not authorized to alter",
+        message: "Suspicious request, not authorized to alter".trim(),
       };
       errorLog(log);
       return NextResponse.json(
@@ -266,7 +266,7 @@ export async function DELETE(request) {
         created_at: currentTimeStamp,
         route: "/api/data/product",
         status: 401,
-        message: "Suspicious request, not authorized to delete",
+        message: "Suspicious request, not authorized to delete".trim(),
       };
       errorLog(log);
       return NextResponse.json(

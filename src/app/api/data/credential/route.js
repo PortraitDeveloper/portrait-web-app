@@ -21,10 +21,9 @@ export async function GET(request) {
     if (!accessToken) {
       const log = {
         created_at: currentTimeStamp,
-        route:
-          "/api/data/credential",
+        route: "/api/data/credential",
         status: 401,
-        message: "Suspicious request, not authorized to get data",
+        message: "Suspicious request, not authorized to get data".trim(),
       };
       errorLog(log);
       return NextResponse.json(
@@ -67,22 +66,22 @@ export async function PATCH(request) {
   const currentTimeStamp = getTimeStamp(timeDiff);
 
   try {
-     // Authorization
-     const accessToken = request.headers.get("Authorization");
+    // Authorization
+    const accessToken = request.headers.get("Authorization");
 
-     if (!accessToken) {
-       const log = {
-         created_at: currentTimeStamp,
-         route: "/api/data/credential",
-         status: 401,
-         message: "Suspicious request, not authorized to alter",
-       };
-       errorLog(log);
-       return NextResponse.json(
-         { message: "You are not authorized to alter this data" },
-         { status: 401 }
-       );
-     }
+    if (!accessToken) {
+      const log = {
+        created_at: currentTimeStamp,
+        route: "/api/data/credential",
+        status: 401,
+        message: "Suspicious request, not authorized to alter".trim(),
+      };
+      errorLog(log);
+      return NextResponse.json(
+        { message: "You are not authorized to alter this data" },
+        { status: 401 }
+      );
+    }
 
     // Read the request body
     const { user_id, old_password, new_password, confirm_password } =

@@ -20,10 +20,9 @@ export async function GET(request, { params: { start, end } }) {
     if (!accessToken) {
       const log = {
         created_at: currentTimeStamp,
-        route:
-          "/api/data/download/summary/[start]/[end]",
+        route: "/api/data/download/summary/[start]/[end]",
         status: 401,
-        message: "Suspicious request, not authorized to get data",
+        message: "Suspicious request, not authorized to get data".trim(),
       };
       errorLog(log);
       return NextResponse.json(

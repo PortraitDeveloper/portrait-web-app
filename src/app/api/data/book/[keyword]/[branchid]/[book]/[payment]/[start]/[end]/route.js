@@ -26,7 +26,7 @@ export async function GET(
         route:
           "/api/data/book/[keyword]/[branchid]/[book]/[payment]/[start]/[end]",
         status: 401,
-        message: "Suspicious request, not authorized to get data",
+        message: "Suspicious request, not authorized to get data".trim(),
       };
       errorLog(log);
       return NextResponse.json(
@@ -89,6 +89,9 @@ export async function GET(
             lte: end,
           },
         },
+        orderBy: {
+          booking_date: "desc",
+        },
       });
     }
 
@@ -140,6 +143,9 @@ export async function GET(
             gte: start,
             lte: end,
           },
+        },
+        orderBy: {
+          booking_date: "desc",
         },
       });
     }

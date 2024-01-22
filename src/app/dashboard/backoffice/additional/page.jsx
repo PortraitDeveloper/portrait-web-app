@@ -19,7 +19,11 @@ const pageTitle = "Add-ons";
 
 export default function AdditionalPage() {
   const router = useRouter();
+
+  // Session
   const { data: session } = useSession();
+  const role = session?.user.role;
+  const accessToken = session?.user.accessToken;
 
   // Add-ons Data
   const [additionalsData, setAdditionalsData] = useState([]);
@@ -47,26 +51,19 @@ export default function AdditionalPage() {
   const [message, setMessage] = useState(null);
   const [color, setColor] = useState("");
 
-  // Session
-  const [role, setRole] = useState(null);
-  const [accessToken, setAccessToken] = useState("");
-
-  const checkRole = () => {
-    const _role = session?.user.role;
-    setRole(_role);
-    setAccessToken(session?.user.accessToken);
-
-    if (_role !== "backoffice") {
+  const checkSession = () => {
+    if (accessToken && role !== "backoffice") {
       router.push("/dashboard/operator/transaction");
     }
   };
 
   useEffect(() => {
-    checkRole();
+    checkSession();
     getAdditionalsData();
   }, [keyword, additionalEditVisible, session]);
 
   useEffect(() => {
+    checkSession();
     getCredentialsData();
   }, []);
 

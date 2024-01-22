@@ -58,7 +58,6 @@ const ModalChangeOrder = ({
   closeModal,
   finishModal,
 }) => {
-  const [view, setView] = useState(true);
   const [loading, setLoading] = useState(true);
 
   let message = null;
@@ -66,17 +65,26 @@ const ModalChangeOrder = ({
 
   const handleSelectedProduct = (e) => {
     const productPrice = e.product_price;
+
+    let dataFiltered = addonsData.find((item) => item.item_id === "it-3");
+    console.log(dataFiltered);
+    const print5rbw = dataFiltered.item_price;
+
+    dataFiltered = addonsData.find((item) => item.item_id === "it-4");
+    console.log(dataFiltered);
+    const print5rc = dataFiltered.item_price;
+
     const print5rPrice =
       e.product_type === "Black and White"
-        ? addonsData[2].item_price * numberPrint5r
-        : addonsData[3].item_price * numberPrint5r;
+        ? print5rbw * numberPrint5r
+        : print5rc * numberPrint5r;
 
+    getPrint5rPrice(print5rPrice);
     getProductId(e.product_id);
     getProductBid(e.branch_id);
     getProductName(e.product_name);
     getProductType(e.product_type);
     getProductPrice(e.product_price);
-    getPrint5rPrice(print5rPrice);
 
     const result = calculateOrder(
       productPrice,
@@ -97,7 +105,8 @@ const ModalChangeOrder = ({
   };
 
   const handlePerson = (e) => {
-    const personPrice = addonsData[0].item_price * e;
+    const dataFiltered = addonsData.find((item) => item.item_id === "it-1");
+    const personPrice = dataFiltered.item_price * e;
     getNumberPerson(e);
     getPersonPrice(personPrice);
 
@@ -120,7 +129,8 @@ const ModalChangeOrder = ({
   };
 
   const handlePet = (e) => {
-    const petPrice = addonsData[1].item_price * e;
+    const dataFiltered = addonsData.find((item) => item.item_id === "it-2");
+    const petPrice = dataFiltered.item_price * e;
     getNumberPet(e);
     getPetPrice(petPrice);
 
@@ -143,10 +153,15 @@ const ModalChangeOrder = ({
   };
 
   const handlePrint5r = (e) => {
+    let dataFiltered = addonsData.find((item) => item.item_id === "it-3");
+    const print5rbw = dataFiltered.item_price * e;
+
+    dataFiltered = addonsData.find((item) => item.item_id === "it-4");
+    const print5rc = dataFiltered.item_price * e;
+
     const print5rPrice =
-      productType === "Black and White"
-        ? addonsData[2].item_price * e
-        : addonsData[3].item_price * e;
+      productType === "Black and White" ? print5rbw : print5rc;
+
     getNumberPrint5r(e);
     getPrint5rPrice(print5rPrice);
 
@@ -169,7 +184,9 @@ const ModalChangeOrder = ({
   };
 
   const handleSoftfile = (e) => {
-    const softfilePrice = addonsData[4].item_price * e;
+    const dataFiltered = addonsData.find((item) => item.item_id === "it-5");
+    const softfilePrice = dataFiltered.item_price * e;
+
     getNumberSoftfile(e);
     getSoftfilePrice(softfilePrice);
 
