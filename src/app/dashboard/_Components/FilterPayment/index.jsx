@@ -15,6 +15,7 @@ const FilterPayment = ({ getPaymentStatus }) => {
       <option value="pending">Pending</option>
       <option value="refund">Refund</option>
       <option value="partial_refund">Partial Refund</option>
+      <option value="expire">Expire</option>
     </select>
   );
 };
