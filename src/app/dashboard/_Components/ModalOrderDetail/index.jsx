@@ -212,13 +212,13 @@ const ModalOrderDetail = ({
                     <div className="text-blue-500">{orderData.book_status}</div>
                   )}
                 </div>
-                <div>
-                  and
-                </div>
+                <div>and</div>
                 <div>
                   {(orderData.transactions.payment_status === "refund" ||
                     orderData.transactions.payment_status ===
-                      "partial_refund") && (
+                      "partial_refund" ||
+                    orderData.transactions.payment_status ===
+                      "expire") && (
                     <div className="text-red-500">
                       {orderData.transactions.payment_status}
                     </div>

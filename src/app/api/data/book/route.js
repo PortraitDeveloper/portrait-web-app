@@ -64,7 +64,8 @@ export async function PATCH(request) {
       book === "canceled" ||
       payment === "pending" ||
       payment === "refund" ||
-      payment === "partial_refund"
+      payment === "partial_refund" ||
+      payment === "expire"
     ) {
       return NextResponse.json({
         created_at: currentTimeStamp,
