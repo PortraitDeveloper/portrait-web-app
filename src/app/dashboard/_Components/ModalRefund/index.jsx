@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import ButtonCancel from "../_ChildComponents/ButtonCancel";
-import ButtonDelete from "../_ChildComponents/ButtonDelete";
+import ButtonRefund from "../_ChildComponents/ButtonRefund";
 
 const ModalRefund = ({
   accessToken,
@@ -74,7 +74,7 @@ const ModalRefund = ({
                   closeModal();
                 }}
               />
-              <ButtonDelete getDelete={refundHandler} />
+              <ButtonRefund getRefund={refundHandler} />
             </div>
           </div>
         </div>
