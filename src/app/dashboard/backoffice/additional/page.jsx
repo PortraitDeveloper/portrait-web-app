@@ -81,6 +81,7 @@ export default function AdditionalPage() {
 
     if (response.status === 404) {
       setDataAvailable(false);
+      setLoading(true);
       setColor("red");
       setMessage("Data tidak ditemukan");
     } else {
