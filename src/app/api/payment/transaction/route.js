@@ -55,8 +55,8 @@ export async function POST(request) {
 
     // Midtrans client config
     const snap = new midtransClient.Snap({
-      isProduction: false, // Sandbox
-      // isProduction: true, // Production
+      // isProduction: false, // Sandbox
+      isProduction: true, // Production
       serverKey: server_key,
       clientKey: client_key,
     });
